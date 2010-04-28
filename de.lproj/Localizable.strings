@@ -1,0 +1,36 @@
+/* 
+   Localizable.strings
+   RentManager
+
+   Created by Benjamin Mies on 22.03.10.
+   Copyright 2010 os-cillation e.K.. All rights reserved.
+ */
+ 
+"LentToTitle" = "Verliehen";
+"LentFromTitle" = "Geliehen";
+"About" = "Info";
+"NewEntry" = "Neuer Eintrag";
+"Edit" = "Bearbeiten";
+"Save" = "Speichern";
+"Author" = "Autor:";
+"Title" = "Titel:";
+"Artist" = "Interpret:";
+"Description" = "Beschreibung:";
+"AdditionalDescription" = "Weitere Beschreibung:";
+"LentToPerson" = "Verliehen an:";
+"FromAddressbook" = "aus Adressbuch:";
+"LentToAt" = "Verliehen am:";
+"LentToUntil" = "Verliehen bis:";
+"LentFromAt" = "Geliehen am:";
+"LentFromUntil" = "Geliehen bis:";
+"Book" = "Buch";
+"CD" = "CD";
+"DVD" = "DVD";
+"Other" = "Andere";
+"Clear" = "Löschen";
+"Entry" = "Eintrag";
+"Entries" = "Einträge";
+"to" = "an";
+"from" = "von";
+"at" = "am";
+"until" = "bis";

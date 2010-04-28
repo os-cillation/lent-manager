@@ -1,0 +1,10 @@
+/* 
+   Localizable.strings
+   RentManager
+
+   Created by Benjamin Mies on 22.03.10.
+   Copyright 2010 __MyCompanyName__. All rights reserved.
+ */
+
+"Author" = "Author";
+"Title" = "Title"

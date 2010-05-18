@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="1"/>
+			<integer value="20"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -70,12 +70,12 @@ b24gZS5LLg</string>
 							<object class="IBUILabel" id="1031874902">
 								<reference key="NSNextResponder" ref="98452158"/>
 								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{113, 165}, {98, 21}}</string>
+								<string key="NSFrame">{{106, 165}, {112, 21}}</string>
 								<reference key="NSSuperview" ref="98452158"/>
 								<bool key="IBUIOpaque">NO</bool>
 								<bool key="IBUIClipsSubviews">YES</bool>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="IBUIText">Version: 0.1</string>
+								<string key="IBUIText">Version: 0.1.2</string>
 								<object class="NSFont" key="IBUIFont" id="877508864">
 									<string key="NSName">Helvetica-Bold</string>
 									<double key="NSSize">17</double>
@@ -192,8 +192,8 @@ b24gZS5LLg</string>
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="78186829"/>
 							<reference ref="888647690"/>
-							<reference ref="1031874902"/>
 							<reference ref="893324308"/>
+							<reference ref="1031874902"/>
 						</object>
 						<reference key="parent" ref="191373211"/>
 					</object>

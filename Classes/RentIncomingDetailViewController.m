@@ -414,7 +414,7 @@
 - (void)updateStrings {
 	self.description1Label.text = NSLocalizedString(@"Author", @"");
 	self.description2Label.text = NSLocalizedString(@"Title", @"");
-	self.lentToLabel.text = NSLocalizedString(@"LentToPerson", @"");
+	self.lentToLabel.text = NSLocalizedString(@"LentFromPerson", @"");
 	self.lentFromLabel.text = NSLocalizedString(@"LentFromAt", @"");
 	self.lentUntilLabel.text = NSLocalizedString(@"LentFromUntil", @"");
 	self.deleteDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");

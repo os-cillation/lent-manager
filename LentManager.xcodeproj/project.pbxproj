@@ -42,6 +42,7 @@
 		43BF8340116B601300167833 /* incoming2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833D116B601300167833 /* incoming2.png */; };
 		43BF8341116B601300167833 /* info2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833E116B601300167833 /* info2.png */; };
 		43BF8342116B601300167833 /* outgoing2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833F116B601300167833 /* outgoing2.png */; };
+		43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C2E69C1192C42E006003B0 /* lent-icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		43BF833D116B601300167833 /* incoming2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incoming2.png; sourceTree = "<group>"; };
 		43BF833E116B601300167833 /* info2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info2.png; sourceTree = "<group>"; };
 		43BF833F116B601300167833 /* outgoing2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outgoing2.png; sourceTree = "<group>"; };
+		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LentManager-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +188,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				43C2E69C1192C42E006003B0 /* lent-icon.png */,
 				432C96271187134D00BDC5C8 /* Default.png */,
 				43BF833D116B601300167833 /* incoming2.png */,
 				43BF833E116B601300167833 /* info2.png */,
@@ -279,6 +282,7 @@
 				43BF8341116B601300167833 /* info2.png in Resources */,
 				43BF8342116B601300167833 /* outgoing2.png in Resources */,
 				432C96291187134D00BDC5C8 /* Default.png in Resources */,
+				43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +362,35 @@
 			};
 			name = Release;
 		};
+		43B0719E1198264400CD50CA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.1.3;
+			};
+			name = Distribution;
+		};
+		43B0719F1198264400CD50CA /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: os-cillation e.K.";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = LentManager_Prefix.pch;
+				INFOPLIST_FILE = "LentManager-Info.plist";
+				PRODUCT_NAME = LentManager;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7546DC9A-CF7B-4D02-93CC-4A64076A63BB";
+				SDKROOT = iphoneos3.0;
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
+			};
+			name = Distribution;
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -392,6 +425,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				43B0719F1198264400CD50CA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -401,6 +435,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				43B0719E1198264400CD50CA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

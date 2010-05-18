@@ -18,11 +18,13 @@
 "Description" = "Description:";
 "AdditionalDescription" = "Additional Description:";
 "LentToPerson" = "Lent to:";
+"LentFromPerson" = "Lent from:";
 "FromAddressbook" = "from Addressbook:";
 "LentToAt" = "Lent at:";
 "LentToUntil" = "Lent until:";
 "LentFromAt" = "Lent at:";
 "LentFromUntil" = "Lent until:";
+"ContactDetails" = "Contact details";
 "Book" = "Book";
 "CD" = "CD";
 "DVD" = "DVD";

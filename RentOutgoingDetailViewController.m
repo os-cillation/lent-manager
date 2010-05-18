@@ -53,7 +53,7 @@
 		personViewController.allowsEditing = YES;
 
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:personViewController];
-		personViewController.navigationItem.title = @"Kontaktdetails";
+		personViewController.navigationItem.title = NSLocalizedString(@"ContactDetails", "");
 		UIBarButtonItem *cancelButton =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
 																				   target:self action:@selector(cancelContact:)];
 		personViewController.navigationItem.leftBarButtonItem = cancelButton;

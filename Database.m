@@ -14,7 +14,7 @@
 @implementation Database
 
 + (void)createEditableCopyOfDatabaseIfNeeded {
-	NSLog(@"Creating editable copy of database...");
+	//NSLog(@"Creating editable copy of database...");
 
 	BOOL success;
 	NSFileManager *fileManager = [NSFileManager alloc];
@@ -35,33 +35,19 @@
 }
 
 + (sqlite3 *) getNewDBConnection {
-	sqlite3 *newDBConnection;
+	sqlite3 *db;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *path = [documentsDirectory stringByAppendingPathComponent:@"data.sqlite"];
 	// Open the database.
-	if (sqlite3_open([path UTF8String], &newDBConnection) == SQLITE_OK) {
-		NSLog(@"Databases successfully opened...");
+	if (sqlite3_open([path UTF8String], &db) == SQLITE_OK) {
+		//NSLog(@"Databases successfully opened...");
 	}
 	else {
-		NSLog(@"Error while openening database...");
+		//NSLog(@"Error while openening database...");
 	}
-	connection = newDBConnection;
-	return newDBConnection;
-}
+	
 
-+ (sqlite3 *)getConnection {
-	if (connection == nil || connection == NULL) {
-		NSLog(@"create a new database instance...");
-		connection = [Database getNewDBConnection];
-		[NSThread detachNewThreadSelector:@selector(prepareContactInfo) toTarget:self withObject:nil];
-	}
-	return connection;
-}
-
-+ (void)prepareContactInfo{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	sqlite3 *db = connection;
 	sqlite3_stmt *statement = nil;
 	const char* sql;
 	
@@ -82,6 +68,24 @@
 	}
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);
+	connection = db;
+	return db;
+}
+
++ (sqlite3 *)getConnection {
+	if (connection == nil || connection == NULL) {
+		//NSLog(@"create a new database instance...");
+		connection = [Database getNewDBConnection];
+		[NSThread detachNewThreadSelector:@selector(prepareContactInfo) toTarget:self withObject:nil];
+	}
+	return connection;
+}
+
++ (void)prepareContactInfo{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	sqlite3 *db = connection;
+	sqlite3_stmt *statement = nil;
+	const char* sql;
 	
 	statement = nil;
 	sql = "CREATE TABLE IF NOT EXISTS contactInfo(id INTEGER PRIMARY KEY, name TEXT);";
@@ -333,12 +337,13 @@
 			sqlString = [sqlString stringByAppendingString:searchText];
 			sqlString = [sqlString stringByAppendingString:@"%' order by name;"];
 		}
-		NSLog(@"%@", sqlString);
+		//NSLog(@"%@", sqlString);
 		const char* sql = [sqlString cString]; 
 		
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-			NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+			NSLog(@"error preparing statement...");
 		}
 		else {
 			while (sqlite3_step(statement) == SQLITE_ROW) {

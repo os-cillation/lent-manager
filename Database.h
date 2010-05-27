@@ -20,8 +20,8 @@ sqlite3 *connection;
 + (void)createEditableCopyOfDatabaseIfNeeded;
 + (sqlite3 *)getConnection;
 + (NSString *)getDescriptionByIndex:(int)index;
-+ (void)addOutgoingEntry:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
-+ (void)addIncomingEntry:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
++ (void)addOutgoingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
++ (void)addIncomingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
 + (void)deleteIncomingEntry:(NSString *)entryId;
 + (void)deleteOutgoingEntry:(NSString *)entryId;
 + (RentList *)getIncomingEntries:(NSString *)searchText;
@@ -32,4 +32,16 @@ sqlite3 *connection;
 + (ContactEntry *)getContactInfo:(NSString *)filter atIndex:(int)index;
 + (int)getContactCount:(NSString *)filter;
 
++ (int)getIncomingCount;
++ (int)getOutgoingCount;
++ (int)getEntryCount;
+
++ (void)addOutgoingText:(NSString *)id withFirstLine:(NSString *)firstLine withSecondLine:(NSString *)secondLine withPerson:(NSString *)personName;
++ (void)addIncomingText:(NSString *)id withFirstLine:(NSString *)firstLine withSecondLine:(NSString *)secondLine withPerson:(NSString *)personName;
+
+/*
++ (void)updateDB:(sqlite3 *)db;
++ (void)prepareOutgoingText:(sqlite3 *)db;
++ (void)prepareIncomingText:(sqlite3 *)db;
+*/
 @end

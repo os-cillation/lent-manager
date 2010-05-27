@@ -17,6 +17,9 @@
 	NSString *person;
 	NSDate *date;
 	NSDate *returnDate;
+	NSString *firstLine;
+	NSString *secondLine;
+	NSString *personName;
 }
 
 @property (nonatomic, retain) NSString *entryId;
@@ -26,8 +29,14 @@
 @property (nonatomic, retain) NSString *person;
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, retain) NSDate *returnDate;
+@property (nonatomic, retain) NSString *firstLine;
+@property (nonatomic, retain) NSString *secondLine;
+@property (nonatomic, retain) NSString *personName;
 
 - (NSString *)getDateString;
 - (NSString *)getReturnDateString;
+- (void)generateTextData;
+- (void)generateOutgoingText;
+- (void)generateIncomingText;
 
 @end

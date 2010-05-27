@@ -8,7 +8,6 @@
 
 #import "RentOutgoingViewController.h"
 #import <AddressBook/AddressBook.h>
-#import "RentOutgoingDetailViewController.h"
 #import "Database.h"
 #import "RentEntry.h"
 #import "AboutViewController.h"
@@ -28,13 +27,27 @@
 - (id)init {
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self != nil) {
-		self.myTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		//self.myTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 	return self;
 }
 
+- (void)reload {
+	NSLog(@"reload call outgoing");
+	allEntries = [Database getOutgoingEntries:nil];
+	if ([searchBar.text length] == 0) {
+		NSMutableArray *tmp = [[NSMutableArray alloc] init];
+		[tmp addObjectsFromArray:[allEntries getData]];
+		[list setData:tmp];
+	}
+	else {
+		list = [Database getOutgoingEntries:searchBar.text];
+	}
+
+}
+
 - (void)initializeTableData {
-	NSLog(@"initialize table data...");
+//	NSLog(@"initialize table data...");
 	list = [Database getOutgoingEntries:nil];
 	
 	if ([list getSectionCount] > 0) {
@@ -48,11 +61,19 @@
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)pSearchBar {
+	pSearchBar.text = @"";
 	[searchBar resignFirstResponder];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	list = [Database getOutgoingEntries:searchText];
+- (void)searchBar:(UISearchBar *)pSearchBar textDidChange:(NSString *)searchText {
+	if ([searchBar.text length] == 0) {
+		NSMutableArray *tmp = [[NSMutableArray alloc] init];
+		[tmp addObjectsFromArray:[allEntries getData]];
+		[list setData:tmp];
+	}
+	else {
+		list = [Database getOutgoingEntries:searchBar.text];
+	}
 	
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
@@ -60,12 +81,16 @@
 	else if (self.tableView.editing){
 		[self stopEdit];
 	}
-	
 	[self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	allEntries = [Database getOutgoingEntries:nil];
+	NSMutableArray *tmp = [[NSMutableArray alloc] init];
+	[tmp addObjectsFromArray:[allEntries getData]];
+	list = [[RentList alloc] init];
+	[list setData:tmp];
+	[super viewDidLoad];
 	
 	self.tableView.delegate = self;
 	
@@ -83,7 +108,6 @@
 								  action:@selector(add)];
     self.navigationItem.rightBarButtonItem = addButton;
 	[addButton release];	
-	
 }
 
 - (void)startEdit {
@@ -94,7 +118,7 @@
 								   action:@selector(stopEdit)];
     self.navigationItem.leftBarButtonItem = doneButton;
 	[doneButton release];
-	self.navigationItem.rightBarButtonItem = nil;
+	//self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)stopEdit {
@@ -112,13 +136,13 @@
 								  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 								  target:self
 								  action:@selector(add)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    //self.navigationItem.rightBarButtonItem = addButton;
 	[addButton release];
 }
 
 - (void)add {
 	RentOutgoingDetailViewController *controller = [[RentOutgoingDetailViewController alloc] initWithNibName:@"RentOutgoingDetailViewController" bundle:nil];
-
+	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:navController animated:YES];
@@ -128,7 +152,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	list = [Database getOutgoingEntries:searchBar.text];
+	int count = [Database getOutgoingCount];
+	if (count > 0) {
+		self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+	}
+	else {
+		self.tabBarItem.badgeValue = nil;
+	}
+	
 	
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
@@ -146,12 +177,6 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-- (void)viewDidUnload {
-	// Release anything that can be recreated in viewDidLoad or on demand.
-	// e.g. self.myOutlet = nil;
-}
-
 
 #pragma mark Table view methods
 
@@ -179,61 +204,16 @@
 		cell.detailTextLabel.numberOfLines = 1;
     }
     RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-		
-	if ([entry.description length] == 0 || [entry.description2 length] == 0) {
-		if ([entry.description length] == 0 ) {
-			cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@", entry.description2];
-		}
-		else {
-			cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@", entry.description];
-		}
+	
+	if ([entry.firstLine length] == 0) {
+		[entry generateOutgoingText];
 	}
-	else {
-		cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@ - %@", entry.description, entry.description2];
-	}
+	
+	cell.textLabel.text = entry.firstLine;
 
-	cell.detailTextLabel.text = @"";
-	
-	ABAddressBookRef ab = ABAddressBookCreate();
-	ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
-	
-	NSString *fullName = @"";
-	
-	if (person > 0) {
-		NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-		NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
-		
-		
-		if (firstName == nil || lastName == nil) {
-			if (firstName == nil) {
-				fullName = lastName;
-			}
-			else {
-				fullName = firstName;
-			}
-		}
-		else {
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-		}
-		fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), fullName];
-	}
-	else {
-		if ([entry.person length] > 0) {
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), entry.person];
-		}
-	}
+	cell.detailTextLabel.text = entry.secondLine;
 
-	if (entry.date != nil) {
-		if ([fullName length] > 0) {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), [entry getDateString], fullName];
-		}
-		else {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), [entry getDateString]];
-		}
-	}
-	else {
-		cell.detailTextLabel.text = fullName;
-	}
+	
 
 	cell.detailTextLabel.textColor = [UIColor blackColor];
 	return cell;	
@@ -241,8 +221,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath { 
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-	
-    NSDate *currentDate = [[NSDate alloc] init];
+	NSDate *currentDate = [[NSDate alloc] init];
 	
 	NSComparisonResult result = [currentDate compare:entry.returnDate];
 	
@@ -258,6 +237,7 @@
 	[searchBar resignFirstResponder];
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	RentOutgoingDetailViewController *controller = [[RentOutgoingDetailViewController alloc] initWithNibName:@"RentOutgoingDetailViewController" bundle:nil];
+	controller.delegate = self;
 	controller.entry = entry;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -266,8 +246,7 @@
 	[controller release];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return 50.0;	
 }
 
@@ -279,6 +258,7 @@
     return title;
 }
 
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	NSString *title = [NSString alloc];
 	int count = [list getEntryCount:section];
@@ -290,6 +270,7 @@
 	}
     return title;
 }
+ */
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -298,6 +279,13 @@
 		[Database deleteOutgoingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
 		[self.tableView reloadData];
+		int count = [Database getOutgoingCount];
+		if (count > 0) {
+			self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+		}
+		else {
+			self.tabBarItem.badgeValue = nil;
+		}
     }   
 }
 

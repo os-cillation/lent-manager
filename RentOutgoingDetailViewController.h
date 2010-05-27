@@ -12,10 +12,13 @@
 #import "DateSelectViewController.h"
 #import "ReturnDateSelectViewController.h"
 
+@protocol RentOutgoingDetailViewControllerDelegate;
+
 @class RentEntry;
 
 
 @interface RentOutgoingDetailViewController : UIViewController <UITextFieldDelegate, DateSelectViewControllerDelegate, ReturnDateSelectViewControllerDelegate, ABPersonViewControllerDelegate/*, ABPeoplePickerNavigationControllerDelegate*/> {
+	id <RentOutgoingDetailViewControllerDelegate> delegate;
 	RentEntry *entry;
 	UITextField *activeField;
 	IBOutlet UITextField *descriptionTxt;
@@ -41,6 +44,7 @@
 	BOOL keyboardShown;	
 }
 
+@property (nonatomic, assign) id <RentOutgoingDetailViewControllerDelegate> delegate;
 @property (nonatomic, retain) RentEntry *entry;
 @property (nonatomic, retain) IBOutlet UITextField *descriptionTxt;
 @property (nonatomic, retain) IBOutlet UITextField *description2Txt;
@@ -69,4 +73,8 @@
 - (void)resignKeyboard;
 - (void)updateStrings;
 
+@end
+
+@protocol RentOutgoingDetailViewControllerDelegate
+- (void)reload;
 @end

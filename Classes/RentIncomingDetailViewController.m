@@ -14,7 +14,7 @@
 
 @implementation RentIncomingDetailViewController
 
-@synthesize scrollView, entry, descriptionTxt, type, personTxt, dateTxt, returnDateTxt, saveButton,
+@synthesize delegate, scrollView, entry, descriptionTxt, type, personTxt, dateTxt, returnDateTxt, saveButton,
 			description2Txt, description1Label, description2Label, detailsButton, lentToLabel, lentFromLabel, lentUntilLabel,
 			deleteDateButton, deleteReturnDateButton, contactTableView;
 
@@ -33,11 +33,17 @@
 		}
 	
 		if (entry != nil) {
-			[Database deleteIncomingEntry:self.entry.entryId];
+			[Database addIncomingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
 		}
+		else {
+			[Database addIncomingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+		}
+
 		
-		[Database addIncomingEntry:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+
 	//}
+
+	[delegate reload];
 
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
@@ -54,7 +60,7 @@
 		personViewController.allowsEditing = YES;
 		
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:personViewController];
-		personViewController.navigationItem.title = @"Kontaktdetails";
+		personViewController.navigationItem.title = NSLocalizedString(@"ContactDetails", "");
 		UIBarButtonItem *cancelButton =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
 																					   target:self action:@selector(cancelContact:)];
 		personViewController.navigationItem.leftBarButtonItem = cancelButton;
@@ -208,6 +214,8 @@
 		date = entry.date;
 		returnDate = entry.returnDate;
 		
+		self.personTxt.text = entry.personName;
+		
 		if (entry.person == NULL || entry.person == nil) {
 			[detailsButton setHidden:YES];
 			return;
@@ -217,7 +225,7 @@
 		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
 		if (person != nil) {
 			personId = entry.person;
-			
+/*			
 			NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
 			NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
 			NSString *fullName;
@@ -234,11 +242,11 @@
 				fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
 			}
 			self.personTxt.text = fullName;
-
+*/
 			[detailsButton setHidden:NO];
 		}
 		else {
-			self.personTxt.text = entry.person;
+			//self.personTxt.text = entry.person;
 			[detailsButton setHidden:YES];
 		}
 	}

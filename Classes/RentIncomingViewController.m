@@ -8,7 +8,6 @@
 
 #import "RentIncomingViewController.h"
 #import <AddressBook/AddressBook.h>
-#import "RentIncomingDetailViewController.h"
 #import "Database.h"
 #import "RentEntry.h"
 #import "AboutViewController.h"
@@ -32,6 +31,20 @@
 	return self;
 }
 
+- (void)reload {
+
+	NSLog(@"reload call incoming");
+	allEntries = [Database getIncomingEntries:nil];
+	if ([searchBar.text length] == 0) {
+		NSMutableArray *tmp = [[NSMutableArray alloc] init];
+		[tmp addObjectsFromArray:[allEntries getData]];
+		[list setData:tmp];
+	}
+	else {
+		list = [Database getIncomingEntries:searchBar.text];
+	}
+}
+
 - (void)initializeTableData {
 	NSLog(@"initialize table data...");
 	list = [Database getIncomingEntries:nil];
@@ -48,11 +61,19 @@
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)pSearchBar {
+	pSearchBar.text = @"";
 	[searchBar resignFirstResponder];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	list = [Database getIncomingEntries:searchText];
+- (void)searchBar:(UISearchBar *)pSearchBar textDidChange:(NSString *)searchText {
+	if ([pSearchBar.text length] == 0) {
+		NSMutableArray *tmp = [[NSMutableArray alloc] init];
+		[tmp addObjectsFromArray:[allEntries getData]];
+		[list setData:tmp];
+	}
+	else {
+		list = [Database getIncomingEntries:pSearchBar.text];
+	}
 	
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
@@ -60,11 +81,15 @@
 	else if (self.tableView.editing){
 		[self stopEdit];
 	}
-	
 	[self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
+	allEntries = [Database getIncomingEntries:nil];
+	NSMutableArray *tmp = [[NSMutableArray alloc] init];
+	[tmp addObjectsFromArray:[allEntries getData]];
+	list = [[RentList alloc] init];
+	[list setData:tmp];
     [super viewDidLoad];
 	
 	editButton = [[UIBarButtonItem alloc] 
@@ -93,7 +118,7 @@
 								   action:@selector(stopEdit)];
     self.navigationItem.leftBarButtonItem = doneButton;
 	[doneButton release];
-	self.navigationItem.rightBarButtonItem = nil;
+	//self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)stopEdit {
@@ -111,13 +136,13 @@
 								  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 								  target:self
 								  action:@selector(add)];
-    self.navigationItem.rightBarButtonItem = addButton;
+    //self.navigationItem.rightBarButtonItem = addButton;
 	[addButton release];
 }
 
 - (void)add {
 	RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
-	
+	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
 	[self presentModalViewController:navController animated:YES];
@@ -127,7 +152,14 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-	list = [Database getIncomingEntries:searchBar.text];
+	int count = [Database getIncomingCount];
+	if (count > 0) {
+		self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+	}
+	else {
+		self.tabBarItem.badgeValue = nil;
+	}
+	
 	
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
@@ -178,69 +210,14 @@
     }
     RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	
-	if ([entry.description length] == 0 || [entry.description2 length] == 0) {
-		if ([entry.description length] == 0 ) {
-			cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@", entry.description2];
-		}
-		else {
-			cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@", entry.description];
-		}
-	}
-	else {
-		cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@ - %@", entry.description, entry.description2];
+	if ([entry.firstLine length] == 0) {
+		[entry generateIncomingText];
 	}
 	
-	cell.detailTextLabel.text = @"";
+	cell.textLabel.text = entry.firstLine;
 	
-	ABAddressBookRef ab = ABAddressBookCreate();
-	ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
-	
-	NSString *fullName = @"";
-	
-	if (person > 0) {
-		NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-		NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
-		
-		
-		if (firstName == nil || lastName == nil) {
-			if (firstName == nil) {
-				fullName = lastName;
-			}
-			else {
-				fullName = firstName;
-			}
-		}
-		else {
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-		}
-		fullName = [[NSString alloc] initWithFormat:@"%@", fullName];
-	}
-	else {
-		fullName = entry.person;
-	}
-	
-	if (entry.returnDate != nil) {
-		if ([fullName length] > 0) {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@ %@, %@ %@", NSLocalizedString(@"until", @""), [entry getReturnDateString], NSLocalizedString(@"from", @""), fullName];
-		}
-		else {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"until", @""), [entry getReturnDateString]];
-		}
-	}
-/*	else if (entry.date != nil) {
-		if ([entry.person length] > 0) {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"am %@, von %@", [entry getDateString], entry.person];
-		}
-		else {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"am %@", [entry getDateString]];
-		}		
-	}*/
-	else {
-		if ([entry.person length] > 0) {
-			cell.detailTextLabel.text = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), fullName];
-		}
-		
-	}
+	cell.detailTextLabel.text = entry.secondLine;
+
 	cell.detailTextLabel.textColor = [UIColor blackColor];
 	return cell;
 }
@@ -264,6 +241,7 @@
 	[searchBar resignFirstResponder];
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
+	controller.delegate = self;
 	controller.entry = entry;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -285,6 +263,7 @@
     return title;
 }
 
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
 	NSString *title = [NSString alloc];
 	int count = [list getEntryCount:section];
@@ -296,6 +275,7 @@
 	}
     return title;
 }
+*/
 
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -303,6 +283,13 @@
 		RentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
 		[Database deleteIncomingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
+		int count = [Database getIncomingCount];
+		if (count > 0) {
+			self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+		}
+		else {
+			self.tabBarItem.badgeValue = nil;
+		}
     }   
 }
 

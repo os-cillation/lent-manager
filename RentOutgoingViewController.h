@@ -6,12 +6,13 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 #import "RentList.h"
+#import "RentOutgoingDetailViewController.h"
 
-
-@interface RentOutgoingViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate> {
+@interface RentOutgoingViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, RentOutgoingDetailViewControllerDelegate> {
 	IBOutlet UISearchBar *searchBar;
 	NSMutableArray *tableData;
 	RentList *list;
+	RentList *allEntries;
 	UIBarButtonItem *editButton;
 	IBOutlet UITableView *myTableView;
 }

@@ -17,5 +17,6 @@
 - (NSInteger)getSectionCount;
 - (NSInteger)getEntryCount:(int)section;
 - (void)setData:(NSMutableArray *)pData;
+- (NSMutableArray *)getData;
 - (RentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row;
 @end

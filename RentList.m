@@ -15,6 +15,10 @@
 	data = pData;
 }
 
+- (NSMutableArray *)getData {
+	return data;
+}
+
 - (NSInteger)getSectionCount {
 	return [data count];
 }

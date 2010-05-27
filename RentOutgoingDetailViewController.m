@@ -14,7 +14,7 @@
 
 @implementation RentOutgoingDetailViewController
 
-@synthesize scrollView, entry, descriptionTxt, type, personTxt, dateTxt, returnDateTxt, detailsButton, saveButton,
+@synthesize delegate, scrollView, entry, descriptionTxt, type, personTxt, dateTxt, returnDateTxt, detailsButton, saveButton,
 			description2Txt, description1Label, description2Label, lentToLabel, lentFromLabel, lentUntilLabel,
 			deleteDateButton, deleteReturnDateButton, contactTableView;
 
@@ -33,11 +33,17 @@
 		}
 	
 		if (entry != nil) {
-			[Database deleteOutgoingEntry:self.entry.entryId];
+			[Database addOutgoingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+		}
+		else {
+			[Database addOutgoingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
 		}
 
-	[Database addOutgoingEntry:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+
+	
 	//}
+
+	[delegate reload];
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
@@ -204,6 +210,8 @@
 		date = entry.date;
 		returnDate = entry.returnDate;
 		
+		self.personTxt.text = entry.personName;
+		
 		if (entry.person == NULL || entry.person == nil) {
 			[detailsButton setHidden:YES];
 			return;
@@ -213,7 +221,7 @@
 		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
 		if (person != nil) {
 			personId = entry.person;
-		
+/*
 			NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
 			NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
 			NSString *fullName;
@@ -229,10 +237,11 @@
 				fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
 			}
 			self.personTxt.text = fullName;
+ */
 			[detailsButton setHidden:NO];
 		}
 		else {
-			self.personTxt.text = entry.person;
+//			self.personTxt.text = entry.person;
 			[detailsButton setHidden:YES];
 		}
 	}

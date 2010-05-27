@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class RentIncomingViewController;
+@class RentOutgoingViewController;
+
 @interface RentManagerAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
+	RentIncomingViewController *incomingController;
+	RentOutgoingViewController *outgoingController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;

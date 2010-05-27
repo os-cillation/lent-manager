@@ -12,7 +12,7 @@
 @implementation AboutViewController
 
 
-@synthesize scrollView;
+@synthesize scrollView, textView;
 
 
 #pragma mark -
@@ -37,8 +37,9 @@
 }
 
 - (void)viewDidLoad {
-	self.scrollView.contentSize = CGSizeMake(320, 800);
+//	self.scrollView.contentSize = CGSizeMake(320, 800);
 	[super viewDidLoad];
+	textView.text = NSLocalizedString(@"aboutText", @"");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

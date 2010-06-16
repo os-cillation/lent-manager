@@ -30,7 +30,7 @@
 
 	success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&error];
 	if (!success) {
-		NSAssert1(0, @"Failed to create writeable database file with message'%@'.", [error localizedDescription]);
+		// NSAssert1(0, @"Failed to create writeable database file with message'%@'.", [error localizedDescription]);
 	}
 }
 
@@ -55,7 +55,8 @@
 	sql = "CREATE TABLE IF NOT EXISTS rentIncoming(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date);";
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);
@@ -64,10 +65,33 @@
 	sql = "CREATE TABLE IF NOT EXISTS rentOutgoing(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date);";
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);
+	
+	statement = nil;
+	sql = "CREATE TABLE IF NOT EXISTS outgoingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);";
+	
+	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+	}
+	
+	sqlite3_step(statement);
+	sqlite3_finalize(statement);
+	
+	statement = nil;
+	sql = "CREATE TABLE IF NOT EXISTS incomingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);";
+	
+	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+	}
+	
+	sqlite3_step(statement);
+	sqlite3_finalize(statement);
+	
+	
 //	[Database updateDB:db];
 	connection = db;
 	return db;
@@ -92,7 +116,8 @@
 	sql = "CREATE TABLE IF NOT EXISTS contactInfo(id INTEGER PRIMARY KEY, name TEXT);";
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);
@@ -101,7 +126,8 @@
 	sql = "DELETE FROM contactInfo;";
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);
@@ -137,12 +163,14 @@
 		}
 		
 		statement = nil;
-		NSString *sqlString = [[NSString alloc] initWithFormat:@"insert into contactInfo(id, name) Values('%@','%@');", personId, fullName];
+		NSString *sqlString = [[NSString alloc] initWithFormat:@"insert into contactInfo(id, name) Values('%@', ?);", personId];
 		sql = [sqlString cString];
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+			NSLog(@"%s",sql);
 		}
+		sqlite3_bind_text(statement, 1, [fullName UTF8String], -1, SQLITE_TRANSIENT);
 		
 		sqlite3_step(statement);
 		sqlite3_finalize(statement);
@@ -162,22 +190,29 @@
 		sqlString = [[NSString alloc] initWithFormat:@"SELECT * from contactInfo ORDER BY name LIMIT %i,1;", index];
 	}
 	else {
-		sqlString = @"SELECT * from contactInfo where name LIKE '%";
-		sqlString = [sqlString stringByAppendingString:filter];
-		sqlString = [sqlString stringByAppendingString:@"%' order by name LIMIT"];
+		sqlString = @"SELECT * from contactInfo where name LIKE ? order by name LIMIT";
 		sqlString = [sqlString stringByAppendingFormat:@" %i,1;", index];
 	}
+	
 	
 	const char* sql = [sqlString cString]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"sql:  %s",sql);
 	}
 	else {
+		filter = [[NSString alloc] initWithFormat:@"%%%@%%", filter];
+		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			ContactEntry *entry = [ContactEntry alloc];
 			entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
-			entry.name = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
+			
+			const char *name = (const char *) sqlite3_column_text(statement,1);
+			
+			if (name != NULL) {
+				entry.name = [NSString stringWithUTF8String:name];
+			}
 			
 			sqlite3_finalize(statement);
 			return entry;
@@ -200,17 +235,18 @@
 		sqlString = [[NSString alloc] initWithFormat:@"SELECT count(*) from contactInfo"];
 	}
 	else {
-		sqlString = @"SELECT count(*) from contactInfo where name LIKE '%";
-		sqlString = [sqlString stringByAppendingString:filter];
-		sqlString = [sqlString stringByAppendingString:@"%';"];
+		sqlString = @"SELECT count(*) from contactInfo where name LIKE ?;";
 	}
 	
 	const char* sql = [sqlString cString]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	else {
+		filter = [[NSString alloc] initWithFormat:@"%%%@%%", filter];
+		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			NSString *countString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 			count = [countString intValue];
@@ -266,6 +302,7 @@
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -359,6 +396,7 @@
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 			NSLog(@"error preparing statement...");
+			NSLog(@"%s",sql);
 		}
 		else {
 			while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -596,7 +634,7 @@
 		
 		if(sqlite3_prepare_v2(db, sql, -1, &addStmt, NULL) != SQLITE_OK) {
 			NSLog(@"%s", sql);
-			NSAssert1(0, @"Error while creating add statement. '%s'", sqlite3_errmsg(db));
+			//NSAssert1(0, @"Error while creating add statement. '%s'", sqlite3_errmsg(db));
 		}
 		sqlite3_bind_text(addStmt, 1, [type UTF8String], -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(addStmt, 2, [((description1 != NULL) ? description1 : @"") UTF8String], -1, SQLITE_TRANSIENT);
@@ -749,14 +787,16 @@
 	
 	if(stmt == nil) {
 		const char *sql = "delete from rentOutgoing where id = ?";
-		if(sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK)
-			NSAssert1(0, @"Error while creating add statement. '%s'", sqlite3_errmsg(db));
+		if(sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+			// NSAssert1(0, @"Error while creating add statement. '%s'", sqlite3_errmsg(db));
+		}
 	}
 	
 	sqlite3_bind_text(stmt, 1, [entryId UTF8String], -1, SQLITE_TRANSIENT);
 	
-	if(SQLITE_DONE != sqlite3_step(stmt))
-		NSAssert1(0, @"Error while inserting data. '%s'", sqlite3_errmsg(db));
+	if(SQLITE_DONE != sqlite3_step(stmt)) {
+		// NSAssert1(0, @"Error while inserting data. '%s'", sqlite3_errmsg(db));
+	}
 	sqlite3_reset(stmt);
 	
 	stmt = nil;
@@ -789,6 +829,7 @@
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -814,6 +855,7 @@
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {

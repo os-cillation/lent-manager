@@ -141,7 +141,15 @@
 }
 
 - (void)add {
-	RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
+	RentIncomingDetailViewController *controller;
+/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
+		// The device is an iPad running iPhone 3.2 or later.
+		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController-iPad" bundle:nil];
+	#else*/
+		// The device is an iPhone or iPod touch.
+		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
+//	#endif
+
 	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -240,7 +248,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[searchBar resignFirstResponder];
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-	RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
+	RentIncomingDetailViewController *controller;
+/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
+		// The device is an iPad running iPhone 3.2 or later.
+		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController-iPad" bundle:nil];
+	#else*/
+		// The device is an iPhone or iPod touch.
+		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
+//	#endif
 	controller.delegate = self;
 	controller.entry = entry;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];

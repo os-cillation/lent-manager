@@ -44,6 +44,10 @@
 		43BF8341116B601300167833 /* info2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833E116B601300167833 /* info2.png */; };
 		43BF8342116B601300167833 /* outgoing2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833F116B601300167833 /* outgoing2.png */; };
 		43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C2E69C1192C42E006003B0 /* lent-icon.png */; };
+		43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */; };
+		43DF184411AFD47D00A09C31 /* AboutViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */; };
+		43DF18A211AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */; };
+		43DF18C811AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +104,10 @@
 		43BF833E116B601300167833 /* info2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info2.png; sourceTree = "<group>"; };
 		43BF833F116B601300167833 /* outgoing2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outgoing2.png; sourceTree = "<group>"; };
 		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
+		43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
+		43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "AboutViewController-iPad.xib"; sourceTree = "<group>"; };
+		43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RentOutgoingDetailViewController-iPad.xib"; sourceTree = "<group>"; };
+		43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RentIncomingDetailViewController-iPad.xib"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LentManager-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -165,6 +173,7 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				43DF182811AFD01000A09C31 /* Resources-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -217,6 +226,17 @@
 				288765070DF74369002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		43DF182811AFD01000A09C31 /* Resources-iPad */ = {
+			isa = PBXGroup;
+			children = (
+				43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */,
+				43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */,
+				43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */,
+				43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */,
+			);
+			name = "Resources-iPad";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -287,6 +307,10 @@
 				432C96291187134D00BDC5C8 /* Default.png in Resources */,
 				43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */,
 				43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */,
+				43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */,
+				43DF184411AFD47D00A09C31 /* AboutViewController-iPad.xib in Resources */,
+				43DF18A211AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib in Resources */,
+				43DF18C811AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -349,6 +374,7 @@
 				INFOPLIST_FILE = "LentManager-Info.plist";
 				PRODUCT_NAME = LentManager;
 				SDKROOT = iphoneos3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -356,12 +382,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LentManager_Prefix.pch;
 				INFOPLIST_FILE = "LentManager-Info.plist";
 				PRODUCT_NAME = LentManager;
 				SDKROOT = iphoneos3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = "-Wno-deprecated-declarations";
 			};
 			name = Release;
@@ -383,6 +411,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: os-cillation e.K.";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -391,6 +420,7 @@
 				PRODUCT_NAME = LentManager;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7546DC9A-CF7B-4D02-93CC-4A64076A63BB";
 				SDKROOT = iphoneos3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = "-Wno-deprecated-declarations";
 			};
 			name = Distribution;

@@ -52,7 +52,18 @@
 		incomingController.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
 	}
 	
-	AboutViewController *aboutController = [[AboutViewController alloc] init];
+	AboutViewController *aboutController;
+	
+/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
+		// The device is an iPad running iPhone 3.2 or later.
+		aboutController = [[AboutViewController alloc] initWithNibName:@"AboutViewController-iPad" bundle:nil];
+	#else*/
+		// The device is an iPhone or iPod touch.
+		aboutController = [[AboutViewController alloc] init];
+//	#endif
+
+
+	
 	aboutController.tabBarItem.image = [UIImage imageNamed:@"info2.png"];
 	aboutController.title = NSLocalizedString(@"About", @"");
 	NSMutableArray *viewControllers = [[NSMutableArray alloc] init];

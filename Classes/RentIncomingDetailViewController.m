@@ -50,24 +50,20 @@
 
 - (IBAction)showDetails {
 	if (personId != nil) {
-		ABPersonViewController *personViewController = [[ABPersonViewController alloc] init];
+		PersonViewController *personViewController = [[PersonViewController alloc] init];
 		
 		ABAddressBookRef ab = ABAddressBookCreate();
 		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [personId intValue]);
 		
 		personViewController.personViewDelegate = self;
 		personViewController.displayedPerson = person;
-		personViewController.allowsEditing = YES;
-		
+		personViewController.allowsEditing = NO;
+
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:personViewController];
 		personViewController.navigationItem.title = NSLocalizedString(@"ContactDetails", "");
-		UIBarButtonItem *cancelButton =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-																					   target:self action:@selector(cancelContact:)];
-		personViewController.navigationItem.leftBarButtonItem = cancelButton;
 		
 		[self presentModalViewController:navController animated:YES];
 		
-		[cancelButton release];
 		[personViewController release];
 		[navController release];
 	}
@@ -153,7 +149,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	
 	self.scrollView.contentSize = CGSizeMake(320, 1000);
 	
 	self.title = NSLocalizedString(@"NewEntry", @"");
@@ -258,6 +253,47 @@
 	[self.contactTableView reloadData];
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (textField == self.personTxt) {
+		scrollView.contentSize = CGSizeMake(320, 940);
+		[scrollView setContentOffset:CGPointMake(0.0, personTxt.frame.origin.y - 80) animated:NO];
+		
+		[self.contactTableView setHidden:NO];
+		//		data = [Database getContactInfo:personTxt.text];
+		[self.contactTableView reloadData];
+		
+	}
+	else {
+		
+		scrollView.contentSize = CGSizeMake(320, 900);
+		[self.contactTableView setHidden:YES];
+		if (textField == self.dateTxt) {
+			[self resignKeyboard];
+			DateSelectViewController *controller = [[DateSelectViewController alloc] initWithNibName:@"DateSelectViewController" bundle:nil];
+			controller.delegate = self;
+			controller.date = date;
+			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+			[self presentModalViewController:controller animated:YES];
+			
+			[controller release];
+			return NO;
+		}
+		else if (textField == self.returnDateTxt) {
+			[textField resignFirstResponder];
+			ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
+			controller.delegate = self;
+			controller.date = returnDate;
+			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+			[self presentModalViewController:controller animated:YES];
+			
+			[controller release];
+			return NO;
+		}
+	}
+	activeField = textField;
+	return YES;
+}
+
 - (void)textFieldDidChange {
 	if (([self.descriptionTxt.text length] > 0) || ([self.description2Txt.text length] > 0)) {
 		[self.saveButton setEnabled:YES];
@@ -267,39 +303,9 @@
 	}
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (textField == self.dateTxt) {
-		[textField resignFirstResponder];
-		DateSelectViewController *controller = [[DateSelectViewController alloc] initWithNibName:@"DateSelectViewController" bundle:nil];
-		controller.delegate = self;
-		controller.date = date;
-		controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		[self presentModalViewController:controller animated:YES];
-		
-		[controller release];
-		return NO;
-	}
-	else if (textField == self.returnDateTxt) {
-		[textField resignFirstResponder];
-		ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
-		controller.delegate = self;
-		controller.date = returnDate;
-		controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		[self presentModalViewController:controller animated:YES];
-		
-		[controller release];
-		return NO;
-	}
-	else if (textField == self.personTxt) {
-		[self.contactTableView reloadData];
-		self.scrollView.contentSize = CGSizeMake(320, 600);
-		[self.contactTableView setHidden:NO];
-	}
-	activeField = textField;
-	return YES;
-}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	[scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:NO];
 	if (textField == self.personTxt) {
 		[self.contactTableView setHidden:YES];
 	}
@@ -307,20 +313,15 @@
     return NO;
 }
 
-- (void)keyboardWasShown:(NSNotification*)aNotification {
-	[scrollView setContentOffset:CGPointMake(0.0, activeField.frame.origin.y - 50) animated:NO];
+- (void)keyboardWasShown:(NSNotification*)aNotification{
 	keyboardShown = YES;
 }
 
-
-// Called when the UIKeyboardDidHideNotification is sent
 - (void)keyboardWasHidden:(NSNotification*)aNotification {
-	[scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
-	self.scrollView.contentSize = CGSizeMake(320, 1000);
-	
-    keyboardShown = NO;
+	scrollView.contentSize = CGSizeMake(320, 600);
+	keyboardShown = NO;
 }
-
+ 
 /*
 //people picker delegate protocol
 

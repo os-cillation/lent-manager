@@ -280,8 +280,9 @@
 	sqlite3_stmt *statement = nil;
 	
 	for (int index = 0; index < 4; index++) {
-	NSMutableArray *listEntry = [[NSMutableArray alloc] init];
-	NSString *sqlString = [NSString alloc];
+		NSMutableArray *listEntry = [[NSMutableArray alloc] init];
+		NSString *sqlString = [NSString alloc];
+		NSString *filter = [NSString alloc];
 	
 	if (searchText == nil || [searchText length] == 0) {
 		
@@ -293,9 +294,7 @@
 	else {
 		sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name from rentIncoming NATURAL LEFT JOIN incomingText where type='";
 		sqlString = [sqlString stringByAppendingFormat:@"%i", index];
-		sqlString = [sqlString stringByAppendingString:@"' AND name LIKE '%"];
-		sqlString = [sqlString stringByAppendingString:searchText];
-		sqlString = [sqlString stringByAppendingString:@"%' order by name;"];
+		sqlString = [sqlString stringByAppendingString:@"' AND name LIKE ? order by name;"];
 	}
 	
 	const char* sql = [sqlString cString]; 
@@ -305,6 +304,8 @@
 		NSLog(@"%s",sql);
 	}
 	else {
+		filter = [[NSString alloc] initWithFormat:@"%%%@%%", searchText];
+		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			RentEntry *entry = [RentEntry alloc];
 			entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
@@ -374,6 +375,7 @@
 		statement = nil;
 		NSMutableArray *listEntry = [[NSMutableArray alloc] init];
 		NSString *sqlString = [NSString alloc];
+		NSString *filter = [NSString alloc];
 		
 		if (searchText == nil || [searchText length] == 0) {
 			
@@ -385,9 +387,7 @@
 		else {
 			sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name from rentOutgoing NATURAL LEFT JOIN outgoingText where type='";
 			sqlString = [sqlString stringByAppendingFormat:@"%i", index];
-			sqlString = [sqlString stringByAppendingString:@"' AND name LIKE '%"];
-			sqlString = [sqlString stringByAppendingString:searchText];
-			sqlString = [sqlString stringByAppendingString:@"%' order by name;"];
+			sqlString = [sqlString stringByAppendingString:@"' AND name LIKE ? order by name;"];
 		}
 		//NSLog(@"%@", sqlString);
 		const char* sql = [sqlString cString]; 
@@ -399,6 +399,8 @@
 			NSLog(@"%s",sql);
 		}
 		else {
+			filter = [[NSString alloc] initWithFormat:@"%%%@%%", searchText];
+			sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			while (sqlite3_step(statement) == SQLITE_ROW) {
 				RentEntry *entry = [RentEntry alloc];
 				entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];

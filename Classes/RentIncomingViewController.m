@@ -142,13 +142,14 @@
 
 - (void)add {
 	RentIncomingDetailViewController *controller;
-/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
+/*	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		// The device is an iPad running iPhone 3.2 or later.
 		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController-iPad" bundle:nil];
-	#else*/
+	}
+	else {*/
 		// The device is an iPhone or iPod touch.
 		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
-//	#endif
+//	}
 
 	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -249,13 +250,15 @@
 	[searchBar resignFirstResponder];
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	RentIncomingDetailViewController *controller;
-/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
+/*	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		// The device is an iPad running iPhone 3.2 or later.
 		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController-iPad" bundle:nil];
-	#else*/
+	}
+	else {*/
 		// The device is an iPhone or iPod touch.
 		controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"RentIncomingDetailViewController" bundle:nil];
-//	#endif
+//	}
+
 	controller.delegate = self;
 	controller.entry = entry;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];

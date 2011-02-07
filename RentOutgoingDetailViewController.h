@@ -11,6 +11,7 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "DateSelectViewController.h"
 #import "ReturnDateSelectViewController.h"
+#import "PersonViewController.h"
 
 @protocol RentOutgoingDetailViewControllerDelegate;
 

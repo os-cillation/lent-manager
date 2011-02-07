@@ -39,6 +39,7 @@
 		43B8D7D11157C6C00074BA21 /* ContactEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B8D7D01157C6C00074BA21 /* ContactEntry.m */; };
 		43B9C93D1153AC9F004EF6B2 /* RentOutgoingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B9C93B1153AC9F004EF6B2 /* RentOutgoingViewController.xib */; };
 		43B9CAC91153D047004EF6B2 /* RentIncomingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B9CAC81153D047004EF6B2 /* RentIncomingViewController.xib */; };
+		43BBE7E411D0A8DE000C7B94 /* PersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */; };
 		43BF8331116B5E7300167833 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF832E116B5E7300167833 /* icon2.png */; };
 		43BF8340116B601300167833 /* incoming2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833D116B601300167833 /* incoming2.png */; };
 		43BF8341116B601300167833 /* info2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833E116B601300167833 /* info2.png */; };
@@ -99,6 +100,8 @@
 		43B8D7D01157C6C00074BA21 /* ContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactEntry.m; sourceTree = "<group>"; };
 		43B9C93B1153AC9F004EF6B2 /* RentOutgoingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RentOutgoingViewController.xib; sourceTree = "<group>"; };
 		43B9CAC81153D047004EF6B2 /* RentIncomingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RentIncomingViewController.xib; sourceTree = "<group>"; };
+		43BBE7E211D0A8DE000C7B94 /* PersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonViewController.h; sourceTree = "<group>"; };
+		43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonViewController.m; sourceTree = "<group>"; };
 		43BF832E116B5E7300167833 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
 		43BF833D116B601300167833 /* incoming2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incoming2.png; sourceTree = "<group>"; };
 		43BF833E116B601300167833 /* info2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info2.png; sourceTree = "<group>"; };
@@ -131,6 +134,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				43BBE7E211D0A8DE000C7B94 /* PersonViewController.h */,
+				43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */,
 				4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */,
 				4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */,
 				4378EAFE11510194002AA27D /* RentIncomingDetailViewController.h */,
@@ -266,6 +271,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "LentManager" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -334,6 +340,7 @@
 				4378EB0111510194002AA27D /* RentIncomingDetailViewController.m in Sources */,
 				4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */,
 				43B8D7D11157C6C00074BA21 /* ContactEntry.m in Sources */,
+				43BBE7E411D0A8DE000C7B94 /* PersonViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +372,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -373,7 +380,7 @@
 				GCC_PREFIX_HEADER = LentManager_Prefix.pch;
 				INFOPLIST_FILE = "LentManager-Info.plist";
 				PRODUCT_NAME = LentManager;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -382,17 +389,47 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = LentManager_Prefix.pch;
+				INFOPLIST_FILE = "LentManager-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PRODUCT_NAME = LentManager;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WARNING_CFLAGS = "-Wno-deprecated-declarations";
+			};
+			name = Release;
+		};
+		4342BB3711C916840005E556 /* Release4.0 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Release4.0;
+		};
+		4342BB3811C916840005E556 /* Release4.0 */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = LentManager_Prefix.pch;
 				INFOPLIST_FILE = "LentManager-Info.plist";
 				PRODUCT_NAME = LentManager;
-				SDKROOT = iphoneos3.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WARNING_CFLAGS = "-Wno-deprecated-declarations";
 			};
-			name = Release;
+			name = Release4.0;
 		};
 		43B0719E1198264400CD50CA /* Distribution */ = {
 			isa = XCBuildConfiguration;
@@ -403,7 +440,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphoneos;
 			};
 			name = Distribution;
 		};
@@ -411,7 +448,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: os-cillation e.K.";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -419,7 +456,7 @@
 				INFOPLIST_FILE = "LentManager-Info.plist";
 				PRODUCT_NAME = LentManager;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7546DC9A-CF7B-4D02-93CC-4A64076A63BB";
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 				WARNING_CFLAGS = "-Wno-deprecated-declarations";
 			};
@@ -434,7 +471,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -447,7 +484,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.1.3;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -459,6 +496,7 @@
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
+				4342BB3811C916840005E556 /* Release4.0 */,
 				43B0719F1198264400CD50CA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -469,6 +507,7 @@
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
 				C01FCF5008A954540054247B /* Release */,
+				4342BB3711C916840005E556 /* Release4.0 */,
 				43B0719E1198264400CD50CA /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;

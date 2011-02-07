@@ -52,15 +52,7 @@
 		incomingController.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
 	}
 	
-	AboutViewController *aboutController;
-	
-/*	#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
-		// The device is an iPad running iPhone 3.2 or later.
-		aboutController = [[AboutViewController alloc] initWithNibName:@"AboutViewController-iPad" bundle:nil];
-	#else*/
-		// The device is an iPhone or iPod touch.
-		aboutController = [[AboutViewController alloc] init];
-//	#endif
+	AboutViewController *aboutController = [[AboutViewController alloc] init];
 
 
 	
@@ -82,6 +74,11 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+	int count = [Database getEntryCount];
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application {
 	int count = [Database getEntryCount];
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
 }

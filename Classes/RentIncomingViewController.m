@@ -301,6 +301,7 @@
 		RentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
 		[Database deleteIncomingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
+		allEntries = [Database getIncomingEntries:nil];
 		int count = [Database getIncomingCount];
 		if (count > 0) {
 			self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];

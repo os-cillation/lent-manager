@@ -149,7 +149,6 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.scrollView.contentSize = CGSizeMake(320, 1000);
 	
 	self.title = NSLocalizedString(@"NewEntry", @"");
 	
@@ -254,6 +253,7 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	[UIView beginAnimations:nil context:NULL];
 	if (textField == self.personTxt) {
 		scrollView.contentSize = CGSizeMake(320, 940);
 		[scrollView setContentOffset:CGPointMake(0.0, personTxt.frame.origin.y - 80) animated:NO];
@@ -291,6 +291,7 @@
 		}
 	}
 	activeField = textField;
+	[UIView commitAnimations];
 	return YES;
 }
 
@@ -305,7 +306,7 @@
 
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	[scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:NO];
+	
 	if (textField == self.personTxt) {
 		[self.contactTableView setHidden:YES];
 	}
@@ -318,8 +319,11 @@
 }
 
 - (void)keyboardWasHidden:(NSNotification*)aNotification {
+	[UIView beginAnimations:nil context:NULL];
 	scrollView.contentSize = CGSizeMake(320, 600);
 	keyboardShown = NO;
+	[scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:NO];
+	[UIView commitAnimations];
 }
  
 /*

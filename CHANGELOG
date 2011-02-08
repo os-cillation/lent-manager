@@ -1,3 +1,18 @@
+2011-02-08	Benjamin Mies	<bmi@os-cillation.de>
+	* RentOutgoingDetailViewController.xib,
+	  LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/benjamin.pbxuser,
+	  AboutViewController.xib,
+	  Classes/RentIncomingDetailViewController.xib,
+	  Classes/RentIncomingViewController.m,
+	  Classes/RentIncomingDetailViewController.m,
+	  RentOutgoingDetailViewController.m,
+	  RentOutgoingViewController.m,
+	  LentManager-Info.plist,
+	  en.lproj/Localizable.strings,
+	  de.lproj/Localizable.strings:
+	  - Anpassungen an neue Xcode Version.
+
 2011-02-07	Benjamin Mies	<bmi@os-cillation.de>
 	* RentOutgoingDetailViewController.xib,
 	  LentManager.xcodeproj/benjamin.mode1v3,

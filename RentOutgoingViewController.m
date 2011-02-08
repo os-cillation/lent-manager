@@ -296,6 +296,7 @@
 		RentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
 		[Database deleteOutgoingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
+		allEntries = [Database getOutgoingEntries:nil];
 		[self.tableView reloadData];
 		int count = [Database getOutgoingCount];
 		if (count > 0) {

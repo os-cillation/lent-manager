@@ -280,6 +280,7 @@
 			ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
 			controller.delegate = self;
 			controller.date = returnDate;
+			controller.minDate = date;
 			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 			[self presentModalViewController:controller animated:YES];
 			

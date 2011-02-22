@@ -1,3 +1,24 @@
+2011-02-22	Benjamin Mies	<bmi@os-cillation.de>
+	* RentOutgoingDetailViewController.xib,
+	  LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/project.pbxproj,
+	  LentManager.xcodeproj/benjamin.pbxuser,
+	  AboutViewController.xib,
+	  Classes/RentIncomingDetailViewController.xib,
+	  Classes/RentIncomingDetailViewController.m,
+	  AboutViewController.h,
+	  RentOutgoingDetailViewController.m,
+	  ReturnDateSelectViewController.h,
+	  AboutViewController.m,
+	  ReturnDateSelectViewController.m,
+	  groupplus-icon.png,
+	  en.lproj/Localizable.strings,
+	  group-icon.png,
+	  groupmessage-icon.png,
+	  de.lproj/Localizable.strings:
+	  - Info Dialog angepasst.
+	  - Detail Dialoge angepasst.
+
 2011-02-08	Benjamin Mies	<bmi@os-cillation.de>
 	* RentOutgoingDetailViewController.xib,
 	  LentManager.xcodeproj/benjamin.mode1v3,

@@ -11,7 +11,7 @@
 
 @implementation ReturnDateSelectViewController
 
-@synthesize delegate, datePicker, date;
+@synthesize delegate, datePicker, date, minDate;
 
 - (IBAction)done {
 	[delegate returnDateSelectViewControllerDidFinish:self];
@@ -24,10 +24,19 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.datePicker.minimumDate = minDate;
 	if (self.date == nil) {
 		self.date = [NSDate date];
 	}
-	[self.datePicker setDate:self.date animated:NO];
+	if ([self.date compare:minDate] == NSOrderedAscending) {
+		[self.datePicker setDate:minDate animated:NO];
+	}
+	else {
+		[self.datePicker setDate:self.date animated:NO];
+	}
+
+	
+	
 
 }
 

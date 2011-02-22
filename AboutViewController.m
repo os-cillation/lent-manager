@@ -23,6 +23,18 @@
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)openGroup {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=370134720&amp;amp;amp;amp;mt=8"]];
+}
+
+- (IBAction)openGroupPlus {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377201940&amp;amp;amp;amp;mt=8"]];
+}
+
+- (IBAction)openGroupMessage {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=377177900&amp;amp;amp;amp;mt=8"]];
+}
+
 
 #pragma mark -
 #pragma mark === View configuration ===
@@ -37,9 +49,10 @@
 }
 
 - (void)viewDidLoad {
-//	self.scrollView.contentSize = CGSizeMake(320, 800);
+	self.scrollView.contentSize = CGSizeMake(320, 750);
 	[super viewDidLoad];
 	textView.text = NSLocalizedString(@"aboutText", @"");
+	labelProducts.text = NSLocalizedString(@"otherProducts", @"");
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

@@ -14,11 +14,13 @@
 	id <ReturnDateSelectViewControllerDelegate> delegate;
 	IBOutlet UIDatePicker *datePicker;
 	NSDate *date;
+	NSDate *minDate;
 }
 
 @property (nonatomic, assign) id <ReturnDateSelectViewControllerDelegate> delegate;
 @property (nonatomic, retain) IBOutlet UIDatePicker *datePicker;
 @property (nonatomic, retain) NSDate *date;
+@property (nonatomic, retain) NSDate *minDate;
 
 - (IBAction)done;
 - (IBAction)cancel;

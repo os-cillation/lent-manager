@@ -8,13 +8,18 @@
  
 "LentToTitle" = "Verliehen";
 "LentFromTitle" = "Geliehen";
+"Categories" = "Kategorien";
 "About" = "Info";
-"NewEntry" = "Neuer Eintrag";
+"NewEntry" = "Neu...";
+"NewCategoryName" = "Name der Kategorie";
 "Edit" = "Bearbeiten";
 "Save" = "Speichern";
+"Category" = "Kategorie";
+"CategoryText" = "Kategorie: %@";
 "Author" = "Autor:";
 "Title" = "Titel:";
 "Artist" = "Interpret:";
+"Amount" = "Betrag:";
 "Description" = "Beschreibung:";
 "AdditionalDescription" = "Weitere Beschreibung:";
 "LentToPerson" = "Verliehen an:";
@@ -29,6 +34,7 @@
 "CD" = "CD";
 "DVD" = "DVD";
 "Other" = "Andere";
+"Money" = "Geld";
 "Clear" = "Löschen";
 "Entry" = "Eintrag";
 "Entries" = "Einträge";
@@ -36,6 +42,10 @@
 "from" = "von";
 "at" = "am";
 "until" = "bis";
+
+"PushNotification" = "Push Benachrichtigung";
+"Show" = "App öffnen";
+"PushMessage" = "'%@' ist jetzt fällig";
 
 "otherProducts" = "Weitere Produkte:";
 "aboutText" = 

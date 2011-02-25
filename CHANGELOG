@@ -1,3 +1,8 @@
+2011-02-25	Benjamin Mies	<bmi@os-cillation.de>
+	* *.*
+	  - Lokale Push Nachrichten umgesetzt.
+	  - Dieverse kleinere Anpassungen.
+
 2011-02-22	Benjamin Mies	<bmi@os-cillation.de>
 	* RentOutgoingDetailViewController.xib,
 	  LentManager.xcodeproj/benjamin.mode1v3,

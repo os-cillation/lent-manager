@@ -242,7 +242,7 @@ b24gZS5LLg</string>
 								</object>
 							</object>
 						</object>
-						<string key="NSFrameSize">{320, 545}</string>
+						<string key="NSFrame">{{0, 50}, {320, 545}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
@@ -423,6 +423,7 @@ b24gZS5LLg</string>
 					<string>18.IBPluginDependency</string>
 					<string>19.IBPluginDependency</string>
 					<string>20.IBPluginDependency</string>
+					<string>20.IBViewBoundsToFrameTransform</string>
 					<string>26.IBPluginDependency</string>
 					<string>26.IBViewBoundsToFrameTransform</string>
 					<string>27.IBPluginDependency</string>
@@ -443,6 +444,9 @@ b24gZS5LLg</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<object class="NSAffineTransform">
+						<bytes key="NSTransformStruct">P4AAAL+AAAAAAAAAw/mAAA</bytes>
+					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">P4AAAL+AAABCKAAAw1oAAA</bytes>

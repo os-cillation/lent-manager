@@ -14,11 +14,17 @@
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
 		432C96291187134D00BDC5C8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 432C96271187134D00BDC5C8 /* Default.png */; };
+		433348481315300B00C681FD /* CategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 433348461315300B00C681FD /* CategoryTableViewController.m */; };
+		433348491315300B00C681FD /* CategoryTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 433348471315300B00C681FD /* CategoryTableViewController.xib */; };
+		43334870131531A300C681FD /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 4333486F131531A300C681FD /* Category.m */; };
+		433348A41315346400C681FD /* CategoryAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 433348A21315346400C681FD /* CategoryAddViewController.m */; };
+		433348A51315346400C681FD /* CategoryAddViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 433348A31315346400C681FD /* CategoryAddViewController.xib */; };
+		43334B4F1315599300C681FD /* categories.png in Resources */ = {isa = PBXBuildFile; fileRef = 43334B4E1315599300C681FD /* categories.png */; };
 		433CE7201152578300D6B3D3 /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 433CE71F1152578300D6B3D3 /* data.sqlite */; };
 		4378EA7E1150F7F2002AA27D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA791150F7F2002AA27D /* AboutViewController.m */; };
 		4378EA7F1150F7F2002AA27D /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA7A1150F7F2002AA27D /* AboutViewController.xib */; };
 		4378EA801150F7F2002AA27D /* RentOutgoingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */; };
-		4378EA811150F7F2002AA27D /* RentOutgoingDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA7D1150F7F2002AA27D /* RentOutgoingDetailViewController.xib */; };
+		4378EA811150F7F2002AA27D /* AbstractDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */; };
 		4378EA8A1150F807002AA27D /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA841150F807002AA27D /* Database.m */; };
 		4378EA8B1150F807002AA27D /* DateSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA861150F807002AA27D /* DateSelectViewController.m */; };
 		4378EA8C1150F807002AA27D /* DateSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA871150F807002AA27D /* DateSelectViewController.xib */; };
@@ -31,7 +37,6 @@
 		4378EAA81150F883002AA27D /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4378EAA71150F883002AA27D /* libsqlite3.0.dylib */; };
 		4378EACE1150FB45002AA27D /* RentIncomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EACD1150FB45002AA27D /* RentIncomingViewController.m */; };
 		4378EB0111510194002AA27D /* RentIncomingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */; };
-		4378EB0211510194002AA27D /* RentIncomingDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EB0011510194002AA27D /* RentIncomingDetailViewController.xib */; };
 		4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */; };
 		4378EBBD115112CA002AA27D /* ReturnDateSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */; };
 		43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43A7FF7E11ABBB050096D8F7 /* InitialDefaults.plist */; };
@@ -40,18 +45,19 @@
 		43AD68481313D6CB00871B47 /* groupplus-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43AD68451313D6CB00871B47 /* groupplus-icon.png */; };
 		43B8D52011576DBE0074BA21 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 43B8D51E11576DBE0074BA21 /* Localizable.strings */; };
 		43B8D7D11157C6C00074BA21 /* ContactEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 43B8D7D01157C6C00074BA21 /* ContactEntry.m */; };
-		43B9C93D1153AC9F004EF6B2 /* RentOutgoingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B9C93B1153AC9F004EF6B2 /* RentOutgoingViewController.xib */; };
-		43B9CAC91153D047004EF6B2 /* RentIncomingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B9CAC81153D047004EF6B2 /* RentIncomingViewController.xib */; };
+		43B9CAC91153D047004EF6B2 /* AbstractTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43B9CAC81153D047004EF6B2 /* AbstractTableViewController.xib */; };
 		43BBE7E411D0A8DE000C7B94 /* PersonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */; };
 		43BF8331116B5E7300167833 /* icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF832E116B5E7300167833 /* icon2.png */; };
 		43BF8340116B601300167833 /* incoming2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833D116B601300167833 /* incoming2.png */; };
 		43BF8341116B601300167833 /* info2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833E116B601300167833 /* info2.png */; };
 		43BF8342116B601300167833 /* outgoing2.png in Resources */ = {isa = PBXBuildFile; fileRef = 43BF833F116B601300167833 /* outgoing2.png */; };
+		43C2B7D5131508FF0029F12F /* Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2B7D4131508FF0029F12F /* Util.m */; };
+		43C2B80B13150B710029F12F /* AbstractDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2B80A13150B710029F12F /* AbstractDetailViewController.m */; };
+		43C2B8E61315151A0029F12F /* CategoryPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2B8E41315151A0029F12F /* CategoryPickerViewController.m */; };
+		43C2B8E71315151A0029F12F /* PickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43C2B8E51315151A0029F12F /* PickerViewController.xib */; };
+		43C2BA24131523630029F12F /* AbstractTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2BA23131523630029F12F /* AbstractTableViewController.m */; };
 		43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C2E69C1192C42E006003B0 /* lent-icon.png */; };
 		43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */; };
-		43DF184411AFD47D00A09C31 /* AboutViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */; };
-		43DF18A211AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */; };
-		43DF18C811AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,23 +72,32 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		432C96281187134D00BDC5C8 /* de */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = de; path = de.lproj/Default.png; sourceTree = "<group>"; };
 		432C962A1187135C00BDC5C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/Default.png; sourceTree = "<group>"; };
+		433348451315300B00C681FD /* CategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryTableViewController.h; sourceTree = "<group>"; };
+		433348461315300B00C681FD /* CategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryTableViewController.m; sourceTree = "<group>"; };
+		433348471315300B00C681FD /* CategoryTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryTableViewController.xib; sourceTree = "<group>"; };
+		4333486E131531A300C681FD /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		4333486F131531A300C681FD /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
+		433348A11315346400C681FD /* CategoryAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAddViewController.h; sourceTree = "<group>"; };
+		433348A21315346400C681FD /* CategoryAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAddViewController.m; sourceTree = "<group>"; };
+		433348A31315346400C681FD /* CategoryAddViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryAddViewController.xib; sourceTree = "<group>"; };
+		43334B4E1315599300C681FD /* categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories.png; sourceTree = "<group>"; };
 		433CE71F1152578300D6B3D3 /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		4378EA781150F7F2002AA27D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../AboutViewController.h; sourceTree = "<group>"; };
 		4378EA791150F7F2002AA27D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../AboutViewController.m; sourceTree = "<group>"; };
 		4378EA7A1150F7F2002AA27D /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		4378EA7B1150F7F2002AA27D /* RentOutgoingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentOutgoingDetailViewController.h; path = ../RentOutgoingDetailViewController.h; sourceTree = "<group>"; };
 		4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentOutgoingDetailViewController.m; path = ../RentOutgoingDetailViewController.m; sourceTree = "<group>"; };
-		4378EA7D1150F7F2002AA27D /* RentOutgoingDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RentOutgoingDetailViewController.xib; sourceTree = "<group>"; };
+		4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AbstractDetailViewController.xib; sourceTree = "<group>"; };
 		4378EA831150F807002AA27D /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../Database.h; sourceTree = "<group>"; };
 		4378EA841150F807002AA27D /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../Database.m; sourceTree = "<group>"; };
 		4378EA851150F807002AA27D /* DateSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DateSelectViewController.h; path = ../DateSelectViewController.h; sourceTree = "<group>"; };
 		4378EA861150F807002AA27D /* DateSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateSelectViewController.m; path = ../DateSelectViewController.m; sourceTree = "<group>"; };
 		4378EA871150F807002AA27D /* DateSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateSelectViewController.xib; sourceTree = "<group>"; };
 		4378EA8E1150F815002AA27D /* os.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = os.png; sourceTree = "<group>"; };
-		4378EA901150F815002AA27D /* RentEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentEntry.h; path = ../RentEntry.h; sourceTree = "<group>"; };
-		4378EA911150F815002AA27D /* RentEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentEntry.m; path = ../RentEntry.m; sourceTree = "<group>"; };
-		4378EA921150F815002AA27D /* RentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentList.h; path = ../RentList.h; sourceTree = "<group>"; };
-		4378EA931150F815002AA27D /* RentList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentList.m; path = ../RentList.m; sourceTree = "<group>"; };
+		4378EA901150F815002AA27D /* RentEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentEntry.h; sourceTree = "<group>"; };
+		4378EA911150F815002AA27D /* RentEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentEntry.m; sourceTree = "<group>"; };
+		4378EA921150F815002AA27D /* RentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentList.h; sourceTree = "<group>"; };
+		4378EA931150F815002AA27D /* RentList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentList.m; sourceTree = "<group>"; };
 		4378EA981150F823002AA27D /* RentOutgoingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentOutgoingViewController.h; path = ../RentOutgoingViewController.h; sourceTree = "<group>"; };
 		4378EA991150F83D002AA27D /* RentOutgoingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentOutgoingViewController.m; path = ../RentOutgoingViewController.m; sourceTree = "<group>"; };
 		4378EA9F1150F877002AA27D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -92,7 +107,6 @@
 		4378EACD1150FB45002AA27D /* RentIncomingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentIncomingViewController.m; sourceTree = "<group>"; };
 		4378EAFE11510194002AA27D /* RentIncomingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentIncomingDetailViewController.h; sourceTree = "<group>"; };
 		4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentIncomingDetailViewController.m; sourceTree = "<group>"; };
-		4378EB0011510194002AA27D /* RentIncomingDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = RentIncomingDetailViewController.xib; path = Classes/RentIncomingDetailViewController.xib; sourceTree = "<group>"; };
 		4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReturnDateSelectViewController.h; sourceTree = SOURCE_ROOT; };
 		4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReturnDateSelectViewController.m; sourceTree = SOURCE_ROOT; };
 		4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReturnDateSelectViewController.xib; sourceTree = "<group>"; };
@@ -102,21 +116,26 @@
 		43AD68451313D6CB00871B47 /* groupplus-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupplus-icon.png"; sourceTree = "<group>"; };
 		43B8D51F11576DBE0074BA21 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		43B8D52311576DD10074BA21 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		43B8D7CF1157C6C00074BA21 /* ContactEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactEntry.h; sourceTree = "<group>"; };
-		43B8D7D01157C6C00074BA21 /* ContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactEntry.m; sourceTree = "<group>"; };
-		43B9C93B1153AC9F004EF6B2 /* RentOutgoingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RentOutgoingViewController.xib; sourceTree = "<group>"; };
-		43B9CAC81153D047004EF6B2 /* RentIncomingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RentIncomingViewController.xib; sourceTree = "<group>"; };
+		43B8D7CF1157C6C00074BA21 /* ContactEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactEntry.h; path = Classes/ContactEntry.h; sourceTree = "<group>"; };
+		43B8D7D01157C6C00074BA21 /* ContactEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactEntry.m; path = Classes/ContactEntry.m; sourceTree = "<group>"; };
+		43B9CAC81153D047004EF6B2 /* AbstractTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AbstractTableViewController.xib; sourceTree = "<group>"; };
 		43BBE7E211D0A8DE000C7B94 /* PersonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonViewController.h; sourceTree = "<group>"; };
 		43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonViewController.m; sourceTree = "<group>"; };
 		43BF832E116B5E7300167833 /* icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon2.png; sourceTree = "<group>"; };
 		43BF833D116B601300167833 /* incoming2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = incoming2.png; sourceTree = "<group>"; };
 		43BF833E116B601300167833 /* info2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = info2.png; sourceTree = "<group>"; };
 		43BF833F116B601300167833 /* outgoing2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outgoing2.png; sourceTree = "<group>"; };
+		43C2B7D3131508FF0029F12F /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
+		43C2B7D4131508FF0029F12F /* Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Util.m; sourceTree = "<group>"; };
+		43C2B80913150B710029F12F /* AbstractDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractDetailViewController.h; sourceTree = "<group>"; };
+		43C2B80A13150B710029F12F /* AbstractDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractDetailViewController.m; sourceTree = "<group>"; };
+		43C2B8E31315151A0029F12F /* CategoryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPickerViewController.h; sourceTree = "<group>"; };
+		43C2B8E41315151A0029F12F /* CategoryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPickerViewController.m; sourceTree = "<group>"; };
+		43C2B8E51315151A0029F12F /* PickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerViewController.xib; sourceTree = "<group>"; };
+		43C2BA22131523630029F12F /* AbstractTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractTableViewController.h; sourceTree = "<group>"; };
+		43C2BA23131523630029F12F /* AbstractTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTableViewController.m; sourceTree = "<group>"; };
 		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
 		43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
-		43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "AboutViewController-iPad.xib"; sourceTree = "<group>"; };
-		43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RentOutgoingDetailViewController-iPad.xib"; sourceTree = "<group>"; };
-		43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = "RentIncomingDetailViewController-iPad.xib"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LentManager-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -144,6 +163,8 @@
 				43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */,
 				4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */,
 				4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */,
+				43C2B80913150B710029F12F /* AbstractDetailViewController.h */,
+				43C2B80A13150B710029F12F /* AbstractDetailViewController.m */,
 				4378EAFE11510194002AA27D /* RentIncomingDetailViewController.h */,
 				4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */,
 				4378EACC1150FB45002AA27D /* RentIncomingViewController.h */,
@@ -152,10 +173,6 @@
 				4378EA981150F823002AA27D /* RentOutgoingViewController.h */,
 				4378EA7B1150F7F2002AA27D /* RentOutgoingDetailViewController.h */,
 				4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */,
-				4378EA901150F815002AA27D /* RentEntry.h */,
-				4378EA911150F815002AA27D /* RentEntry.m */,
-				4378EA921150F815002AA27D /* RentList.h */,
-				4378EA931150F815002AA27D /* RentList.m */,
 				4378EA831150F807002AA27D /* Database.h */,
 				4378EA841150F807002AA27D /* Database.m */,
 				4378EA851150F807002AA27D /* DateSelectViewController.h */,
@@ -164,8 +181,19 @@
 				4378EA791150F7F2002AA27D /* AboutViewController.m */,
 				1D3623240D0F684500981E51 /* RentManagerAppDelegate.h */,
 				1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */,
-				43B8D7CF1157C6C00074BA21 /* ContactEntry.h */,
-				43B8D7D01157C6C00074BA21 /* ContactEntry.m */,
+				43C2B7D3131508FF0029F12F /* Util.h */,
+				43C2B7D4131508FF0029F12F /* Util.m */,
+				43C2B8E31315151A0029F12F /* CategoryPickerViewController.h */,
+				43C2B8E41315151A0029F12F /* CategoryPickerViewController.m */,
+				43C2B8E51315151A0029F12F /* PickerViewController.xib */,
+				43C2BA22131523630029F12F /* AbstractTableViewController.h */,
+				43C2BA23131523630029F12F /* AbstractTableViewController.m */,
+				433348451315300B00C681FD /* CategoryTableViewController.h */,
+				433348461315300B00C681FD /* CategoryTableViewController.m */,
+				433348471315300B00C681FD /* CategoryTableViewController.xib */,
+				433348A11315346400C681FD /* CategoryAddViewController.h */,
+				433348A21315346400C681FD /* CategoryAddViewController.m */,
+				433348A31315346400C681FD /* CategoryAddViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -181,6 +209,7 @@
 		29B97314FDCFA39411CA2CEA /* RentManager */ = {
 			isa = PBXGroup;
 			children = (
+				4333486C1315317700C681FD /* Entities */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -194,15 +223,13 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				43B9CAC81153D047004EF6B2 /* RentIncomingViewController.xib */,
+				43B9CAC81153D047004EF6B2 /* AbstractTableViewController.xib */,
 				4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */,
-				4378EB0011510194002AA27D /* RentIncomingDetailViewController.xib */,
 				4378EA871150F807002AA27D /* DateSelectViewController.xib */,
 				4378EA7A1150F7F2002AA27D /* AboutViewController.xib */,
-				4378EA7D1150F7F2002AA27D /* RentOutgoingDetailViewController.xib */,
+				4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */,
 				28A0AB4B0D9B1048005BE974 /* LentManager_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				43B9C93B1153AC9F004EF6B2 /* RentOutgoingViewController.xib */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -210,6 +237,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				43334B4E1315599300C681FD /* categories.png */,
 				43AD68431313D6CB00871B47 /* group-icon.png */,
 				43AD68441313D6CB00871B47 /* groupmessage-icon.png */,
 				43AD68451313D6CB00871B47 /* groupplus-icon.png */,
@@ -242,13 +270,25 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4333486C1315317700C681FD /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				43B8D7CF1157C6C00074BA21 /* ContactEntry.h */,
+				43B8D7D01157C6C00074BA21 /* ContactEntry.m */,
+				4378EA901150F815002AA27D /* RentEntry.h */,
+				4378EA911150F815002AA27D /* RentEntry.m */,
+				4378EA921150F815002AA27D /* RentList.h */,
+				4378EA931150F815002AA27D /* RentList.m */,
+				4333486E131531A300C681FD /* Category.h */,
+				4333486F131531A300C681FD /* Category.m */,
+			);
+			name = Entities;
+			sourceTree = "<group>";
+		};
 		43DF182811AFD01000A09C31 /* Resources-iPad */ = {
 			isa = PBXGroup;
 			children = (
 				43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */,
-				43DF184311AFD47D00A09C31 /* AboutViewController-iPad.xib */,
-				43DF18A111AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib */,
-				43DF18C711AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib */,
 			);
 			name = "Resources-iPad";
 			sourceTree = "<group>";
@@ -306,14 +346,12 @@
 			files = (
 				28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */,
 				4378EA7F1150F7F2002AA27D /* AboutViewController.xib in Resources */,
-				4378EA811150F7F2002AA27D /* RentOutgoingDetailViewController.xib in Resources */,
+				4378EA811150F7F2002AA27D /* AbstractDetailViewController.xib in Resources */,
 				4378EA8C1150F807002AA27D /* DateSelectViewController.xib in Resources */,
 				4378EA941150F815002AA27D /* os.png in Resources */,
-				4378EB0211510194002AA27D /* RentIncomingDetailViewController.xib in Resources */,
 				4378EBBD115112CA002AA27D /* ReturnDateSelectViewController.xib in Resources */,
 				433CE7201152578300D6B3D3 /* data.sqlite in Resources */,
-				43B9C93D1153AC9F004EF6B2 /* RentOutgoingViewController.xib in Resources */,
-				43B9CAC91153D047004EF6B2 /* RentIncomingViewController.xib in Resources */,
+				43B9CAC91153D047004EF6B2 /* AbstractTableViewController.xib in Resources */,
 				43B8D52011576DBE0074BA21 /* Localizable.strings in Resources */,
 				43BF8331116B5E7300167833 /* icon2.png in Resources */,
 				43BF8340116B601300167833 /* incoming2.png in Resources */,
@@ -323,12 +361,13 @@
 				43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */,
 				43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */,
 				43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */,
-				43DF184411AFD47D00A09C31 /* AboutViewController-iPad.xib in Resources */,
-				43DF18A211AFDD1400A09C31 /* RentOutgoingDetailViewController-iPad.xib in Resources */,
-				43DF18C811AFE20400A09C31 /* RentIncomingDetailViewController-iPad.xib in Resources */,
 				43AD68461313D6CB00871B47 /* group-icon.png in Resources */,
 				43AD68471313D6CB00871B47 /* groupmessage-icon.png in Resources */,
 				43AD68481313D6CB00871B47 /* groupplus-icon.png in Resources */,
+				43C2B8E71315151A0029F12F /* PickerViewController.xib in Resources */,
+				433348491315300B00C681FD /* CategoryTableViewController.xib in Resources */,
+				433348A51315346400C681FD /* CategoryAddViewController.xib in Resources */,
+				43334B4F1315599300C681FD /* categories.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,6 +392,13 @@
 				4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */,
 				43B8D7D11157C6C00074BA21 /* ContactEntry.m in Sources */,
 				43BBE7E411D0A8DE000C7B94 /* PersonViewController.m in Sources */,
+				43C2B7D5131508FF0029F12F /* Util.m in Sources */,
+				43C2B80B13150B710029F12F /* AbstractDetailViewController.m in Sources */,
+				43C2B8E61315151A0029F12F /* CategoryPickerViewController.m in Sources */,
+				43C2BA24131523630029F12F /* AbstractTableViewController.m in Sources */,
+				433348481315300B00C681FD /* CategoryTableViewController.m in Sources */,
+				43334870131531A300C681FD /* Category.m in Sources */,
+				433348A41315346400C681FD /* CategoryAddViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -49,7 +49,7 @@
 }
 
 - (void)viewDidLoad {
-	self.scrollView.contentSize = CGSizeMake(320, 750);
+	self.scrollView.contentSize = CGSizeMake(320, 800);
 	[super viewDidLoad];
 	textView.text = NSLocalizedString(@"aboutText", @"");
 	labelProducts.text = NSLocalizedString(@"otherProducts", @"");

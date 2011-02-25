@@ -13,6 +13,8 @@
 
 sqlite3 *connection;
 
+@class Category;
+
 @interface Database : NSObject {
 
 }
@@ -20,8 +22,8 @@ sqlite3 *connection;
 + (void)createEditableCopyOfDatabaseIfNeeded;
 + (sqlite3 *)getConnection;
 + (NSString *)getDescriptionByIndex:(int)index;
-+ (void)addOutgoingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
-+ (void)addIncomingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate;
++ (NSString *)addOutgoingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate withPushAlarm:(NSDate *)pushAlarm;
++ (NSString *)addIncomingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate withPushAlarm:(NSDate *)pushAlarm;
 + (void)deleteIncomingEntry:(NSString *)entryId;
 + (void)deleteOutgoingEntry:(NSString *)entryId;
 + (RentList *)getIncomingEntries:(NSString *)searchText;
@@ -35,6 +37,13 @@ sqlite3 *connection;
 + (int)getIncomingCount;
 + (int)getOutgoingCount;
 + (int)getEntryCount;
+
++ (NSArray *)getAllCategories;
++ (NSMutableArray *)getAllOwnCategories;
++ (Category *)getCategory:(NSString *)idx;
++ (void)addCategory:(NSString *)name;
++ (void)updateCategory:(Category *)category;
++ (void)deleteCategory:(Category *)category;
 
 + (void)addOutgoingText:(NSString *)id withFirstLine:(NSString *)firstLine withSecondLine:(NSString *)secondLine withPerson:(NSString *)personName;
 + (void)addIncomingText:(NSString *)id withFirstLine:(NSString *)firstLine withSecondLine:(NSString *)secondLine withPerson:(NSString *)personName;

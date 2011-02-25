@@ -11,7 +11,7 @@
 
 @implementation ReturnDateSelectViewController
 
-@synthesize delegate, datePicker, date, minDate;
+@synthesize delegate, datePicker, date, minDate, switchPush, pushAlarm;
 
 - (IBAction)done {
 	[delegate returnDateSelectViewControllerDidFinish:self];
@@ -21,21 +21,51 @@
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
+- (IBAction)handlePushNotificationsChanged {
+	if (switchPush.on) {
+		datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+	}
+	else {
+		datePicker.datePickerMode = UIDatePickerModeDate;
+	}
+}
+
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	
+	labelPush.text = NSLocalizedString(@"PushNotification", @"");
+	
+	[datePicker setTimeZone:[NSTimeZone systemTimeZone]];
+	
+	if (!minDate) {
+		minDate = [NSDate date];
+	}
+	
 	self.datePicker.minimumDate = minDate;
 	if (self.date == nil) {
 		self.date = [NSDate date];
 	}
-	if ([self.date compare:minDate] == NSOrderedAscending) {
-		[self.datePicker setDate:minDate animated:NO];
+	NSDate *currentDate;
+	if ([self.date compare:minDate] == NSOrderedDescending) {
+		currentDate = minDate;
 	}
 	else {
-		[self.datePicker setDate:self.date animated:NO];
+		currentDate = self.date;
 	}
-
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:currentDate];
+	components.day++;
+	components.hour = 8;
+	currentDate = [calendar dateFromComponents:components];
 	
+	[self.datePicker setDate:currentDate animated:NO];
+
+	if (pushAlarm) {
+		[self.datePicker setDate:pushAlarm animated:NO];
+		switchPush.on = YES;
+		datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+	}
 	
 
 }

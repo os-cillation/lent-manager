@@ -10,477 +10,90 @@
 #import "Database.h"
 #import "DateSelectViewController.h"
 #import "ContactEntry.h"
+#import "Category.h"
 
 
 @implementation RentIncomingDetailViewController
 
-@synthesize delegate, scrollView, entry, descriptionTxt, type, personTxt, dateTxt, returnDateTxt, saveButton,
-			description2Txt, description1Label, description2Label, detailsButton, lentToLabel, lentFromLabel, lentUntilLabel,
-			deleteDateButton, deleteReturnDateButton, contactTableView;
-
-- (IBAction)cancel {
-	[self.parentViewController dismissModalViewControllerAnimated:YES];
-}
 - (IBAction)save {
-	//if ([descriptionTxt.text length] > 0) {
-		NSString *typeTxt = [NSString stringWithFormat:@"%i",[type selectedSegmentIndex]];
-		NSString *description = descriptionTxt.text;
-		NSString *description2 = description2Txt.text;
-		NSString *personString = personTxt.text;
+	NSString *typeTxt = currentCategory.idx;
+	NSString *description = descriptionTxt.text;
+	NSString *description2 = description2Txt.text;
+	NSString *personString = personTxt.text;
+
+	if (personId > 0) {
+		personString = personId;
+	}
 	
-		if (personId > 0) {
-			personString = personId;
+	NSString *entryId;
+
+	if (entry != nil) {
+		entryId = [Database addIncomingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+	}
+	else {
+		entryId = [Database addIncomingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+	}
+	
+#ifdef __IPHONE_4_0
+
+	NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"PushAlarmListIncoming"];
+	if (!tmpList) {
+		tmpList = [[NSDictionary alloc] init];
+	}
+	NSMutableDictionary *list = [[NSMutableDictionary alloc] initWithDictionary:tmpList];
+	NSData *data = [list objectForKey:entryId];
+	
+	if (data) {
+		UILocalNotification *notification = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+		[[UIApplication sharedApplication] cancelLocalNotification:notification];
+		notification = nil;
+		[list removeObjectForKey:entryId];
+	}
+	
+	if (pushAlarmDate) {
+		NSString *message;
+		if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
+			message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
 		}
-	
-		if (entry != nil) {
-			[Database addIncomingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+		else if (([descriptionTxt.text length] > 0)) {
+			message = descriptionTxt.text;
 		}
 		else {
-			[Database addIncomingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate];
+			message = description2Txt.text;
 		}
 
+
 		
+		UILocalNotification *notification = [RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate];
+		
+		data = [NSKeyedArchiver archivedDataWithRootObject:notification];
+		[list setObject:data forKey:entryId];
+	}
+	if ([list count] == 0) {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListIncoming"];
+	}
+	else {
+		[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListIncoming"];
+	}
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	//}
-
+#endif
+	
 	[delegate reload];
 
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)showDetails {
-	if (personId != nil) {
-		PersonViewController *personViewController = [[PersonViewController alloc] init];
-		
-		ABAddressBookRef ab = ABAddressBookCreate();
-		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [personId intValue]);
-		
-		personViewController.personViewDelegate = self;
-		personViewController.displayedPerson = person;
-		personViewController.allowsEditing = NO;
-
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:personViewController];
-		personViewController.navigationItem.title = NSLocalizedString(@"ContactDetails", "");
-		
-		[self presentModalViewController:navController animated:YES];
-		
-		[personViewController release];
-		[navController release];
-	}
-}
-
-- (IBAction)typeChanged {
-	int index = [self.type selectedSegmentIndex];
-	switch (index) {
-		case 0:
-			self.description1Label.text = NSLocalizedString(@"Author", @"");
-			self.description2Label.text = NSLocalizedString(@"Title", @"");
-			break;
-		case 1:
-			self.description1Label.text = NSLocalizedString(@"Artist", @"");
-			self.description2Label.text = NSLocalizedString(@"Title", @"");
-			break;
-		case 2:
-			self.description1Label.text = NSLocalizedString(@"Title", @"");
-			self.description2Label.text = NSLocalizedString(@"AdditionalDescription", @"");
-			break;
-		case 3:
-			self.description1Label.text = NSLocalizedString(@"Description", @"");
-			self.description2Label.text = NSLocalizedString(@"AdditionalDescription", @"");
-			break;
-		default:
-			break;
-	}
-}
-
-- (IBAction)clearDate {
-	date = nil;
-	self.dateTxt.text = @"";
-}
-
-- (IBAction)clearReturnDate {
-	returnDate = nil;
-	self.returnDateTxt.text = @"";
-}
-
-- (void)cancelContact:(id)sender {
-	[self dismissModalViewControllerAnimated:YES];	
-}
-
-- (void)dateSelectViewControllerDidFinish:(DateSelectViewController *)controller {
-	date = [controller.datePicker date];
-
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:date];
-	self.dateTxt.text = dateString;
-	[dateFormat release];
-	
-	[self dismissModalViewControllerAnimated:YES];
-	[self resignKeyboard];	
-}
-
-- (void)returnDateSelectViewControllerDidFinish:(ReturnDateSelectViewController *)controller {
-	returnDate = [controller.datePicker date];
-	
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:returnDate];
-
-	self.returnDateTxt.text = dateString;
-	[dateFormat release];
-	
-	[self dismissModalViewControllerAnimated:YES];
-	[self resignKeyboard];
-}
-
-- (void)resignKeyboard {
-	[self.dateTxt resignFirstResponder];
-	[self.returnDateTxt resignFirstResponder];
-	[self.descriptionTxt resignFirstResponder];
-	[self.description2Txt resignFirstResponder];
-	[self.personTxt resignFirstResponder];
-}
-
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	
-	self.title = NSLocalizedString(@"NewEntry", @"");
-	
-	[self updateStrings];
-	
-	self.descriptionTxt.delegate = self;
-	self.description2Txt.delegate = self;
-	self.personTxt.delegate = self;
-	self.dateTxt.delegate = self;
-	self.returnDateTxt.delegate = self;
-	
-	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] 
-									 initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-									 target:self
-									 action:@selector(cancel)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
-	[cancelButton release];
-	
-	saveButton = [[UIBarButtonItem alloc] 
-				  initWithTitle:NSLocalizedString(@"Save", @"")
-				  style:UIBarButtonItemStylePlain
-				  target:self
-				  action:@selector(save)];
-    self.navigationItem.rightBarButtonItem = saveButton;
-	[self.saveButton setEnabled:NO];
-	
-	[self.descriptionTxt addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
-	[self.description2Txt addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
-	[self.personTxt addTarget:self action:@selector(contactInfoDidChange) forControlEvents:UIControlEventEditingChanged];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasShown:)
-												 name:UIKeyboardDidShowNotification object:nil];
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasHidden:)
-												 name:UIKeyboardDidHideNotification object:nil];
-	
-	if (self.entry != nil) {
-		self.title = NSLocalizedString(@"Edit", @"");
-		
-		[type setSelectedSegmentIndex:[entry.type intValue]];
-		[self typeChanged];
-		
-		if ([entry.description length] > 0) {
-			self.descriptionTxt.text = entry.description;
-			[self.saveButton setEnabled:YES];
-		}
-		if ([entry.description2 length] > 0) {
-			self.description2Txt.text = entry.description2;
-			[self.saveButton setEnabled:YES];
-		}		
-		
-		self.dateTxt.text = [entry getDateString];
-		self.returnDateTxt.text = [entry getReturnDateString];
-		
-		date = entry.date;
-		returnDate = entry.returnDate;
-		
-		self.personTxt.text = entry.personName;
-		
-		if (entry.person == NULL || entry.person == nil) {
-			[detailsButton setHidden:YES];
-			return;
-		}
-
-		ABAddressBookRef ab = ABAddressBookCreate();
-		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
-		if (person != nil) {
-			personId = entry.person;
-/*			
-			NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-			NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
-			NSString *fullName;
-
-			if (firstName == nil || lastName == nil) {
-				if (firstName == nil) {
-					fullName = lastName;
-				}
-				else {
-					fullName = firstName;
-				}
-			}
-			else {
-				fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-			}
-			self.personTxt.text = fullName;
-*/
-			[detailsButton setHidden:NO];
-		}
-		else {
-			//self.personTxt.text = entry.person;
-			[detailsButton setHidden:YES];
-		}
-	}
-}
-
-- (void)contactInfoDidChange {
-	personId = 0;
-	[self.detailsButton setHidden:YES];
-	[self.contactTableView reloadData];
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	[UIView beginAnimations:nil context:NULL];
-	if (textField == self.personTxt) {
-		scrollView.contentSize = CGSizeMake(320, 940);
-		[scrollView setContentOffset:CGPointMake(0.0, personTxt.frame.origin.y - 80) animated:NO];
-		
-		[self.contactTableView setHidden:NO];
-		//		data = [Database getContactInfo:personTxt.text];
-		[self.contactTableView reloadData];
-		
-	}
-	else {
-		
-		scrollView.contentSize = CGSizeMake(320, 900);
-		[self.contactTableView setHidden:YES];
-		if (textField == self.dateTxt) {
-			[self resignKeyboard];
-			DateSelectViewController *controller = [[DateSelectViewController alloc] initWithNibName:@"DateSelectViewController" bundle:nil];
-			controller.delegate = self;
-			controller.date = date;
-			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-			[self presentModalViewController:controller animated:YES];
-			
-			[controller release];
-			return NO;
-		}
-		else if (textField == self.returnDateTxt) {
-			[textField resignFirstResponder];
-			ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
-			controller.delegate = self;
-			controller.date = returnDate;
-			controller.minDate = date;
-			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-			[self presentModalViewController:controller animated:YES];
-			
-			[controller release];
-			return NO;
-		}
-	}
-	activeField = textField;
-	[UIView commitAnimations];
-	return YES;
-}
-
-- (void)textFieldDidChange {
-	if (([self.descriptionTxt.text length] > 0) || ([self.description2Txt.text length] > 0)) {
-		[self.saveButton setEnabled:YES];
-	}
-	else {
-		[self.saveButton setEnabled:NO];
-	}
-}
-
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	
-	if (textField == self.personTxt) {
-		[self.contactTableView setHidden:YES];
-	}
-    [self resignKeyboard];
-    return NO;
-}
-
-- (void)keyboardWasShown:(NSNotification*)aNotification{
-	keyboardShown = YES;
-}
-
-- (void)keyboardWasHidden:(NSNotification*)aNotification {
-	[UIView beginAnimations:nil context:NULL];
-	scrollView.contentSize = CGSizeMake(320, 600);
-	keyboardShown = NO;
-	[scrollView setContentOffset:CGPointMake(0.0, 0.0) animated:NO];
-	[UIView commitAnimations];
-}
- 
-/*
-//people picker delegate protocol
-
-// Called after the user has pressed cancel
-// The delegate is responsible for dismissing the peoplePicker
-- (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker {
-	[self dismissModalViewControllerAnimated:YES];
-}
-
-// Called after a person has been selected by the user.
-// Return YES if you want the person to be displayed.
-// Return NO  to do nothing (the delegate is responsible for dismissing the peoplePicker).
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectionPerson:(ABRecordRef)person {
-	return NO;
-}
-
-// Called after a value has been selected by the user.
-// Return YES if you want default action to be performed.
-// Return NO to do nothing (the delegate is responsible for dismissing the peoplePicker).
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person {
-	ABRecordID recordId = ABRecordGetRecordID(person);
-	
-	personId = [[NSString alloc] initWithFormat:@"%i", recordId];
-	
-	NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-	NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
-	NSString *fullName;
-	if (firstName == nil || lastName == nil) {
-		if (firstName == nil) {
-			fullName = lastName;
-		}
-		else {
-			fullName = firstName;
-		}
-	}
-	else {
-		fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-	}
-	self.personTxt.text = fullName;
-	[detailsButton setHidden:NO];
-	
-	[self dismissModalViewControllerAnimated:YES];
-	[self resignKeyboard];
-	
-	return NO;
-}
-
-// Called after a value has been selected by the user.
-// Return YES if you want default action to be performed.
-// Return NO to do nothing (the delegate is responsible for dismissing the peoplePicker).
-- (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier {
-	return NO;
-}
-*/
-
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue {
-	return YES;
-}
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-    [super dealloc];
-	/*[entry release];
-	[activeField release];
-	[descriptionTxt release];
-	[description2Txt release];
-	[type release];
-	[personTxt release];
-	[dateTxt release];
-	[returnDateTxt release];
-	[scrollView release];
-	[saveButton release];
-	[description1Label release];
-	[description2Label release];
-	[lentToLabel release];
-	[lentFromLabel release];
-	[lentUntilLabel release];
-	[detailsButton release];
-	[deleteDateButton release];
-	[deleteReturnDateButton release];
-	[contactTableView release];
-	[personId release];
-	[date release];
-	[returnDate release];*/
-}
-
 - (void)updateStrings {
-	self.description1Label.text = NSLocalizedString(@"Author", @"");
-	self.description2Label.text = NSLocalizedString(@"Title", @"");
-	self.lentToLabel.text = NSLocalizedString(@"LentFromPerson", @"");
-	self.lentFromLabel.text = NSLocalizedString(@"LentFromAt", @"");
-	self.lentUntilLabel.text = NSLocalizedString(@"LentFromUntil", @"");
-	self.deleteDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
-	self.deleteReturnDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
+	description1Label.text = NSLocalizedString(@"Author", @"");
+	description2Label.text = NSLocalizedString(@"Title", @"");
+	lentToLabel.text = NSLocalizedString(@"LentFromPerson", @"");
+	lentFromLabel.text = NSLocalizedString(@"LentFromAt", @"");
+	lentUntilLabel.text = NSLocalizedString(@"LentFromUntil", @"");
+	deleteDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
+	deleteReturnDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
 	
-	[self.type setTitle:[Database getDescriptionByIndex:0] forSegmentAtIndex:0];
-	[self.type setTitle:[Database getDescriptionByIndex:1] forSegmentAtIndex:1];
-	[self.type setTitle:[Database getDescriptionByIndex:2] forSegmentAtIndex:2];
-	[self.type setTitle:[Database getDescriptionByIndex:3] forSegmentAtIndex:3];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-
-// Customize the number of rows in the table view.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [Database getContactCount:self.personTxt.text];
-}
-
-
-// Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    static NSString *CellIdentifier = @"Cell";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-    }
-	
-	ContactEntry *contactEntry = [Database getContactInfo:personTxt.text atIndex:indexPath.row];
-	
-	cell.textLabel.text = contactEntry.name;
-    
-    // Set up the cell...
-	
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	ContactEntry *contactEntry = [Database getContactInfo:personTxt.text atIndex:indexPath.row];
-	self.personTxt.text = contactEntry.name;
-	personId = contactEntry.entryId;
-	[self.detailsButton setHidden:NO];
-	[self.contactTableView setHidden:YES];
-	[self.personTxt resignFirstResponder];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	return NSLocalizedString(@"FromAddressbook", @"");
+	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:[[currentCategory idx] intValue]]]];
 }
 
 @end

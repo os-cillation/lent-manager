@@ -13,7 +13,7 @@
 
 @implementation RentEntry
 
-@synthesize entryId, type, description, description2, person, date, returnDate, firstLine, secondLine, personName;
+@synthesize entryId, type, description, description2, person, date, returnDate, firstLine, secondLine, personName, pushAlarm;
 
 - (NSString *)getDateString {
 	if (date == nil) {

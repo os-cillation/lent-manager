@@ -8,13 +8,18 @@
 
 "LentToTitle" = "Lent to...";
 "LentFromTitle" = "Lent from...";
+"Categories" = "Categories";
 "About" = "About";
-"NewEntry" = "New entry";
+"NewEntry" = "New...";
+"NewCategoryName" = "Name of the category";
 "Edit" = "Edit";
 "Save" = "Save";
+"Category" = "Category";
+"CategoryText" = "Category: %@";
 "Author" = "Author:";
 "Title" = "Title:";
 "Artist" = "Artist:";
+"Amount" = "Amount:";
 "Description" = "Description:";
 "AdditionalDescription" = "Additional Description:";
 "LentToPerson" = "Lent to:";
@@ -29,6 +34,7 @@
 "CD" = "CD";
 "DVD" = "DVD";
 "Other" = "Other";
+"Money" = "Money";
 "Clear" = "Clear";
 "Entry" = "Entry";
 "Entries" = "Entries";
@@ -36,6 +42,10 @@
 "from" = "from";
 "at" = "at";
 "until" = "until";
+
+"PushNotification" = "Push notification";
+"Show" = "Open App";
+"PushMessage" = "'%@' is now due";
 
 "otherProducts" = "Other products:";
 "aboutText" = 

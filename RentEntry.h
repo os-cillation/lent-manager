@@ -20,6 +20,7 @@
 	NSString *firstLine;
 	NSString *secondLine;
 	NSString *personName;
+	NSDate *pushAlarm;
 }
 
 @property (nonatomic, retain) NSString *entryId;
@@ -32,6 +33,7 @@
 @property (nonatomic, retain) NSString *firstLine;
 @property (nonatomic, retain) NSString *secondLine;
 @property (nonatomic, retain) NSString *personName;
+@property (nonatomic, retain) NSDate *pushAlarm;
 
 - (NSString *)getDateString;
 - (NSString *)getReturnDateString;

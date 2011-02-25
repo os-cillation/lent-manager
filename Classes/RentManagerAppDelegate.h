@@ -10,15 +10,21 @@
 
 @class RentIncomingViewController;
 @class RentOutgoingViewController;
+@class CategoryTableViewController;
 
 @interface RentManagerAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
     UIWindow *window;
     UITabBarController *tabBarController;
 	RentIncomingViewController *incomingController;
 	RentOutgoingViewController *outgoingController;
+	CategoryTableViewController *categoryController;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+
++ (RentManagerAppDelegate *)getAppDelegate;
+
++ (UILocalNotification *)createLocalNotification:(NSString *)message withDate:(NSDate *)date;
 
 @end

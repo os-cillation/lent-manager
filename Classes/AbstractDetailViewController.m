@@ -173,6 +173,8 @@
 	
 	[self updateStrings];
 	
+	[self changeCategory:currentCategory];
+	
 	descriptionTxt.delegate = self;
 	description2Txt.delegate = self;
 	personTxt.delegate = self;
@@ -264,7 +266,7 @@
 	}
 	else {
 		
-		scrollView.contentSize = CGSizeMake(320, 900);
+		
 		[contactTableView setHidden:YES];
 		if (textField == dateTxt) {
 			[self resignKeyboard];
@@ -278,7 +280,7 @@
 			return NO;
 		}
 		else if (textField == returnDateTxt) {
-			[textField resignFirstResponder];
+			[self resignKeyboard];
 			ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
 			controller.delegate = self;
 			controller.pushAlarm = pushAlarmDate;
@@ -290,6 +292,11 @@
 			[controller release];
 			return NO;
 		}
+		else {
+			scrollView.contentSize = CGSizeMake(320, 900);
+			[scrollView setContentOffset:CGPointMake(0.0, textField.frame.origin.y -120) animated:NO];
+		}
+
 	}
 	activeField = textField;
 	[UIView commitAnimations];

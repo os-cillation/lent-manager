@@ -82,7 +82,7 @@
 	[self applicationDidFinishLaunching:application];
 	NSArray *array = [launchOptions allValues];
 	for (int i = 0; i < [array count]; i++) {
-		NSLog(@"%@", [array objectAtIndex:i]);
+		//NSLog(@"%@", [array objectAtIndex:i]);
 	}
 	return YES;
 }

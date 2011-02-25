@@ -57,7 +57,6 @@
 		43C2B8E71315151A0029F12F /* PickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43C2B8E51315151A0029F12F /* PickerViewController.xib */; };
 		43C2BA24131523630029F12F /* AbstractTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2BA23131523630029F12F /* AbstractTableViewController.m */; };
 		43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C2E69C1192C42E006003B0 /* lent-icon.png */; };
-		43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -135,7 +134,6 @@
 		43C2BA22131523630029F12F /* AbstractTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractTableViewController.h; sourceTree = "<group>"; };
 		43C2BA23131523630029F12F /* AbstractTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTableViewController.m; sourceTree = "<group>"; };
 		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
-		43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "Resources-iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LentManager-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -211,7 +209,6 @@
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				43A7B3821317B6F70066BE7B /* GUI */,
-				43DF182811AFD01000A09C31 /* GUI-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -293,14 +290,6 @@
 			name = GUI;
 			sourceTree = "<group>";
 		};
-		43DF182811AFD01000A09C31 /* GUI-iPad */ = {
-			isa = PBXGroup;
-			children = (
-				43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */,
-			);
-			name = "GUI-iPad";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -368,7 +357,6 @@
 				432C96291187134D00BDC5C8 /* Default.png in Resources */,
 				43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */,
 				43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */,
-				43DF182A11AFD01100A09C31 /* MainWindow-iPad.xib in Resources */,
 				43AD68461313D6CB00871B47 /* group-icon.png in Resources */,
 				43AD68471313D6CB00871B47 /* groupmessage-icon.png in Resources */,
 				43AD68481313D6CB00871B47 /* groupplus-icon.png in Resources */,

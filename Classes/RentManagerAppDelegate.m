@@ -25,13 +25,6 @@
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-#ifdef __IPHONE_4_0
-	NSLog(@"#ifdef");
-#endif
-#ifndef __IPHONE_4_0
-	NSLog(@"#ifndef");
-#endif
-	
 	NSString *      initialDefaultsPath;
 	NSDictionary *  initialDefaults;
     
@@ -110,8 +103,10 @@
 }
 
 
-+ (UILocalNotification *)createLocalNotification:(NSString *)message withDate:(NSDate *)date {
-		UILocalNotification *notification = [[UILocalNotification alloc] init]; 
++ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date {
+	Class myClass = NSClassFromString(@"UILocalNotification");
+	if (myClass) {
+		UILocalNotification *notification = [[myClass alloc] init];
 		notification.fireDate = date;
 		notification.timeZone = [NSTimeZone systemTimeZone];
 		notification.alertAction = NSLocalizedString(@"Show", nil); 
@@ -126,6 +121,31 @@
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 		
 		return notification;
+	}
+	//	UILocalNotification *notification = [[UILocalNotification alloc] init]; 
+//		notification.fireDate = date;
+//		notification.timeZone = [NSTimeZone systemTimeZone];
+//		notification.alertAction = NSLocalizedString(@"Show", nil); 
+//		notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"PushMessage",@""), message];
+//		notification.soundName = UILocalNotificationDefaultSoundName; 
+//		
+//		NSString *tabIndex = [NSString stringWithFormat:@"%i", [[[RentManagerAppDelegate getAppDelegate] tabBarController] selectedIndex]];
+//		
+//		NSDictionary *infoDict = [NSDictionary dictionaryWithObject:tabIndex forKey:@"tabIndex"]; 
+//		notification.userInfo = infoDict; 
+//		
+//		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
+//		
+//		return notification;
+	return nil;
+}
+
++ (BOOL)deviceSupportsPush {
+	Class myClass = NSClassFromString(@"UILocalNotification");
+	if (myClass) {
+		return YES;
+	}
+	return NO;
 }
 
 - (void)dealloc {

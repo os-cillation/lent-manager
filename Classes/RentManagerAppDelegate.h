@@ -24,7 +24,8 @@
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 
 + (RentManagerAppDelegate *)getAppDelegate;
++ (BOOL)deviceSupportsPush;
 
-+ (UILocalNotification *)createLocalNotification:(NSString *)message withDate:(NSDate *)date;
++ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date;
 
 @end

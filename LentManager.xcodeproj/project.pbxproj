@@ -74,12 +74,12 @@
 		432C962A1187135C00BDC5C8 /* en */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = en; path = en.lproj/Default.png; sourceTree = "<group>"; };
 		433348451315300B00C681FD /* CategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryTableViewController.h; sourceTree = "<group>"; };
 		433348461315300B00C681FD /* CategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryTableViewController.m; sourceTree = "<group>"; };
-		433348471315300B00C681FD /* CategoryTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryTableViewController.xib; sourceTree = "<group>"; };
+		433348471315300B00C681FD /* CategoryTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryTableViewController.xib; path = Classes/CategoryTableViewController.xib; sourceTree = "<group>"; };
 		4333486E131531A300C681FD /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
 		4333486F131531A300C681FD /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		433348A11315346400C681FD /* CategoryAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryAddViewController.h; sourceTree = "<group>"; };
 		433348A21315346400C681FD /* CategoryAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryAddViewController.m; sourceTree = "<group>"; };
-		433348A31315346400C681FD /* CategoryAddViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryAddViewController.xib; sourceTree = "<group>"; };
+		433348A31315346400C681FD /* CategoryAddViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryAddViewController.xib; path = Classes/CategoryAddViewController.xib; sourceTree = "<group>"; };
 		43334B4E1315599300C681FD /* categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories.png; sourceTree = "<group>"; };
 		433CE71F1152578300D6B3D3 /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
 		4378EA781150F7F2002AA27D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../AboutViewController.h; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 		43C2B80A13150B710029F12F /* AbstractDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractDetailViewController.m; sourceTree = "<group>"; };
 		43C2B8E31315151A0029F12F /* CategoryPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryPickerViewController.h; sourceTree = "<group>"; };
 		43C2B8E41315151A0029F12F /* CategoryPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryPickerViewController.m; sourceTree = "<group>"; };
-		43C2B8E51315151A0029F12F /* PickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PickerViewController.xib; sourceTree = "<group>"; };
+		43C2B8E51315151A0029F12F /* PickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PickerViewController.xib; path = Classes/PickerViewController.xib; sourceTree = "<group>"; };
 		43C2BA22131523630029F12F /* AbstractTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractTableViewController.h; sourceTree = "<group>"; };
 		43C2BA23131523630029F12F /* AbstractTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTableViewController.m; sourceTree = "<group>"; };
 		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
@@ -185,15 +185,12 @@
 				43C2B7D4131508FF0029F12F /* Util.m */,
 				43C2B8E31315151A0029F12F /* CategoryPickerViewController.h */,
 				43C2B8E41315151A0029F12F /* CategoryPickerViewController.m */,
-				43C2B8E51315151A0029F12F /* PickerViewController.xib */,
 				43C2BA22131523630029F12F /* AbstractTableViewController.h */,
 				43C2BA23131523630029F12F /* AbstractTableViewController.m */,
 				433348451315300B00C681FD /* CategoryTableViewController.h */,
 				433348461315300B00C681FD /* CategoryTableViewController.m */,
-				433348471315300B00C681FD /* CategoryTableViewController.xib */,
 				433348A11315346400C681FD /* CategoryAddViewController.h */,
 				433348A21315346400C681FD /* CategoryAddViewController.m */,
-				433348A31315346400C681FD /* CategoryAddViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -213,7 +210,8 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				43DF182811AFD01000A09C31 /* Resources-iPad */,
+				43A7B3821317B6F70066BE7B /* GUI */,
+				43DF182811AFD01000A09C31 /* GUI-iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -223,11 +221,6 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				43B9CAC81153D047004EF6B2 /* AbstractTableViewController.xib */,
-				4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */,
-				4378EA871150F807002AA27D /* DateSelectViewController.xib */,
-				4378EA7A1150F7F2002AA27D /* AboutViewController.xib */,
-				4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */,
 				28A0AB4B0D9B1048005BE974 /* LentManager_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
@@ -250,7 +243,6 @@
 				43B8D51E11576DBE0074BA21 /* Localizable.strings */,
 				433CE71F1152578300D6B3D3 /* data.sqlite */,
 				4378EA8E1150F815002AA27D /* os.png */,
-				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* LentManager-Info.plist */,
 				43A7FF7E11ABBB050096D8F7 /* InitialDefaults.plist */,
 			);
@@ -285,12 +277,28 @@
 			name = Entities;
 			sourceTree = "<group>";
 		};
-		43DF182811AFD01000A09C31 /* Resources-iPad */ = {
+		43A7B3821317B6F70066BE7B /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				28AD73870D9D96C1002E5188 /* MainWindow.xib */,
+				43B9CAC81153D047004EF6B2 /* AbstractTableViewController.xib */,
+				4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */,
+				4378EA871150F807002AA27D /* DateSelectViewController.xib */,
+				4378EA7A1150F7F2002AA27D /* AboutViewController.xib */,
+				4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */,
+				43C2B8E51315151A0029F12F /* PickerViewController.xib */,
+				433348471315300B00C681FD /* CategoryTableViewController.xib */,
+				433348A31315346400C681FD /* CategoryAddViewController.xib */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		43DF182811AFD01000A09C31 /* GUI-iPad */ = {
 			isa = PBXGroup;
 			children = (
 				43DF182911AFD01100A09C31 /* MainWindow-iPad.xib */,
 			);
-			name = "Resources-iPad";
+			name = "GUI-iPad";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

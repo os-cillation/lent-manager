@@ -34,50 +34,56 @@
 		entryId = [Database addIncomingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
 	}
 	
-#ifdef __IPHONE_4_0
+	Class myClass = NSClassFromString(@"UILocalNotification");
+	if (myClass) {
 
-	NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"PushAlarmListIncoming"];
-	if (!tmpList) {
-		tmpList = [[NSDictionary alloc] init];
-	}
-	NSMutableDictionary *list = [[NSMutableDictionary alloc] initWithDictionary:tmpList];
-	NSData *data = [list objectForKey:entryId];
-	
-	if (data) {
-		UILocalNotification *notification = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-		[[UIApplication sharedApplication] cancelLocalNotification:notification];
-		notification = nil;
-		[list removeObjectForKey:entryId];
-	}
-	
-	if (pushAlarmDate) {
-		NSString *message;
-		if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
-			message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
-		}
-		else if (([descriptionTxt.text length] > 0)) {
-			message = descriptionTxt.text;
+		NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"PushAlarmListIncoming"];
+		NSMutableDictionary *list;
+		if (tmpList) {
+			list = [[NSMutableDictionary alloc] initWithDictionary:tmpList];
 		}
 		else {
-			message = description2Txt.text;
+			list = [[NSMutableDictionary alloc] init];
 		}
 
-
 		
-		UILocalNotification *notification = [RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate];
+		NSData *data = [list objectForKey:entryId];
 		
-		data = [NSKeyedArchiver archivedDataWithRootObject:notification];
-		[list setObject:data forKey:entryId];
-	}
-	if ([list count] == 0) {
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListIncoming"];
-	}
-	else {
-		[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListIncoming"];
-	}
-	[[NSUserDefaults standardUserDefaults] synchronize];
+		if (data) {
+			UILocalNotification *notification = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+			[[UIApplication sharedApplication] cancelLocalNotification:notification];
+			notification = nil;
+			[list removeObjectForKey:entryId];
+		}
+		
+		if (pushAlarmDate) {
+			NSString *message;
+			if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
+				message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
+			}
+			else if (([descriptionTxt.text length] > 0)) {
+				message = descriptionTxt.text;
+			}
+			else {
+				message = description2Txt.text;
+			}
 
-#endif
+
+			
+			UILocalNotification *notification = (UILocalNotification *)[RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate];
+			
+			data = [NSKeyedArchiver archivedDataWithRootObject:notification];
+			[list setObject:data forKey:entryId];
+		}
+		if ([list count] == 0) {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListIncoming"];
+		}
+		else {
+			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListIncoming"];
+		}
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+	}
 	
 	[delegate reload];
 

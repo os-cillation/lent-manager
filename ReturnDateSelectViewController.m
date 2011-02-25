@@ -23,6 +23,9 @@
 
 - (IBAction)handlePushNotificationsChanged {
 	if (switchPush.on) {
+		if ([self.datePicker.date compare:[NSDate date]] == NSOrderedAscending) {
+			[self.datePicker setDate:[NSDate date] animated:NO];
+		}
 		datePicker.datePickerMode = UIDatePickerModeDateAndTime;
 	}
 	else {
@@ -33,10 +36,16 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+	if (![RentManagerAppDelegate deviceSupportsPush]) {
+		labelPush.hidden = YES;
+		switchPush.hidden = YES;
+	}
 	
 	labelPush.text = NSLocalizedString(@"PushNotification", @"");
 	
 	[datePicker setTimeZone:[NSTimeZone systemTimeZone]];
+	
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	
 	if (!minDate) {
 		minDate = [NSDate date];
@@ -44,27 +53,26 @@
 	
 	self.datePicker.minimumDate = minDate;
 	if (self.date == nil) {
-		self.date = [NSDate date];
+		NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:[NSDate date]];
+		components.day++;
+		components.hour = 8;
+		self.date  = [calendar dateFromComponents:components];
+		
+		if ([self.date compare:minDate] == NSOrderedAscending) {
+			NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:minDate];
+			components.day++;
+			components.hour = 8;
+			self.date  = [calendar dateFromComponents:components];
+		}
 	}
-	NSDate *currentDate;
-	if ([self.date compare:minDate] == NSOrderedDescending) {
-		currentDate = minDate;
-	}
-	else {
-		currentDate = self.date;
-	}
-	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:currentDate];
-	components.day++;
-	components.hour = 8;
-	currentDate = [calendar dateFromComponents:components];
-	
-	[self.datePicker setDate:currentDate animated:NO];
+	[self.datePicker setDate:self.date animated:NO];
 
 	if (pushAlarm) {
-		[self.datePicker setDate:pushAlarm animated:NO];
-		switchPush.on = YES;
-		datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+		if ([pushAlarm compare:[NSDate date]] == NSOrderedDescending) {
+			[self.datePicker setDate:pushAlarm animated:NO];
+			switchPush.on = YES;
+			datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+		}
 	}
 	
 

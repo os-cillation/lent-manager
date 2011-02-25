@@ -105,6 +105,7 @@
 - (IBAction)clearReturnDate {
 	returnDate = nil;
 	returnDateTxt.text = @"";
+	pushAlarmDate = nil;
 }
 
 - (void)cancelContact:(id)sender {
@@ -135,7 +136,7 @@
 		pushAlarmDate = [[calendar dateFromComponents:components] retain];
 	}
 	else {
-		entry.pushAlarm = nil;
+		pushAlarmDate = nil;
 	}
 	
 	NSString *dateString = [NSString alloc];

@@ -1,5 +1,18 @@
 2011-02-25	Benjamin Mies	<bmi@os-cillation.de>
-	* *.*
+	* LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/project.pbxproj,
+	  LentManager.xcodeproj/benjamin.pbxuser,
+	  Classes/AbstractDetailViewController.m,
+	  Classes/RentManagerAppDelegate.h,
+	  Classes/RentManagerAppDelegate.m,
+	  Classes/RentIncomingDetailViewController.m,
+	  DateSelectViewController.xib,
+	  RentOutgoingDetailViewController.m,
+	  ReturnDateSelectViewController.m:
+	  - Anpassungen fuer Firmware 3.1.3.
+
+2011-02-25	Benjamin Mies	<bmi@os-cillation.de>
+	* *.*:
 	  - Lokale Push Nachrichten umgesetzt.
 	  - Dieverse kleinere Anpassungen.
 

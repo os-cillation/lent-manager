@@ -21,7 +21,6 @@
 
 @interface AbstractDetailViewController : UIViewController <UITextFieldDelegate, DateSelectViewControllerDelegate, ReturnDateSelectViewControllerDelegate, ABPersonViewControllerDelegate, PickerViewControllerDelegate> {
 	id <AbstractDetailViewControllerDelegate> delegate;
-	RentEntry *entry;
 	UITextField *activeField;
 	IBOutlet UIButton *buttonType;
 	IBOutlet UITextField *descriptionTxt;
@@ -40,6 +39,7 @@
 	IBOutlet UIButton *deleteDateButton;
 	IBOutlet UIButton *deleteReturnDateButton;
 	IBOutlet UITableView *contactTableView;
+	RentEntry *entry;
 	Category *currentCategory;
 	NSString *personId;
 	NSDate *date;

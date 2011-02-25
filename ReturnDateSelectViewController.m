@@ -92,9 +92,10 @@
 
 
 - (void)dealloc {
-    [super dealloc];
-	//[datePicker release];
 	[date release];
+	[minDate release];
+	[pushAlarm release];
+    [super dealloc];
 }
 
 

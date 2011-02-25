@@ -57,6 +57,8 @@
 
 
 - (void)dealloc {
+	[data release];
+	[stringTitle release];
     [super dealloc];
 }
 

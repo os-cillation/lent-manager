@@ -2,6 +2,25 @@
 	* LentManager.xcodeproj/benjamin.mode1v3,
 	  LentManager.xcodeproj/project.pbxproj,
 	  LentManager.xcodeproj/benjamin.pbxuser,
+	  Classes/CategoryTableViewController.m,
+	  Classes/AbstractDetailViewController.m,
+	  Classes/CategoryAddViewController.m,
+	  Classes/RentManagerAppDelegate.m,
+	  Classes/CategoryPickerViewController.m,
+	  Classes/ContactEntry.m,
+	  Classes/AbstractDetailViewController.h,
+	  RentOutgoingDetailViewController.m,
+	  DateSelectViewController.m,
+	  ReturnDateSelectViewController.m,
+	  Category.m,
+	  RentEntry.m,
+	  RentList.m:
+	  * Kleinere Anpassungen.
+
+2011-02-25	Benjamin Mies	<bmi@os-cillation.de>
+	* LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/project.pbxproj,
+	  LentManager.xcodeproj/benjamin.pbxuser,
 	  Classes/AbstractDetailViewController.m,
 	  Classes/RentManagerAppDelegate.m:
 	  - Kleinere Anpassungen an der GUI.

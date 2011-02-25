@@ -151,6 +151,9 @@
 - (void)dealloc {
     [tabBarController release];
     [window release];
+	[incomingController release];
+	[outgoingController release];
+	[categoryController release];
     [super dealloc];
 }
 

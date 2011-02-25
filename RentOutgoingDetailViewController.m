@@ -53,7 +53,16 @@
 		}
 		
 		if (pushAlarmDate) {
-			NSString *message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
+			NSString *message;
+			if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
+				message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
+			}
+			else if (([descriptionTxt.text length] > 0)) {
+				message = descriptionTxt.text;
+			}
+			else {
+				message = description2Txt.text;
+			}
 			UILocalNotification *notification = (UILocalNotification *)[RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate];
 			
 			data = [NSKeyedArchiver archivedDataWithRootObject:notification];

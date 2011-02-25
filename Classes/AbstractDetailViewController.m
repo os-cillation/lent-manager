@@ -351,29 +351,14 @@
 
 
 - (void)dealloc {
-    [super dealloc];
-	/*[entry release];
-	 [activeField release];
-	 [descriptionTxt release];
-	 [description2Txt release];
-	 [type release];
-	 [personTxt release];
-	 [dateTxt release];
-	 [returnDateTxt release];
-	 [scrollView release];
-	 [saveButton release];
-	 [description1Label release];
-	 [description2Label release];
-	 [lentToLabel release];
-	 [lentFromLabel release];
-	 [lentUntilLabel release];
-	 [detailsButton release];
-	 [deleteDateButton release];
-	 [deleteReturnDateButton release];
-	 [contactTableView release];
-	 [personId release];
-	 [date release];
-	 [returnDate release];*/
+	[super dealloc];
+	[entry release];
+	[personId release];
+	[date release];
+	[returnDate release];
+
+	[currentCategory release];
+	[pushAlarmDate release];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

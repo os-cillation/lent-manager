@@ -35,4 +35,9 @@
 	return result;
 }
 
+- (void)dealloc {
+	[data release];
+	[super dealloc];
+}
+
 @end

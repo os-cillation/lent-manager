@@ -100,6 +100,7 @@
 
 
 - (void)dealloc {
+	[category release];
     [super dealloc];
 }
 

@@ -14,4 +14,10 @@
 @synthesize idx;
 @synthesize name;
 
+- (void)dealloc {
+	[idx release];
+	[name release];
+	[super dealloc];
+}
+
 @end

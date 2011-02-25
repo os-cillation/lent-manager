@@ -46,7 +46,6 @@
 
 - (void)dealloc {
     [super dealloc];
-	//[datePicker release];
 	[date release];
 }
 

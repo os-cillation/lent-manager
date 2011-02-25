@@ -108,5 +108,20 @@
 	}
 }
 
+- (void)dealloc {
+	[entryId release];
+	[type release];
+	[description release];
+	[description2 release];
+	[person release];
+	[date release];
+	[returnDate release];
+	[firstLine release];
+	[secondLine release];
+	[personName release];
+	[pushAlarm release];
+	[super dealloc];
+}
+
 
 @end

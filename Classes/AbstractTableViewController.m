@@ -99,12 +99,6 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
-- (void)viewDidUnload {
-	// Release anything that can be recreated in viewDidLoad or on demand.
-	// e.g. self.myOutlet = nil;
-}
-
-
 #pragma mark Table view methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -178,17 +172,15 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	
-// 	[super scrollViewDidScroll:scrollView];
 	[self.searchBar resignFirstResponder];
 }
 
 - (void)add {
-	
+	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)add'" userInfo:nil]);
 }
 
 - (void)reload {
-	
+	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)reload'" userInfo:nil]);
 }
 
 @end

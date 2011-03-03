@@ -1,3 +1,34 @@
+2011-03-03	Benjamin Mies	<bmi@os-cillation.de>
+	* LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/benjamin.pbxuser,
+	  AboutViewController.xib,
+	  Database.h,
+	  Classes/CategoryTableViewController.m,
+	  Classes/CategoryAddViewController.m,
+	  Classes/AbstractDetailViewController.m,
+	  Classes/RentManagerAppDelegate.h,
+	  Classes/RentIncomingViewController.m,
+	  Classes/RentManagerAppDelegate.m,
+	  Classes/PersonViewController.m,
+	  Classes/AbstractTableViewController.m,
+	  Classes/CategoryPickerViewController.m,
+	  Classes/RentIncomingDetailViewController.m,
+	  Database.m,
+	  RentOutgoingDetailViewController.m,
+	  ReturnDateSelectViewController.m,
+	  DateSelectViewController.m,
+	  RentOutgoingViewController.m,
+	  LentManager-Info.plist,
+	  en.lproj/Default.png,
+	  en.lproj/Localizable.strings,
+	  AbstractDetailViewController.xib,
+	  categories.png,
+	  de.lproj/Default.png,
+	  de.lproj/Localizable.strings:
+	  - Anpassungen fuer lokale Benachrichtigungen.
+	  - Diverse kleinere Anpassungen.
+
+
 2011-02-25	Benjamin Mies	<bmi@os-cillation.de>
 	* LentManager.xcodeproj/benjamin.mode1v3,
 	  LentManager.xcodeproj/project.pbxproj,

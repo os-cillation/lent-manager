@@ -47,19 +47,26 @@
 	else {
 		//NSLog(@"Error while openening database...");
 	}
-	
-	sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS rentIncoming(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date, pushAlarm DateTime);", NULL, NULL, NULL);
-	sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS rentOutgoing(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date, pushAlarm DateTime);", NULL, NULL, NULL);
-	sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS outgoingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);", NULL, NULL, NULL);
-	sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS incomingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);", NULL, NULL, NULL);
-	sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, preDefined TINYINT);", NULL, NULL, NULL);
-	sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (0, 'Book', 1);", NULL, NULL, NULL);
-	sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (1, 'CD', 1);", NULL, NULL, NULL);
-	sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (2, 'DVD', 1);", NULL, NULL, NULL);
-	sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (3, 'Other', 1);", NULL, NULL, NULL);
-	sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (4, 'Money', 1);", NULL, NULL, NULL);
-	sqlite3_exec(db, "ALTER TABLE rentIncoming ADD COLUMN pushAlarm DateTime;", NULL, NULL, NULL);
-	sqlite3_exec(db, "ALTER TABLE rentOutgoing ADD COLUMN pushAlarm DateTime;", NULL, NULL, NULL);
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DatabaseUpdated_1.0.0"]) {
+		[[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"DatabaseUpdated_1.0.0"];
+		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS rentIncoming(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date, pushAlarm DateTime);", NULL, NULL, NULL);
+		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS rentOutgoing(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date, pushAlarm DateTime);", NULL, NULL, NULL);
+		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS outgoingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);", NULL, NULL, NULL);
+		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS incomingText(id INTEGER PRIMARY KEY, firstLine TEXT, secondLine TEXT, personName TEXT);", NULL, NULL, NULL);
+		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS categories(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, preDefined TINYINT);", NULL, NULL, NULL);
+		sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (0, 'Book', 1);", NULL, NULL, NULL);
+		sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (1, 'CD', 1);", NULL, NULL, NULL);
+		sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (2, 'DVD', 1);", NULL, NULL, NULL);
+		sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (3, 'Other', 1);", NULL, NULL, NULL);
+		sqlite3_exec(db, "INSERT INTO categories(id, name, preDefined) VALUES (4, 'Money', 1);", NULL, NULL, NULL);
+		sqlite3_exec(db, "ALTER TABLE rentIncoming ADD COLUMN pushAlarm DateTime;", NULL, NULL, NULL);
+		sqlite3_exec(db, "ALTER TABLE rentOutgoing ADD COLUMN pushAlarm DateTime;", NULL, NULL, NULL);
+		
+		NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO categories(name, preDefined) VALUES ('%@', 0);", NSLocalizedString(@"Ballpen",@"")];
+		sqlite3_exec(db,[sqlString cStringUsingEncoding:NSISOLatin1StringEncoding] , NULL, NULL, NULL);
+		sqlString = [NSString stringWithFormat:@"INSERT INTO categories(name, preDefined) VALUES ('%@', 0);", NSLocalizedString(@"Tool",@"")];
+		sqlite3_exec(db,[sqlString cStringUsingEncoding:NSISOLatin1StringEncoding] , NULL, NULL, NULL);
+	}
 	connection = db;
 	return db;
 }
@@ -401,6 +408,70 @@
 	sqlite3_exec(db, [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding], NULL, NULL, NULL);
 }
 
++ (RentEntry *)getIncomingEntry:(NSString *)entryId {
+	sqlite3 *db = [Database getConnection];
+	sqlite3_stmt *statement = nil;
+	RentEntry *entry = [RentEntry alloc];
+	
+	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentIncoming NATURAL LEFT JOIN incomingText where id=?;";
+		
+	const char* sql = [sqlString cString]; 
+	
+	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
+	}
+	else {
+		sqlite3_bind_text(statement, 1, [entryId UTF8String], -1, SQLITE_TRANSIENT);
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			
+			entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			entry.type = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
+			NSString *dateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 5)];
+			NSString *returnDateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 6)];
+			NSString *pushAlarmString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 11)];
+			
+			const char *description = (const char *) sqlite3_column_text(statement,2);
+			const char *description2 = (const char *)sqlite3_column_text(statement,3);
+			const char *person = (const char *)sqlite3_column_text(statement,4);
+			const char *firstLine = (const char *)sqlite3_column_text(statement,7);
+			const char *secondLine = (const char *)sqlite3_column_text(statement,8);
+			const char *personName = (const char *)sqlite3_column_text(statement,9);
+			
+			if (description != NULL) {
+				entry.description = [NSString stringWithUTF8String:description];
+			}
+			if (description2 != NULL) {
+				entry.description2 = [NSString stringWithUTF8String:description2];
+			}
+			if (person != NULL) {
+				entry.person = [NSString stringWithUTF8String:person];
+			}
+			if (firstLine != NULL) {
+				entry.firstLine = [NSString stringWithUTF8String:firstLine];
+			}
+			if (secondLine != NULL) {
+				entry.secondLine = [NSString stringWithUTF8String:secondLine];
+			}
+			if (personName != NULL) {
+				entry.personName = [NSString stringWithUTF8String:personName];
+			}
+			
+			NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+			[dateFormat setDateFormat:@"yyyy-MM-dd"];
+			entry.date = [dateFormat dateFromString:dateString];  
+			entry.returnDate = [dateFormat dateFromString:returnDateString];
+			[dateFormat setDateFormat:@"yyyy-MM-dd HH:mm"];
+			[dateFormat setTimeZone:[NSTimeZone systemTimeZone]];
+			entry.pushAlarm = [dateFormat dateFromString:pushAlarmString];
+			[dateFormat release];
+		}
+	}
+	sqlite3_finalize(statement);
+
+	return entry;
+}
+
 + (RentList *)getIncomingEntries:(NSString *)searchText {
 	RentList *list = [[RentList alloc] init];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
@@ -497,6 +568,71 @@
 //	NSLog(@"finish getting entries...");
 	return list;
 }
+
++ (RentEntry *)getOutgoingEntry:(NSString *)entryId {
+	sqlite3 *db = [Database getConnection];
+	sqlite3_stmt *statement = nil;
+	RentEntry *entry = [RentEntry alloc];
+	
+	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentOutgoing NATURAL LEFT JOIN outgoingText where id=?;";
+	
+	const char* sql = [sqlString cString]; 
+	
+	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
+		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
+		NSLog(@"%s",sql);
+	}
+	else {
+		sqlite3_bind_text(statement, 1, [entryId UTF8String], -1, SQLITE_TRANSIENT);
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			
+			entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			entry.type = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
+			NSString *dateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 5)];
+			NSString *returnDateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 6)];
+			NSString *pushAlarmString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 11)];
+			
+			const char *description = (const char *) sqlite3_column_text(statement,2);
+			const char *description2 = (const char *)sqlite3_column_text(statement,3);
+			const char *person = (const char *)sqlite3_column_text(statement,4);
+			const char *firstLine = (const char *)sqlite3_column_text(statement,7);
+			const char *secondLine = (const char *)sqlite3_column_text(statement,8);
+			const char *personName = (const char *)sqlite3_column_text(statement,9);
+			
+			if (description != NULL) {
+				entry.description = [NSString stringWithUTF8String:description];
+			}
+			if (description2 != NULL) {
+				entry.description2 = [NSString stringWithUTF8String:description2];
+			}
+			if (person != NULL) {
+				entry.person = [NSString stringWithUTF8String:person];
+			}
+			if (firstLine != NULL) {
+				entry.firstLine = [NSString stringWithUTF8String:firstLine];
+			}
+			if (secondLine != NULL) {
+				entry.secondLine = [NSString stringWithUTF8String:secondLine];
+			}
+			if (personName != NULL) {
+				entry.personName = [NSString stringWithUTF8String:personName];
+			}
+			
+			NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+			[dateFormat setDateFormat:@"yyyy-MM-dd"];
+			entry.date = [dateFormat dateFromString:dateString];  
+			entry.returnDate = [dateFormat dateFromString:returnDateString];
+			[dateFormat setDateFormat:@"yyyy-MM-dd HH:mm"];
+			[dateFormat setTimeZone:[NSTimeZone systemTimeZone]];
+			entry.pushAlarm = [dateFormat dateFromString:pushAlarmString];
+			[dateFormat release];
+		}
+	}
+	sqlite3_finalize(statement);
+	
+	return entry;
+}
+
 
 + (RentList *)getOutgoingEntries:(NSString *)searchText {
 //	NSLog(@"start getting outgoing entries...");

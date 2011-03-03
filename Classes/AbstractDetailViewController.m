@@ -385,8 +385,6 @@
 	ContactEntry *contactEntry = [Database getContactInfo:personTxt.text atIndex:indexPath.row];
 	
 	cell.textLabel.text = contactEntry.name;
-    
-    // Set up the cell...
 	
     return cell;
 }

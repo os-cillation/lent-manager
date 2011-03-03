@@ -27,7 +27,6 @@
 }
 
 - (void)reload {
-
 	NSLog(@"reload call incoming");
 	allEntries = [Database getIncomingEntries:nil];
 	if ([searchBar.text length] == 0) {
@@ -68,8 +67,8 @@
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
 	}
-	else if (self.tableView.editing){
-		[self stopEdit];
+	else {
+		[editButton setEnabled:NO];
 	}
 	[self.tableView reloadData];
 }

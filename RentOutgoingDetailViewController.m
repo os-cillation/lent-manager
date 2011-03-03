@@ -53,20 +53,22 @@
 		}
 		
 		if (pushAlarmDate) {
-			NSString *message;
-			if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
-				message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
+			if ([pushAlarmDate compare:[NSDate date]] == NSOrderedDescending) {
+				NSString *message;
+				if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
+					message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
+				}
+				else if (([descriptionTxt.text length] > 0)) {
+					message = descriptionTxt.text;
+				}
+				else {
+					message = description2Txt.text;
+				}
+				UILocalNotification *notification = (UILocalNotification *)[RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate forEntry:entryId];
+				
+				data = [NSKeyedArchiver archivedDataWithRootObject:notification];
+				[list setObject:data forKey:entryId];
 			}
-			else if (([descriptionTxt.text length] > 0)) {
-				message = descriptionTxt.text;
-			}
-			else {
-				message = description2Txt.text;
-			}
-			UILocalNotification *notification = (UILocalNotification *)[RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate];
-			
-			data = [NSKeyedArchiver archivedDataWithRootObject:notification];
-			[list setObject:data forKey:entryId];
 		}
 		if ([list count] == 0) {
 			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListOutgoing"];

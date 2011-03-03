@@ -69,8 +69,8 @@
 	if ([list getSectionCount] > 0) {
 		[editButton setEnabled:YES];
 	}
-	else if (self.tableView.editing){
-		[self stopEdit];
+	else {
+		[editButton setEnabled:NO];
 	}
 	[self.tableView reloadData];
 }

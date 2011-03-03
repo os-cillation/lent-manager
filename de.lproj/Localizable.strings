@@ -33,8 +33,10 @@
 "Book" = "Buch";
 "CD" = "CD";
 "DVD" = "DVD";
-"Other" = "Andere";
+"Other" = "Sonstiges";
 "Money" = "Geld";
+"Tool" = "Werkzeug";
+"Ballpen" = "Kugelschreiber";
 "Clear" = "Löschen";
 "Entry" = "Eintrag";
 "Entries" = "Einträge";
@@ -43,11 +45,13 @@
 "at" = "am";
 "until" = "bis";
 
+"Info" = "Info";
+"Close" = "Schließen";
 "PushNotification" = "Push Benachrichtigung";
-"Show" = "App öffnen";
+"Show" = "Anzeigen";
 "PushMessage" = "'%@' ist jetzt fällig";
 
-"otherProducts" = "Weitere Produkte:";
+"otherProducts" = "Weitere Apps:";
 "aboutText" = 
 "os-cillation e.K.  
 GF: Oliver Schweissgut

@@ -9,7 +9,9 @@
 #import "RentManagerAppDelegate.h"
 #import "Database.h"
 #import "RentOutgoingViewController.h"
+#import "RentOutgoingDetailViewController.h"
 #import "RentIncomingViewController.h"
+#import "RentIncomingDetailViewController.h"
 #import "CategoryTableViewController.h"
 #import "AboutViewController.h"
 
@@ -73,16 +75,50 @@
 	[viewControllers addObject:navController3];
 	[viewControllers addObject:navController4];
 	[tabBarController setViewControllers:viewControllers];
-//	tabBarController.delegate = self;
+
     // Add the tab bar controller's current view as a subview of the window
     [window addSubview:tabBarController.view];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	[self applicationDidFinishLaunching:application];
-	NSArray *array = [launchOptions allValues];
-	for (int i = 0; i < [array count]; i++) {
-		//NSLog(@"%@", [array objectAtIndex:i]);
+	if ([launchOptions count] == 0) {
+		return YES;
+	}
+	UILocalNotification *notification =
+	[launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+	if (notification) {
+		int newTabIndex = [[notification.userInfo valueForKey:@"TabIndex"] intValue];
+		NSString *entryId = [notification.userInfo valueForKey:@"CurrentEntry"];
+		[tabBarController setSelectedIndex:newTabIndex];
+		if (newTabIndex == 0) {
+			RentEntry *entry = [Database getOutgoingEntry:entryId];
+			if ([entry.entryId intValue] > 0) {
+				RentOutgoingDetailViewController *controller = [[RentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+				
+				controller.delegate = outgoingController;
+				controller.entry = entry;
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+				controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+				[outgoingController presentModalViewController:navController animated:YES];
+				
+				[controller release];
+			}
+		}
+		else if (newTabIndex == 1) {
+			RentEntry *entry = [Database getIncomingEntry:entryId];
+			if ([entry.entryId intValue] > 0) {
+				RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+				
+				controller.delegate = incomingController;
+				controller.entry = entry;
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+				controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+				[incomingController presentModalViewController:navController animated:YES];
+				
+				[controller release];
+			}
+		}
 	}
 	return YES;
 }
@@ -98,12 +134,26 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
+	sleeping = TRUE;
 	int count = [Database getEntryCount];
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+	sleeping = FALSE;
+}
 
-+ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date {
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+	if (!sleeping) {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info",@"") message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Close",@"") otherButtonTitles:nil];
+		[alertView show];
+		[alertView release];
+	}
+}
+
+
++ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId {
 	Class myClass = NSClassFromString(@"UILocalNotification");
 	if (myClass) {
 		UILocalNotification *notification = [[myClass alloc] init];
@@ -113,9 +163,12 @@
 		notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"PushMessage",@""), message];
 		notification.soundName = UILocalNotificationDefaultSoundName; 
 		
-		NSString *tabIndex = [NSString stringWithFormat:@"%i", [[[RentManagerAppDelegate getAppDelegate] tabBarController] selectedIndex]];
+		NSString *tabIndex = [[NSString alloc ] initWithFormat:@"%i", [[[RentManagerAppDelegate getAppDelegate] tabBarController] selectedIndex]];
 		
-		NSDictionary *infoDict = [NSDictionary dictionaryWithObject:tabIndex forKey:@"tabIndex"]; 
+		NSMutableDictionary *infoDict = [[NSMutableDictionary alloc] init];
+		[infoDict setValue:tabIndex forKey:@"TabIndex"];
+		[infoDict setValue:entryId forKey:@"CurrentEntry"];
+		
 		notification.userInfo = infoDict; 
 		
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];

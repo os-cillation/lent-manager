@@ -18,6 +18,7 @@
 	RentIncomingViewController *incomingController;
 	RentOutgoingViewController *outgoingController;
 	CategoryTableViewController *categoryController;
+	BOOL sleeping;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -26,6 +27,6 @@
 + (RentManagerAppDelegate *)getAppDelegate;
 + (BOOL)deviceSupportsPush;
 
-+ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date;
++ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId;
 
 @end

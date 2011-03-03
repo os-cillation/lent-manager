@@ -23,6 +23,7 @@
 
 - (IBAction)handlePushNotificationsChanged {
 	if (switchPush.on) {
+		self.datePicker.minimumDate = [NSDate date];
 		if ([self.datePicker.date compare:[NSDate date]] == NSOrderedAscending) {
 			[self.datePicker setDate:[NSDate date] animated:NO];
 		}
@@ -30,6 +31,7 @@
 	}
 	else {
 		datePicker.datePickerMode = UIDatePickerModeDate;
+		self.datePicker.minimumDate = minDate;
 	}
 }
 
@@ -48,7 +50,7 @@
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	
 	if (!minDate) {
-		minDate = [NSDate date];
+		minDate = [[NSDate date] retain];
 	}
 	
 	self.datePicker.minimumDate = minDate;
@@ -74,22 +76,7 @@
 			datePicker.datePickerMode = UIDatePickerModeDateAndTime;
 		}
 	}
-	
-
 }
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
 	[date release];

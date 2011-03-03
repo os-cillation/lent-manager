@@ -35,6 +35,8 @@
 "DVD" = "DVD";
 "Other" = "Other";
 "Money" = "Money";
+"Tool" = "Tool";
+"Ballpen" = "Ballpen";
 "Clear" = "Clear";
 "Entry" = "Entry";
 "Entries" = "Entries";
@@ -43,11 +45,13 @@
 "at" = "at";
 "until" = "until";
 
+"Info" = "Info";
+"Close" = "Close";
 "PushNotification" = "Push notification";
-"Show" = "Open App";
+"Show" = "Show";
 "PushMessage" = "'%@' is now due";
 
-"otherProducts" = "Other products:";
+"otherProducts" = "Other Apps:";
 "aboutText" = 
 "os-cillation e.K.  
 CEO: Oliver Schweissgut

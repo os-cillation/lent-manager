@@ -26,7 +26,9 @@ sqlite3 *connection;
 + (NSString *)addIncomingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate withPushAlarm:(NSDate *)pushAlarm;
 + (void)deleteIncomingEntry:(NSString *)entryId;
 + (void)deleteOutgoingEntry:(NSString *)entryId;
++ (RentEntry *)getIncomingEntry:(NSString *)entryId;
 + (RentList *)getIncomingEntries:(NSString *)searchText;
++ (RentEntry *)getOutgoingEntry:(NSString *)entryId;
 + (RentList *)getOutgoingEntries:(NSString *)searchText;
 
 + (void)prepareContactInfo;

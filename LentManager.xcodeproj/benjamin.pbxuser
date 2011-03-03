@@ -10,9 +10,9 @@
 	};
 	1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1167, 2678}}";
-			sepNavSelRange = "{3581, 0}";
-			sepNavVisRange = "{2490, 2397}";
+			sepNavIntBoundsRect = "{{0, 0}, {966, 2639}}";
+			sepNavSelRange = "{740, 0}";
+			sepNavVisRange = "{1339, 1803}";
 			sepNavWindowFrame = "{{50, 1}, {1137, 777}}";
 		};
 	};
@@ -125,7 +125,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFindDataSource_LocationID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					200,
-					851,
+					802,
 				);
 				PBXFileTableDataSourceColumnsKey = (
 					PBXFindDataSource_MessageID,
@@ -174,6 +174,9 @@
 			PBXWorkspaceStateSaveDate = 320856448;
 		};
 		perUserProjectItems = {
+			435230F0131FEA3500E1BB38 /* PBXTextBookmark */ = 435230F0131FEA3500E1BB38 /* PBXTextBookmark */;
+			435230F1131FEA3500E1BB38 /* PBXTextBookmark */ = 435230F1131FEA3500E1BB38 /* PBXTextBookmark */;
+			43523102131FEAE700E1BB38 /* PBXTextBookmark */ = 43523102131FEAE700E1BB38 /* PBXTextBookmark */;
 			43B58558131F9DAA00153468 = 43B58558131F9DAA00153468 /* PBXBookmark */;
 			43B5859C131FDAD400153468 = 43B5859C131FDAD400153468 /* PBXTextBookmark */;
 			43B5859D131FDAD400153468 = 43B5859D131FDAD400153468 /* PBXTextBookmark */;
@@ -267,6 +270,36 @@
 			sepNavWindowFrame = "{{19, 21}, {1093, 752}}";
 		};
 	};
+	435230F0131FEA3500E1BB38 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */;
+		name = "RentManagerAppDelegate.m: 86";
+		rLen = 0;
+		rLoc = 3240;
+		rType = 0;
+		vrLen = 1158;
+		vrLoc = 3099;
+	};
+	435230F1131FEA3500E1BB38 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */;
+		name = "RentManagerAppDelegate.m: 29";
+		rLen = 0;
+		rLoc = 740;
+		rType = 0;
+		vrLen = 1802;
+		vrLoc = 1102;
+	};
+	43523102131FEAE700E1BB38 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */;
+		name = "RentManagerAppDelegate.m: 29";
+		rLen = 0;
+		rLoc = 740;
+		rType = 0;
+		vrLen = 1803;
+		vrLoc = 1339;
+	};
 	4378EA621150F72A002AA27D /* LentManager */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -355,9 +388,9 @@
 	};
 	4378EA841150F807002AA27D /* Database.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1657, 15483}}";
-			sepNavSelRange = "{1932, 0}";
-			sepNavVisRange = "{1277, 3267}";
+			sepNavIntBoundsRect = "{{0, 0}, {1657, 15457}}";
+			sepNavSelRange = "{4080, 0}";
+			sepNavVisRange = "{1757, 2357}";
 			sepNavWindowFrame = "{{50, 1}, {1137, 777}}";
 		};
 	};
@@ -435,9 +468,9 @@
 	};
 	4378EACD1150FB45002AA27D /* RentIncomingViewController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1215, 1937}}";
-			sepNavSelRange = "{4284, 37}";
-			sepNavVisRange = "{3547, 1000}";
+			sepNavIntBoundsRect = "{{0, 0}, {1083, 1807}}";
+			sepNavSelRange = "{4287, 9}";
+			sepNavVisRange = "{3811, 742}";
 			sepNavWindowFrame = "{{19, 0}, {1230, 778}}";
 		};
 	};
@@ -569,7 +602,7 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {966, 858}}";
 			sepNavSelRange = "{929, 39}";
-			sepNavVisRange = "{1007, 418}";
+			sepNavVisRange = "{988, 437}";
 			sepNavWindowFrame = "{{4, 12}, {628, 766}}";
 		};
 	};
@@ -641,8 +674,8 @@
 	43C2B80913150B710029F12F /* AbstractDetailViewController.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1538, 884}}";
-			sepNavSelRange = "{1578, 0}";
-			sepNavVisRange = "{1237, 619}";
+			sepNavSelRange = "{1424, 0}";
+			sepNavVisRange = "{1203, 677}";
 			sepNavWindowFrame = "{{50, 18}, {1112, 760}}";
 		};
 	};
@@ -688,7 +721,7 @@
 	};
 	8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {
 		uiCtxt = {
-			sepNavWindowFrame = "{{19, 54}, {1024, 719}}";
+			sepNavWindowFrame = "{{50, 220}, {750, 558}}";
 		};
 	};
 }

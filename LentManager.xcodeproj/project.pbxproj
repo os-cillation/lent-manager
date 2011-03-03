@@ -39,7 +39,6 @@
 		4378EB0111510194002AA27D /* RentIncomingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */; };
 		4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */; };
 		4378EBBD115112CA002AA27D /* ReturnDateSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */; };
-		43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 43A7FF7E11ABBB050096D8F7 /* InitialDefaults.plist */; };
 		43AD68461313D6CB00871B47 /* group-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43AD68431313D6CB00871B47 /* group-icon.png */; };
 		43AD68471313D6CB00871B47 /* groupmessage-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43AD68441313D6CB00871B47 /* groupmessage-icon.png */; };
 		43AD68481313D6CB00871B47 /* groupplus-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43AD68451313D6CB00871B47 /* groupplus-icon.png */; };
@@ -109,7 +108,6 @@
 		4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReturnDateSelectViewController.h; sourceTree = SOURCE_ROOT; };
 		4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReturnDateSelectViewController.m; sourceTree = SOURCE_ROOT; };
 		4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReturnDateSelectViewController.xib; sourceTree = "<group>"; };
-		43A7FF7E11ABBB050096D8F7 /* InitialDefaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InitialDefaults.plist; sourceTree = "<group>"; };
 		43AD68431313D6CB00871B47 /* group-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "group-icon.png"; sourceTree = "<group>"; };
 		43AD68441313D6CB00871B47 /* groupmessage-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupmessage-icon.png"; sourceTree = "<group>"; };
 		43AD68451313D6CB00871B47 /* groupplus-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "groupplus-icon.png"; sourceTree = "<group>"; };
@@ -241,7 +239,6 @@
 				433CE71F1152578300D6B3D3 /* data.sqlite */,
 				4378EA8E1150F815002AA27D /* os.png */,
 				8D1107310486CEB800E47090 /* LentManager-Info.plist */,
-				43A7FF7E11ABBB050096D8F7 /* InitialDefaults.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -356,7 +353,6 @@
 				43BF8342116B601300167833 /* outgoing2.png in Resources */,
 				432C96291187134D00BDC5C8 /* Default.png in Resources */,
 				43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */,
-				43A7FF7F11ABBB050096D8F7 /* InitialDefaults.plist in Resources */,
 				43AD68461313D6CB00871B47 /* group-icon.png in Resources */,
 				43AD68471313D6CB00871B47 /* groupmessage-icon.png in Resources */,
 				43AD68481313D6CB00871B47 /* groupplus-icon.png in Resources */,

@@ -27,15 +27,6 @@
 
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
-	NSString *      initialDefaultsPath;
-	NSDictionary *  initialDefaults;
-    
-	initialDefaultsPath = [[NSBundle mainBundle] pathForResource:@"InitialDefaults" ofType:@"plist"];
-	
-	initialDefaults = [NSDictionary dictionaryWithContentsOfFile:initialDefaultsPath];
-	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:initialDefaults];
-	
 	[Database createEditableCopyOfDatabaseIfNeeded];   
 	outgoingController = [[RentOutgoingViewController alloc] initWithNibName:@"AbstractTableViewController" bundle:nil];
 	outgoingController.title = NSLocalizedString(@"LentToTitle", @"");

@@ -33,6 +33,7 @@
 	if (!success) {
 		// NSAssert1(0, @"Failed to create writeable database file with message'%@'.", [error localizedDescription]);
 	}
+	[fileManager release];
 }
 
 + (sqlite3 *) getNewDBConnection {
@@ -74,7 +75,6 @@
 	
 	connection = db;
 	
-	//[NSThread detachNewThreadSelector:@selector(prepareContactInfo) toTarget:self withObject:nil];
 	[Database prepareContactInfo];
 	
 	return db;
@@ -84,8 +84,6 @@
 	if (connection == nil || connection == NULL) {
 		//NSLog(@"create a new database instance...");
 		[Database getNewDBConnection];
-		//
-		//[Database prepareContactInfo];
 	}
 	return connection;
 }
@@ -131,7 +129,7 @@
 		NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
 		NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);		
 
-		NSString *fullName = [NSString alloc];
+		NSString *fullName;
 		if ((firstName == NULL) && (lastName == NULL)) {
 			fullName = (NSString *)ABRecordCopyValue(person, kABPersonOrganizationProperty);
 		}
@@ -146,9 +144,12 @@
 		else {
 			fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
+		if ([fullName length] == 0) {
+			continue;
+		}
 		
 		statement = nil;
-		NSString *sqlString = [NSString stringWithFormat:@"insert into contactInfo(id, name) Values('%@', ?);", personId];
+		NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO contactInfo(id, name) Values('%@', ?);", personId];
 		sql = [sqlString cString];
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -169,14 +170,14 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sqlString = [NSString alloc];
+	NSString *sqlString;
 	
 	if (filter == nil || [filter length] == 0) {
 		
-		sqlString = [[NSString alloc] initWithFormat:@"SELECT * from contactInfo ORDER BY name LIMIT %i,1;", index];
+		sqlString = [NSString stringWithFormat:@"SELECT id, name FROM contactInfo ORDER BY name LIMIT %i,1;", index];
 	}
 	else {
-		sqlString = @"SELECT * from contactInfo where name LIKE ? order by name LIMIT";
+		sqlString = @"SELECT id, name FROM contactInfo WHERE name LIKE ? order by name LIMIT";
 		sqlString = [sqlString stringByAppendingFormat:@" %i,1;", index];
 	}
 	
@@ -188,7 +189,7 @@
 		NSLog(@"sql:  %s",sql);
 	}
 	else {
-		filter = [[NSString alloc] initWithFormat:@"%%%@%%", filter];
+		filter = [NSString stringWithFormat:@"%%%@%%", filter];
 		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			ContactEntry *entry = [ContactEntry alloc];
@@ -214,11 +215,11 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sqlString = [NSString alloc];
+	NSString *sqlString;
 	
 	if (filter == nil || [filter length] == 0) {
 		
-		sqlString = [[NSString alloc] initWithFormat:@"SELECT count(*) from contactInfo"];
+		sqlString = [NSString stringWithFormat:@"SELECT count(*) from contactInfo"];
 	}
 	else {
 		sqlString = @"SELECT count(*) from contactInfo where name LIKE ?;";
@@ -231,7 +232,7 @@
 		NSLog(@"%s",sql);
 	}
 	else {
-		filter = [[NSString alloc] initWithFormat:@"%%%@%%", filter];
+		filter = [NSString stringWithFormat:@"%%%@%%", filter];
 		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			NSString *countString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
@@ -247,7 +248,7 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sql = [NSString stringWithFormat:@"SELECT * FROM categories WHERE id = %i", index];
+	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE id = %i", index];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 		NSLog(@"%s",sql);
@@ -287,7 +288,7 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sql = [NSString stringWithFormat:@"SELECT * FROM categories WHERE 1"];
+	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE 1"];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 		NSLog(@"%s",sql);
@@ -295,7 +296,7 @@
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			Category *category = [[Category alloc] init];
-			category.idx = [[NSString alloc] initWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			category.idx = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 			const char *categoryName = (const char *) sqlite3_column_text(statement,1);
 			
 			if (categoryName != NULL) {
@@ -320,14 +321,14 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-		NSString *sql = [NSString stringWithFormat:@"SELECT * FROM categories WHERE id = %@ ORDER BY name ASC", idx];
+		NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE id = %@ ORDER BY name ASC", idx];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 		NSLog(@"%s",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			category.idx = [[NSString alloc] initWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			category.idx = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 			const char *categoryName = (const char *) sqlite3_column_text(statement,1);
 			
 			if (categoryName != NULL) {
@@ -346,7 +347,7 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sql = [NSString stringWithFormat:@"SELECT * FROM categories WHERE predefined = 0 ORDER BY name ASC"];
+	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE predefined = 0 ORDER BY name ASC"];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 		NSLog(@"%s",sql);
@@ -354,7 +355,7 @@
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			Category *category = [[Category alloc] init];
-			category.idx = [[NSString alloc] initWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			category.idx = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 			
 			const char *categoryName = (const char *) sqlite3_column_text(statement,1);
 			
@@ -494,8 +495,8 @@
 	for (int i = 0; i < [categories count]; i++) {
 		int idx = [[[categories objectAtIndex:i] idx] intValue];
 		NSMutableArray *listEntry = [[NSMutableArray alloc] init];
-		NSString *sqlString = [NSString alloc];
-		NSString *filter = [NSString alloc];
+		NSString *sqlString;
+		NSString *filter;
 	
 		if (searchText == nil || [searchText length] == 0) {
 			
@@ -517,7 +518,7 @@
 			NSLog(@"%s",sql);
 		}
 		else {
-			filter = [[NSString alloc] initWithFormat:@"%%%@%%", searchText];
+			filter = [NSString stringWithFormat:@"%%%@%%", searchText];
 			sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -658,8 +659,8 @@
 		int idx = [[[categories objectAtIndex:i] idx] intValue];
 		statement = nil;
 		NSMutableArray *listEntry = [[NSMutableArray alloc] init];
-		NSString *sqlString = [NSString alloc];
-		NSString *filter = [NSString alloc];
+		NSString *sqlString;
+		NSString *filter;
 		
 		if (searchText == nil || [searchText length] == 0) {
 			
@@ -683,7 +684,7 @@
 			NSLog(@"%s",sql);
 		}
 		else {
-			filter = [[NSString alloc] initWithFormat:@"%%%@%%", searchText];
+			filter = [NSString stringWithFormat:@"%%%@%%", searchText];
 			sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -798,10 +799,12 @@
 	
 	sqlite3_reset(addStmt);
 	
-	dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:date];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	dateString = [formatter stringForObjectValue:date];
+	[formatter release];
 	
 	[dateFormat release];
 	
@@ -810,14 +813,14 @@
 	
 	if ([description1 length] == 0 || [description2 length] == 0) {
 		if ([description1 length] == 0 ) {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description2];
+			firstLine = [NSString stringWithFormat:@"%@", description2];
 		}
 		else {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description1];
+			firstLine = [NSString stringWithFormat:@"%@", description1];
 		}
 	}
 	else {
-		firstLine = [[NSString alloc] initWithFormat:@"%@ - %@", description1, description2];
+		firstLine = [NSString stringWithFormat:@"%@ - %@", description1, description2];
 	}
 	
 	ABAddressBookRef ab = ABAddressBookCreate();
@@ -840,23 +843,23 @@
 			}
 		}
 		else {
-			personName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
+			personName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
-		fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
+		fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
 	}
 	else {
 		if ([person length] > 0) {
 			personName = person;
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
+			fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
 		}
 	}
 	
 	if (date != nil) {
 		if ([fullName length] > 0) {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), dateString, fullName];
+			secondLine = [NSString stringWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), dateString, fullName];
 		}
 		else {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), dateString];
+			secondLine = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), dateString];
 		}
 	}
 	else {
@@ -945,11 +948,12 @@
 			entryId = [[NSString alloc] initWithFormat:@"%i", sqlite3_last_insert_rowid(db)];
 	}
 	
-	
-	dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:returnDate];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	dateString = [formatter stringForObjectValue:returnDate];
+	[formatter release];
 	
 	[dateFormat release];
 	
@@ -958,14 +962,14 @@
 	
 	if ([description1 length] == 0 || [description2 length] == 0) {
 		if ([description1 length] == 0 ) {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description2];
+			firstLine = [NSString stringWithFormat:@"%@", description2];
 		}
 		else {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description1];
+			firstLine = [NSString stringWithFormat:@"%@", description1];
 		}
 	}
 	else {
-		firstLine = [[NSString alloc] initWithFormat:@"%@ - %@", description1, description2];
+		firstLine = [NSString stringWithFormat:@"%@ - %@", description1, description2];
 	}
 	
 	ABAddressBookRef ab = ABAddressBookCreate();
@@ -988,23 +992,23 @@
 			}
 		}
 		else {
-			personName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
+			personName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
-		fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
+		fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
 	}
 	else {
 		if ([person length] > 0) {
 			personName = person;
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
+			fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
 		}
 	}
 	
 	if (returnDate != nil) {
 		if ([fullName length] > 0) {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@, %@", NSLocalizedString(@"until", @""), dateString, fullName];
+			secondLine = [NSString stringWithFormat:@"%@ %@, %@", NSLocalizedString(@"until", @""), dateString, fullName];
 		}
 		else {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"until", @""), dateString];
+			secondLine = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"until", @""), dateString];
 		}
 	}
 	else {
@@ -1115,9 +1119,9 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sqlString = [NSString alloc];
+	NSString *sqlString;
 	
-	sqlString = [[NSString alloc] initWithFormat:@"SELECT returnDate from rentIncoming WHERE returnDate <= date();"];
+	sqlString = [NSString stringWithFormat:@"SELECT returnDate from rentIncoming WHERE returnDate <= date();"];
 	const char *sql = [sqlString cString]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -1142,9 +1146,9 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sqlString = [NSString alloc];
+	NSString *sqlString;
 	
-	sqlString = [[NSString alloc] initWithFormat:@"SELECT returnDate from rentOutgoing WHERE returnDate <= date();"];
+	sqlString = [NSString stringWithFormat:@"SELECT returnDate from rentOutgoing WHERE returnDate <= date();"];
 	
 	const char *sql = [sqlString cString]; 
 	

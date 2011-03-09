@@ -19,12 +19,12 @@
 	if (date == nil) {
 		return @"";
 	}
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:date];
-	[dateFormat release];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *dateString = [formatter stringForObjectValue:date];
+	[formatter release];
 	return dateString;
 }
 
@@ -32,12 +32,12 @@
 	if (returnDate == nil) {
 		return @"";
 	}
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
-	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:returnDate];
-	[dateFormat release];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *dateString = [formatter stringForObjectValue:returnDate];
+	[formatter release];
 	return dateString;
 }
 

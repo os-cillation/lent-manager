@@ -115,13 +115,15 @@
 - (void)dateSelectViewControllerDidFinish:(DateSelectViewController *)controller {
 	date = [controller.datePicker date];
 	
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *dateString = [formatter stringForObjectValue:date];
+	[formatter release];
 	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:date];
 	dateTxt.text = dateString;
-	[dateFormat release];
+
 	
 	[self dismissModalViewControllerAnimated:YES];
 	[self resignKeyboard];	
@@ -138,15 +140,17 @@
 	else {
 		pushAlarmDate = nil;
 	}
+
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
+	[formatter setDateStyle:NSDateFormatterShortStyle];
+	[formatter setTimeStyle:NSDateFormatterNoStyle];
+	NSString *dateString = [formatter stringForObjectValue:returnDate];
+	[formatter release];
 	
-	NSString *dateString = [NSString alloc];
-	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init]; 
 	
-	[dateFormat setDateFormat:@"dd.MM.yyyy"];
-	dateString = [dateFormat stringFromDate:returnDate];
 	
 	returnDateTxt.text = dateString;
-	[dateFormat release];
 	
 	[self dismissModalViewControllerAnimated:YES];
 	[self resignKeyboard];

@@ -139,7 +139,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath { 
 	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	
-    NSDate *currentDate = [[NSDate alloc] init];
+    NSDate *currentDate = [NSDate date];
 	
 	NSComparisonResult result = [currentDate compare:entry.returnDate];
 	
@@ -156,9 +156,8 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	NSString *title = [NSString alloc];
 	RentEntry *entry = [list getSectionData:section atRow:0];
-	title = [[NSString alloc] initWithFormat:@"%@", [Database getDescriptionByIndex:[entry.type intValue]]];
+	NSString *title = [NSString stringWithFormat:@"%@", [Database getDescriptionByIndex:[entry.type intValue]]];
 	
     return title;
 }

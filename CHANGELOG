@@ -1,3 +1,12 @@
+2011-03-09	Benjamin Mies	<bmi@os-cillation.de>
+	* LentManager.xcodeproj/benjamin.mode1v3,
+	  LentManager.xcodeproj/benjamin.pbxuser,
+	  Classes/RentManagerAppDelegate.m,
+	  Classes/RentIncomingDetailViewController.m,
+	  Database.m,
+	  RentOutgoingDetailViewController.m:
+	  - Kleinere Fixes.
+
 2011-03-03	Benjamin Mies	<bmi@os-cillation.de>
 	* LentManager.xcodeproj/benjamin.mode1v3,
 	  LentManager.xcodeproj/project.pbxproj,

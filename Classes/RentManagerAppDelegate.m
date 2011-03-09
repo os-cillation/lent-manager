@@ -131,7 +131,11 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
+	if (sleeping) {
+		[Database prepareContactInfo];
+	}
 	sleeping = FALSE;
+	
 }
 
 

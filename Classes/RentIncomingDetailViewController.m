@@ -98,8 +98,8 @@
 	lentToLabel.text = NSLocalizedString(@"LentFromPerson", @"");
 	lentFromLabel.text = NSLocalizedString(@"LentFromAt", @"");
 	lentUntilLabel.text = NSLocalizedString(@"LentFromUntil", @"");
-	deleteDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
-	deleteReturnDateButton.titleLabel.text = NSLocalizedString(@"Clear", @"");
+	[Util button:deleteDateButton setTitle:NSLocalizedString(@"Clear", @"")];
+	[Util button:deleteReturnDateButton setTitle:NSLocalizedString(@"Clear", @"")];
 	
 	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:[[currentCategory idx] intValue]]]];
 }

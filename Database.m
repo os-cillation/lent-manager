@@ -47,6 +47,10 @@
 	else {
 		//NSLog(@"Error while openening database...");
 	}
+	
+	
+	
+	
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:@"DatabaseUpdated_1.0.0"]) {
 		[[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"DatabaseUpdated_1.0.0"];
 		sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS rentIncoming(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT, description1 TEXT, description2 TEXT, person TEXT, date DATE, returnDate Date, pushAlarm DateTime);", NULL, NULL, NULL);
@@ -67,7 +71,12 @@
 		sqlString = [NSString stringWithFormat:@"INSERT INTO categories(name, preDefined) VALUES ('%@', 0);", NSLocalizedString(@"Tool",@"")];
 		sqlite3_exec(db,[sqlString cStringUsingEncoding:NSISOLatin1StringEncoding] , NULL, NULL, NULL);
 	}
+	
 	connection = db;
+	
+	//[NSThread detachNewThreadSelector:@selector(prepareContactInfo) toTarget:self withObject:nil];
+	[Database prepareContactInfo];
+	
 	return db;
 }
 
@@ -75,7 +84,8 @@
 	if (connection == nil || connection == NULL) {
 		//NSLog(@"create a new database instance...");
 		[Database getNewDBConnection];
-		[NSThread detachNewThreadSelector:@selector(prepareContactInfo) toTarget:self withObject:nil];
+		//
+		//[Database prepareContactInfo];
 	}
 	return connection;
 }
@@ -83,6 +93,7 @@
 + (void)prepareContactInfo{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	sqlite3 *db = connection;
+	sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
 	sqlite3_stmt *statement = nil;
 	const char* sql;
 	
@@ -133,11 +144,11 @@
 			}
 		}
 		else {
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
+			fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
 		
 		statement = nil;
-		NSString *sqlString = [[NSString alloc] initWithFormat:@"insert into contactInfo(id, name) Values('%@', ?);", personId];
+		NSString *sqlString = [NSString stringWithFormat:@"insert into contactInfo(id, name) Values('%@', ?);", personId];
 		sql = [sqlString cString];
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -149,6 +160,7 @@
 		sqlite3_step(statement);
 		sqlite3_finalize(statement);
 	}
+	sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
 	
 	[pool release];
 }
@@ -1103,10 +1115,9 @@
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
-	NSString *sqlString = [NSString alloc];	
+	NSString *sqlString = [NSString alloc];
 	
-	sqlString = [[NSString alloc] initWithFormat:@"SELECT count(*) from rentIncoming"];
-	
+	sqlString = [[NSString alloc] initWithFormat:@"SELECT returnDate from rentIncoming WHERE returnDate <= date();"];
 	const char *sql = [sqlString cString]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -1114,9 +1125,12 @@
 		NSLog(@"%s",sql);
 	}
 	else {
+		NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+		[dateFormat setDateFormat:@"yyyy-MM-dd"];
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			NSString *countString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
-			count += [countString intValue];
+			if ([dateFormat dateFromString:[NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)]]) {
+				count++;
+			}
 		}
 	}
 	sqlite3_finalize(statement);
@@ -1130,19 +1144,22 @@
 	
 	NSString *sqlString = [NSString alloc];
 	
-	
-	sqlString = [[NSString alloc] initWithFormat:@"SELECT count(*) from rentOutgoing"];
+	sqlString = [[NSString alloc] initWithFormat:@"SELECT returnDate from rentOutgoing WHERE returnDate <= date();"];
 	
 	const char *sql = [sqlString cString]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
 		NSLog(@"%s",sql);
+		NSLog(@"%s",sqlite3_errmsg(db));
 	}
 	else {
+		NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+		[dateFormat setDateFormat:@"yyyy-MM-dd"];
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			NSString *countString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
-			count += [countString intValue];
+			if ([dateFormat dateFromString:[NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)]]) {
+				count++;
+			}
 		}
 	}
 	sqlite3_finalize(statement);

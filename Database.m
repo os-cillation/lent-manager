@@ -7,7 +7,7 @@
 //
 
 #import "Database.h"
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import "Category.h"
 #import <AddressBook/AddressBook.h>
 
@@ -150,7 +150,7 @@
 		
 		statement = nil;
 		NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO contactInfo(id, name) Values('%@', ?);", personId];
-		sql = [sqlString cString];
+		sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding];
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -182,7 +182,7 @@
 	}
 	
 	
-	const char* sql = [sqlString cString]; 
+	const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -225,7 +225,7 @@
 		sqlString = @"SELECT count(*) from contactInfo where name LIKE ?;";
 	}
 	
-	const char* sql = [sqlString cString]; 
+	const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -251,7 +251,7 @@
 	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE id = %i", index];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
+		NSLog(@"%@",sql);
 	}
 	else {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -272,7 +272,7 @@
 	NSString *sql = [NSString stringWithFormat:@"SELECT count(1) FROM categories WHERE 1"];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
+		NSLog(@"%@",sql);
 	}
 	else {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -291,7 +291,7 @@
 	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE 1"];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
+		NSLog(@"%@",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -324,7 +324,7 @@
 		NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE id = %@ ORDER BY name ASC", idx];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
+		NSLog(@"%@",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -350,7 +350,7 @@
 	NSString *sql = [NSString stringWithFormat:@"SELECT id, name, preDefined FROM categories WHERE predefined = 0 ORDER BY name ASC"];
 	if (sqlite3_prepare_v2(db, [sql cStringUsingEncoding:NSISOLatin1StringEncoding], -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
+		NSLog(@"%@",sql);
 	}
 	else {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -421,14 +421,14 @@
 	sqlite3_exec(db, [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding], NULL, NULL, NULL);
 }
 
-+ (RentEntry *)getIncomingEntry:(NSString *)entryId {
++ (LentEntry *)getIncomingEntry:(NSString *)entryId {
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
-	RentEntry *entry = [RentEntry alloc];
+	LentEntry *entry = [LentEntry alloc];
 	
 	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentIncoming NATURAL LEFT JOIN incomingText where id=?;";
 		
-	const char* sql = [sqlString cString]; 
+	const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -485,8 +485,8 @@
 	return entry;
 }
 
-+ (RentList *)getIncomingEntries:(NSString *)searchText {
-	RentList *list = [[RentList alloc] init];
++ (LentList *)getIncomingEntries:(NSString *)searchText {
+	LentList *list = [[LentList alloc] init];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
@@ -511,7 +511,7 @@
 			sqlString = [sqlString stringByAppendingString:@"' AND (name LIKE ? OR personName LIKE ?) order by name;"];
 		}
 	
-		const char* sql = [sqlString cString]; 
+		const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -522,7 +522,7 @@
 			sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				RentEntry *entry = [RentEntry alloc];
+				LentEntry *entry = [LentEntry alloc];
 				entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 				entry.type = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
 				NSString *dateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 5)];
@@ -582,14 +582,14 @@
 	return list;
 }
 
-+ (RentEntry *)getOutgoingEntry:(NSString *)entryId {
++ (LentEntry *)getOutgoingEntry:(NSString *)entryId {
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
-	RentEntry *entry = [RentEntry alloc];
+	LentEntry *entry = [LentEntry alloc];
 	
 	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentOutgoing NATURAL LEFT JOIN outgoingText where id=?;";
 	
-	const char* sql = [sqlString cString]; 
+	const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -647,9 +647,9 @@
 }
 
 
-+ (RentList *)getOutgoingEntries:(NSString *)searchText {
++ (LentList *)getOutgoingEntries:(NSString *)searchText {
 //	NSLog(@"start getting outgoing entries...");
-	RentList *list = [[RentList alloc] init];
+	LentList *list = [[LentList alloc] init];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
@@ -675,7 +675,7 @@
 			sqlString = [sqlString stringByAppendingString:@"' AND (name LIKE ? OR personName LIKE ?) order by name;"];
 		}
 		//NSLog(@"%@", sqlString);
-		const char* sql = [sqlString cString]; 
+		const char* sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 		
 		
 		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
@@ -688,7 +688,7 @@
 			sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, [filter UTF8String], -1, SQLITE_TRANSIENT);
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				RentEntry *entry = [RentEntry alloc];
+				LentEntry *entry = [LentEntry alloc];
 				entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 				entry.type = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
 				NSString *dateString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 5)];
@@ -1122,7 +1122,7 @@
 	NSString *sqlString;
 	
 	sqlString = [NSString stringWithFormat:@"SELECT returnDate from rentIncoming WHERE returnDate <= date();"];
-	const char *sql = [sqlString cString]; 
+	const char *sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
@@ -1150,7 +1150,7 @@
 	
 	sqlString = [NSString stringWithFormat:@"SELECT returnDate from rentOutgoing WHERE returnDate <= date();"];
 	
-	const char *sql = [sqlString cString]; 
+	const char *sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding]; 
 	
 	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
 		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));

@@ -1,5 +1,5 @@
 //
-//  untitled.m
+//  ContactEntry.m
 //  LentManager
 //
 //  Created by Benjamin Mies on 22.03.10.

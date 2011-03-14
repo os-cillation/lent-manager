@@ -1,17 +1,17 @@
 //
-//  RentEntry.m
+//  LentEntry.m
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import <AddressBook/AddressBook.h>
 #import "Database.h"
 
 
-@implementation RentEntry
+@implementation LentEntry
 
 @synthesize entryId, type, description, description2, person, date, returnDate, firstLine, secondLine, personName, pushAlarm;
 

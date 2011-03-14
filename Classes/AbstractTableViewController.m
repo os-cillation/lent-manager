@@ -9,7 +9,7 @@
 #import "AbstractTableViewController.h"
 #import <AddressBook/AddressBook.h>
 #import "Database.h"
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import "AboutViewController.h"
 
 @implementation AbstractTableViewController
@@ -32,7 +32,7 @@
 - (void)viewDidLoad {
 	NSMutableArray *tmp = [[NSMutableArray alloc] init];
 	[tmp addObjectsFromArray:[allEntries getData]];
-	list = [[RentList alloc] init];
+	list = [[LentList alloc] init];
 	[list setData:tmp];
     [super viewDidLoad];
 	
@@ -123,7 +123,7 @@
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.detailTextLabel.numberOfLines = 1;
     }
-    RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
+    LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	if ([entry.firstLine length] == 0) {
 		[entry generateIncomingText];
 	}
@@ -137,7 +137,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath { 
-	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
+	LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
 	
     NSDate *currentDate = [NSDate date];
 	
@@ -156,7 +156,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	RentEntry *entry = [list getSectionData:section atRow:0];
+	LentEntry *entry = [list getSectionData:section atRow:0];
 	NSString *title = [NSString stringWithFormat:@"%@", [Database getDescriptionByIndex:[entry.type intValue]]];
 	
     return title;

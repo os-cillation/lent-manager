@@ -1,5 +1,5 @@
 //
-//  untitled.h
+//  ContactEntry.h
 //  LentManager
 //
 //  Created by Benjamin Mies on 22.03.10.

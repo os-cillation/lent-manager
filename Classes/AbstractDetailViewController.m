@@ -41,7 +41,7 @@
 		}
 	}
 	
-	[[RentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
+	[[LentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
 }
 
 - (IBAction)showDetails {

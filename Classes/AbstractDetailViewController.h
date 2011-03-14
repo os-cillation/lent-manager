@@ -12,7 +12,7 @@
 #import "DateSelectViewController.h"
 #import "ReturnDateSelectViewController.h"
 #import "PersonViewController.h"
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import "CategoryPickerViewController.h"
 
 @protocol AbstractDetailViewControllerDelegate;
@@ -39,7 +39,7 @@
 	IBOutlet UIButton *deleteDateButton;
 	IBOutlet UIButton *deleteReturnDateButton;
 	IBOutlet UITableView *contactTableView;
-	RentEntry *entry;
+	LentEntry *entry;
 	Category *currentCategory;
 	NSString *personId;
 	NSDate *date;
@@ -49,7 +49,7 @@
 }
 
 @property (nonatomic, assign) id <AbstractDetailViewControllerDelegate> delegate;
-@property (nonatomic, retain) RentEntry *entry;
+@property (nonatomic, retain) LentEntry *entry;
 
 - (IBAction)cancel;
 - (IBAction)save;

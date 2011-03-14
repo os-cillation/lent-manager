@@ -1,5 +1,5 @@
 //
-//  RentList.h
+//  LentList.h
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "RentEntry.h"
+#import "LentEntry.h"
 
 
-@interface RentList : NSObject {
+@interface LentList : NSObject {
 	NSMutableArray *data;
 }
 
@@ -18,5 +18,5 @@
 - (NSInteger)getEntryCount:(int)section;
 - (void)setData:(NSMutableArray *)pData;
 - (NSMutableArray *)getData;
-- (RentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row;
+- (LentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row;
 @end

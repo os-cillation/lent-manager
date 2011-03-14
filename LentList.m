@@ -1,15 +1,15 @@
 //
-//  RentList.m
+//  LentList.m
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentList.h"
+#import "LentList.h"
 
 
-@implementation RentList
+@implementation LentList
 
 - (void)setData:(NSMutableArray *)pData {
 	data = pData;
@@ -28,10 +28,10 @@
 	return [[data objectAtIndex:section] count];
 }
 
-- (RentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row {
-	RentEntry *result = [RentEntry alloc];
+- (LentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row {
+	LentEntry *result = [LentEntry alloc];
 	NSMutableArray *array = (NSMutableArray *)[data objectAtIndex:(int)section];
-	result = (RentEntry *) [array objectAtIndex:(int)row];
+	result = (LentEntry *) [array objectAtIndex:(int)row];
 	return result;
 }
 

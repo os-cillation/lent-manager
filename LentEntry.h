@@ -1,5 +1,5 @@
 //
-//  RentEntry.h
+//  LentEntry.h
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-@interface RentEntry : NSObject {
+@interface LentEntry : NSObject {
 	NSString *entryId;
 	NSString *type;
 	NSString *description;

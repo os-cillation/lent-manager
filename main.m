@@ -1,6 +1,6 @@
 //
 //  main.m
-//  RentManager
+//  LentManager
 //
 //  Created by Benjamin Mies on 17.03.10.
 //  Copyright os-cillation e.K. 2010. All rights reserved.

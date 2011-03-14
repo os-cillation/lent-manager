@@ -6,14 +6,13 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentIncomingDetailViewController.h"
+#import "LentOutgoingDetailViewController.h"
 #import "Database.h"
-#import "DateSelectViewController.h"
 #import "ContactEntry.h"
 #import "Category.h"
 
 
-@implementation RentIncomingDetailViewController
+@implementation LentOutgoingDetailViewController
 
 - (IBAction)save {
 	NSString *typeTxt = currentCategory.idx;
@@ -26,18 +25,17 @@
 	}
 	
 	NSString *entryId;
-
 	if (entry != nil) {
-		entryId = [Database addIncomingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+		entryId = [Database addOutgoingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
 	}
 	else {
-		entryId = [Database addIncomingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+		entryId = [Database addOutgoingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
 	}
 	
 	Class myClass = NSClassFromString(@"UILocalNotification");
 	if (myClass) {
 
-		NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"PushAlarmListIncoming"];
+		NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] objectForKey:@"PushAlarmListOutgoing"];
 		NSMutableDictionary *list;
 		if (tmpList) {
 			list = [[NSMutableDictionary alloc] initWithDictionary:tmpList];
@@ -45,8 +43,6 @@
 		else {
 			list = [[NSMutableDictionary alloc] init];
 		}
-
-		
 		NSData *data = [list objectForKey:entryId];
 		
 		if (data) {
@@ -68,40 +64,36 @@
 				else {
 					message = description2Txt.text;
 				}
-
-
-				
-				UILocalNotification *notification = (UILocalNotification *)[RentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate forEntry:entryId];
+				UILocalNotification *notification = (UILocalNotification *)[LentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate forEntry:entryId];
 				
 				data = [NSKeyedArchiver archivedDataWithRootObject:notification];
 				[list setObject:data forKey:entryId];
 			}
 		}
 		if ([list count] == 0) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListIncoming"];
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListOutgoing"];
 		}
 		else {
-			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListIncoming"];
+			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListOutgoing"];
 		}
 		[[NSUserDefaults standardUserDefaults] synchronize];
 
 	}
 	
 	[delegate reload];
-
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 - (void)updateStrings {
 	description1Label.text = NSLocalizedString(@"Author", @"");
 	description2Label.text = NSLocalizedString(@"Title", @"");
-	lentToLabel.text = NSLocalizedString(@"LentFromPerson", @"");
-	lentFromLabel.text = NSLocalizedString(@"LentFromAt", @"");
-	lentUntilLabel.text = NSLocalizedString(@"LentFromUntil", @"");
+	lentToLabel.text = NSLocalizedString(@"LentToPerson", @"");
+	lentFromLabel.text = NSLocalizedString(@"LentToAt", @"");
+	lentUntilLabel.text = NSLocalizedString(@"LentToUntil", @"");
 	[Util button:deleteDateButton setTitle:NSLocalizedString(@"Clear", @"")];
 	[Util button:deleteReturnDateButton setTitle:NSLocalizedString(@"Clear", @"")];
 	
-	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:[[currentCategory idx] intValue]]]];
+	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""),[Database getDescriptionByIndex:[[currentCategory idx] intValue]]]];
 }
 
 @end

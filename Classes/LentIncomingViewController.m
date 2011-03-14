@@ -6,20 +6,20 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentIncomingViewController.h"
-#import "RentIncomingDetailViewController.h"
+#import "LentIncomingViewController.h"
+#import "LentIncomingDetailViewController.h"
 #import <AddressBook/AddressBook.h>
 #import "Database.h"
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import "AboutViewController.h"
 
-@implementation RentIncomingViewController
+@implementation LentIncomingViewController
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	int count = [Database getIncomingCount];
 	if (count > 0) {
-		self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+		self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", count];
 	}
 	else {
 		self.tabBarItem.badgeValue = nil;
@@ -27,7 +27,7 @@
 }
 
 - (void)reload {
-	NSLog(@"reload call incoming");
+//	NSLog(@"reload call incoming");
 	allEntries = [Database getIncomingEntries:nil];
 	if ([searchBar.text length] == 0) {
 		NSMutableArray *tmp = [[NSMutableArray alloc] init];
@@ -40,7 +40,7 @@
 }
 
 - (void)initializeTableData {
-	NSLog(@"initialize table data...");
+//	NSLog(@"initialize table data...");
 	list = [Database getIncomingEntries:nil];
 	
 	if ([list getSectionCount] > 0) {
@@ -79,8 +79,8 @@
 }
 
 - (void)add {
-	RentIncomingDetailViewController *controller;
-	controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+	LentIncomingDetailViewController *controller;
+	controller = [[LentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
 
 	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -93,8 +93,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[searchBar resignFirstResponder];
-	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-	RentIncomingDetailViewController *controller = [[RentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+	LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
+	LentIncomingDetailViewController *controller = [[LentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
 
 	controller.delegate = self;
 	controller.entry = entry;
@@ -108,13 +108,13 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-		RentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
+		LentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
 		[Database deleteIncomingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
 		allEntries = [Database getIncomingEntries:nil];
 		int count = [Database getIncomingCount];
 		if (count > 0) {
-			self.tabBarItem.badgeValue = [[NSString alloc] initWithFormat:@"%i", count];
+			self.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", count];
 		}
 		else {
 			self.tabBarItem.badgeValue = nil;

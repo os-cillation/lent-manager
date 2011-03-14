@@ -6,14 +6,14 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentList.h"
+#import "LentList.h"
 #import "AbstractDetailViewController.h"
 
 @interface AbstractTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, AbstractDetailViewControllerDelegate> {
 	IBOutlet UISearchBar *searchBar;
 	NSMutableArray *tableData;
-	RentList *list;
-	RentList *allEntries;
+	LentList *list;
+	LentList *allEntries;
 	UIBarButtonItem *editButton;
 }
 

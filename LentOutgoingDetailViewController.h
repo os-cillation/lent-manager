@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "AbstractDetailViewController.h"
 
+@interface LentOutgoingDetailViewController : AbstractDetailViewController {
 
-@interface RentIncomingDetailViewController : AbstractDetailViewController {
-	
 }
 
 @end

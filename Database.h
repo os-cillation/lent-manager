@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
-#import "RentList.h"
+#import "LentList.h"
 #import "ContactEntry.h"
 
 sqlite3 *connection;
@@ -26,10 +26,10 @@ sqlite3 *connection;
 + (NSString *)addIncomingEntry:(NSString *)entryId withType:(NSString *) type withDescription1:(NSString *)description1 withDescription2:(NSString *)description2 forPerson:(NSString *)person withDate:(NSDate *)date withReturnDate:(NSDate *)returnDate withPushAlarm:(NSDate *)pushAlarm;
 + (void)deleteIncomingEntry:(NSString *)entryId;
 + (void)deleteOutgoingEntry:(NSString *)entryId;
-+ (RentEntry *)getIncomingEntry:(NSString *)entryId;
-+ (RentList *)getIncomingEntries:(NSString *)searchText;
-+ (RentEntry *)getOutgoingEntry:(NSString *)entryId;
-+ (RentList *)getOutgoingEntries:(NSString *)searchText;
++ (LentEntry *)getIncomingEntry:(NSString *)entryId;
++ (LentList *)getIncomingEntries:(NSString *)searchText;
++ (LentEntry *)getOutgoingEntry:(NSString *)entryId;
++ (LentList *)getOutgoingEntries:(NSString *)searchText;
 
 + (void)prepareContactInfo;
 //+ (NSMutableArray *)getContactInfo:(NSString *)filter;

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* RentManagerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */; };
+		1D3623260D0F684500981E51 /* LentManagerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* LentManagerAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
@@ -23,20 +23,20 @@
 		433CE7201152578300D6B3D3 /* data.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 433CE71F1152578300D6B3D3 /* data.sqlite */; };
 		4378EA7E1150F7F2002AA27D /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA791150F7F2002AA27D /* AboutViewController.m */; };
 		4378EA7F1150F7F2002AA27D /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA7A1150F7F2002AA27D /* AboutViewController.xib */; };
-		4378EA801150F7F2002AA27D /* RentOutgoingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */; };
+		4378EA801150F7F2002AA27D /* LentOutgoingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA7C1150F7F2002AA27D /* LentOutgoingDetailViewController.m */; };
 		4378EA811150F7F2002AA27D /* AbstractDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */; };
 		4378EA8A1150F807002AA27D /* Database.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA841150F807002AA27D /* Database.m */; };
 		4378EA8B1150F807002AA27D /* DateSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA861150F807002AA27D /* DateSelectViewController.m */; };
 		4378EA8C1150F807002AA27D /* DateSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA871150F807002AA27D /* DateSelectViewController.xib */; };
 		4378EA941150F815002AA27D /* os.png in Resources */ = {isa = PBXBuildFile; fileRef = 4378EA8E1150F815002AA27D /* os.png */; };
-		4378EA961150F815002AA27D /* RentEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA911150F815002AA27D /* RentEntry.m */; };
-		4378EA971150F815002AA27D /* RentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA931150F815002AA27D /* RentList.m */; };
-		4378EA9A1150F83D002AA27D /* RentOutgoingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA991150F83D002AA27D /* RentOutgoingViewController.m */; };
+		4378EA961150F815002AA27D /* LentEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA911150F815002AA27D /* LentEntry.m */; };
+		4378EA971150F815002AA27D /* LentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA931150F815002AA27D /* LentList.m */; };
+		4378EA9A1150F83D002AA27D /* LentOutgoingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EA991150F83D002AA27D /* LentOutgoingViewController.m */; };
 		4378EAA01150F877002AA27D /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4378EA9F1150F877002AA27D /* AddressBook.framework */; };
 		4378EAA21150F877002AA27D /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4378EAA11150F877002AA27D /* AddressBookUI.framework */; };
 		4378EAA81150F883002AA27D /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4378EAA71150F883002AA27D /* libsqlite3.0.dylib */; };
-		4378EACE1150FB45002AA27D /* RentIncomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EACD1150FB45002AA27D /* RentIncomingViewController.m */; };
-		4378EB0111510194002AA27D /* RentIncomingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */; };
+		4378EACE1150FB45002AA27D /* LentIncomingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EACD1150FB45002AA27D /* LentIncomingViewController.m */; };
+		4378EB0111510194002AA27D /* LentIncomingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EAFF11510194002AA27D /* LentIncomingDetailViewController.m */; };
 		4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */; };
 		4378EBBD115112CA002AA27D /* ReturnDateSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */; };
 		43AD68461313D6CB00871B47 /* group-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43AD68431313D6CB00871B47 /* group-icon.png */; };
@@ -60,8 +60,8 @@
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* RentManagerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentManagerAppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentManagerAppDelegate.m; sourceTree = "<group>"; };
+		1D3623240D0F684500981E51 /* LentManagerAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LentManagerAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* LentManagerAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LentManagerAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* LentManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LentManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765070DF74369002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -80,11 +80,12 @@
 		433348A31315346400C681FD /* CategoryAddViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CategoryAddViewController.xib; path = Classes/CategoryAddViewController.xib; sourceTree = "<group>"; };
 		43334B4E1315599300C681FD /* categories.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories.png; sourceTree = "<group>"; };
 		433CE71F1152578300D6B3D3 /* data.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = data.sqlite; sourceTree = "<group>"; };
+		4340C172132E0C9200D7BA49 /* LentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LentList.h; sourceTree = "<group>"; };
 		4378EA781150F7F2002AA27D /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../AboutViewController.h; sourceTree = "<group>"; };
 		4378EA791150F7F2002AA27D /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../AboutViewController.m; sourceTree = "<group>"; };
 		4378EA7A1150F7F2002AA27D /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
-		4378EA7B1150F7F2002AA27D /* RentOutgoingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentOutgoingDetailViewController.h; path = ../RentOutgoingDetailViewController.h; sourceTree = "<group>"; };
-		4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentOutgoingDetailViewController.m; path = ../RentOutgoingDetailViewController.m; sourceTree = "<group>"; };
+		4378EA7B1150F7F2002AA27D /* LentOutgoingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LentOutgoingDetailViewController.h; path = ../LentOutgoingDetailViewController.h; sourceTree = "<group>"; };
+		4378EA7C1150F7F2002AA27D /* LentOutgoingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LentOutgoingDetailViewController.m; path = ../LentOutgoingDetailViewController.m; sourceTree = "<group>"; };
 		4378EA7D1150F7F2002AA27D /* AbstractDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AbstractDetailViewController.xib; sourceTree = "<group>"; };
 		4378EA831150F807002AA27D /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Database.h; path = ../Database.h; sourceTree = "<group>"; };
 		4378EA841150F807002AA27D /* Database.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Database.m; path = ../Database.m; sourceTree = "<group>"; };
@@ -92,19 +93,18 @@
 		4378EA861150F807002AA27D /* DateSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DateSelectViewController.m; path = ../DateSelectViewController.m; sourceTree = "<group>"; };
 		4378EA871150F807002AA27D /* DateSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateSelectViewController.xib; sourceTree = "<group>"; };
 		4378EA8E1150F815002AA27D /* os.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = os.png; sourceTree = "<group>"; };
-		4378EA901150F815002AA27D /* RentEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentEntry.h; sourceTree = "<group>"; };
-		4378EA911150F815002AA27D /* RentEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentEntry.m; sourceTree = "<group>"; };
-		4378EA921150F815002AA27D /* RentList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentList.h; sourceTree = "<group>"; };
-		4378EA931150F815002AA27D /* RentList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentList.m; sourceTree = "<group>"; };
-		4378EA981150F823002AA27D /* RentOutgoingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RentOutgoingViewController.h; path = ../RentOutgoingViewController.h; sourceTree = "<group>"; };
-		4378EA991150F83D002AA27D /* RentOutgoingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RentOutgoingViewController.m; path = ../RentOutgoingViewController.m; sourceTree = "<group>"; };
+		4378EA901150F815002AA27D /* LentEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LentEntry.h; sourceTree = "<group>"; };
+		4378EA911150F815002AA27D /* LentEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LentEntry.m; sourceTree = "<group>"; };
+		4378EA931150F815002AA27D /* LentList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LentList.m; sourceTree = "<group>"; };
+		4378EA981150F823002AA27D /* LentOutgoingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LentOutgoingViewController.h; path = ../LentOutgoingViewController.h; sourceTree = "<group>"; };
+		4378EA991150F83D002AA27D /* LentOutgoingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LentOutgoingViewController.m; path = ../LentOutgoingViewController.m; sourceTree = "<group>"; };
 		4378EA9F1150F877002AA27D /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		4378EAA11150F877002AA27D /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		4378EAA71150F883002AA27D /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-		4378EACC1150FB45002AA27D /* RentIncomingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentIncomingViewController.h; sourceTree = "<group>"; };
-		4378EACD1150FB45002AA27D /* RentIncomingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentIncomingViewController.m; sourceTree = "<group>"; };
-		4378EAFE11510194002AA27D /* RentIncomingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RentIncomingDetailViewController.h; sourceTree = "<group>"; };
-		4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RentIncomingDetailViewController.m; sourceTree = "<group>"; };
+		4378EACC1150FB45002AA27D /* LentIncomingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LentIncomingViewController.h; sourceTree = "<group>"; };
+		4378EACD1150FB45002AA27D /* LentIncomingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LentIncomingViewController.m; sourceTree = "<group>"; };
+		4378EAFE11510194002AA27D /* LentIncomingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LentIncomingDetailViewController.h; sourceTree = "<group>"; };
+		4378EAFF11510194002AA27D /* LentIncomingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LentIncomingDetailViewController.m; sourceTree = "<group>"; };
 		4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReturnDateSelectViewController.h; sourceTree = SOURCE_ROOT; };
 		4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReturnDateSelectViewController.m; sourceTree = SOURCE_ROOT; };
 		4378EBBB115112CA002AA27D /* ReturnDateSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReturnDateSelectViewController.xib; sourceTree = "<group>"; };
@@ -161,22 +161,22 @@
 				4378EBBA115112CA002AA27D /* ReturnDateSelectViewController.m */,
 				43C2B80913150B710029F12F /* AbstractDetailViewController.h */,
 				43C2B80A13150B710029F12F /* AbstractDetailViewController.m */,
-				4378EAFE11510194002AA27D /* RentIncomingDetailViewController.h */,
-				4378EAFF11510194002AA27D /* RentIncomingDetailViewController.m */,
-				4378EACC1150FB45002AA27D /* RentIncomingViewController.h */,
-				4378EACD1150FB45002AA27D /* RentIncomingViewController.m */,
-				4378EA981150F823002AA27D /* RentOutgoingViewController.h */,
-				4378EA991150F83D002AA27D /* RentOutgoingViewController.m */,
-				4378EA7B1150F7F2002AA27D /* RentOutgoingDetailViewController.h */,
-				4378EA7C1150F7F2002AA27D /* RentOutgoingDetailViewController.m */,
+				4378EAFE11510194002AA27D /* LentIncomingDetailViewController.h */,
+				4378EAFF11510194002AA27D /* LentIncomingDetailViewController.m */,
+				4378EACC1150FB45002AA27D /* LentIncomingViewController.h */,
+				4378EACD1150FB45002AA27D /* LentIncomingViewController.m */,
+				4378EA981150F823002AA27D /* LentOutgoingViewController.h */,
+				4378EA991150F83D002AA27D /* LentOutgoingViewController.m */,
+				4378EA7B1150F7F2002AA27D /* LentOutgoingDetailViewController.h */,
+				4378EA7C1150F7F2002AA27D /* LentOutgoingDetailViewController.m */,
 				4378EA831150F807002AA27D /* Database.h */,
 				4378EA841150F807002AA27D /* Database.m */,
 				4378EA851150F807002AA27D /* DateSelectViewController.h */,
 				4378EA861150F807002AA27D /* DateSelectViewController.m */,
 				4378EA781150F7F2002AA27D /* AboutViewController.h */,
 				4378EA791150F7F2002AA27D /* AboutViewController.m */,
-				1D3623240D0F684500981E51 /* RentManagerAppDelegate.h */,
-				1D3623250D0F684500981E51 /* RentManagerAppDelegate.m */,
+				1D3623240D0F684500981E51 /* LentManagerAppDelegate.h */,
+				1D3623250D0F684500981E51 /* LentManagerAppDelegate.m */,
 				43C2B7D3131508FF0029F12F /* Util.h */,
 				43C2B7D4131508FF0029F12F /* Util.m */,
 				43C2B8E31315151A0029F12F /* CategoryPickerViewController.h */,
@@ -259,12 +259,12 @@
 		4333486C1315317700C681FD /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				4340C172132E0C9200D7BA49 /* LentList.h */,
 				43B8D7CF1157C6C00074BA21 /* ContactEntry.h */,
 				43B8D7D01157C6C00074BA21 /* ContactEntry.m */,
-				4378EA901150F815002AA27D /* RentEntry.h */,
-				4378EA911150F815002AA27D /* RentEntry.m */,
-				4378EA921150F815002AA27D /* RentList.h */,
-				4378EA931150F815002AA27D /* RentList.m */,
+				4378EA901150F815002AA27D /* LentEntry.h */,
+				4378EA911150F815002AA27D /* LentEntry.m */,
+				4378EA931150F815002AA27D /* LentList.m */,
 				4333486E131531A300C681FD /* Category.h */,
 				4333486F131531A300C681FD /* Category.m */,
 			);
@@ -371,16 +371,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* RentManagerAppDelegate.m in Sources */,
+				1D3623260D0F684500981E51 /* LentManagerAppDelegate.m in Sources */,
 				4378EA7E1150F7F2002AA27D /* AboutViewController.m in Sources */,
-				4378EA801150F7F2002AA27D /* RentOutgoingDetailViewController.m in Sources */,
+				4378EA801150F7F2002AA27D /* LentOutgoingDetailViewController.m in Sources */,
 				4378EA8A1150F807002AA27D /* Database.m in Sources */,
 				4378EA8B1150F807002AA27D /* DateSelectViewController.m in Sources */,
-				4378EA961150F815002AA27D /* RentEntry.m in Sources */,
-				4378EA971150F815002AA27D /* RentList.m in Sources */,
-				4378EA9A1150F83D002AA27D /* RentOutgoingViewController.m in Sources */,
-				4378EACE1150FB45002AA27D /* RentIncomingViewController.m in Sources */,
-				4378EB0111510194002AA27D /* RentIncomingDetailViewController.m in Sources */,
+				4378EA961150F815002AA27D /* LentEntry.m in Sources */,
+				4378EA971150F815002AA27D /* LentList.m in Sources */,
+				4378EA9A1150F83D002AA27D /* LentOutgoingViewController.m in Sources */,
+				4378EACE1150FB45002AA27D /* LentIncomingViewController.m in Sources */,
+				4378EB0111510194002AA27D /* LentIncomingDetailViewController.m in Sources */,
 				4378EBBC115112CA002AA27D /* ReturnDateSelectViewController.m in Sources */,
 				43B8D7D11157C6C00074BA21 /* ContactEntry.m in Sources */,
 				43BBE7E411D0A8DE000C7B94 /* PersonViewController.m in Sources */,

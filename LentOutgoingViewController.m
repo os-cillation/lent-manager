@@ -6,15 +6,15 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "RentOutgoingViewController.h"
-#import "RentOutgoingDetailViewController.h"
+#import "LentOutgoingViewController.h"
+#import "LentOutgoingDetailViewController.h"
 #import <AddressBook/AddressBook.h>
 #import "Database.h"
-#import "RentEntry.h"
+#import "LentEntry.h"
 #import "AboutViewController.h"
-#import "RentManagerAppDelegate.h"
+#import "LentManagerAppDelegate.h"
 
-@implementation RentOutgoingViewController
+@implementation LentOutgoingViewController
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
@@ -81,7 +81,7 @@
 }
 
 - (void)add {
-	RentOutgoingDetailViewController *controller = [[RentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+	LentOutgoingDetailViewController *controller = [[LentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
 
 	controller.delegate = self;
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -93,8 +93,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[searchBar resignFirstResponder];
-	RentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-	RentOutgoingDetailViewController *controller = [[RentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+	LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
+	LentOutgoingDetailViewController *controller = [[LentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
 
 	controller.delegate = self;
 	controller.entry = entry;
@@ -108,7 +108,7 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		RentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
+		LentEntry *entryAtIndex = [list getSectionData:indexPath.section atRow: indexPath.row];
 		[Database deleteOutgoingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
 		allEntries = [Database getOutgoingEntries:nil];

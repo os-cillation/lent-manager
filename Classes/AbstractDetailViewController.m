@@ -40,6 +40,18 @@
 			break;
 		}
 	}
+    
+    /*
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];    
+    [self presentModalViewController:navigationController animated:YES];
+    [navigationController release];
+    [controller release];
+     */
+    
+    /*
+    [[self navigationController] presentModalViewController:controller animated:YES];
+    [controller release];
+     */
 	
 	[[LentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
 }
@@ -66,6 +78,8 @@
 }
 
 - (void)changeCategory:(Category *)category {
+    [category retain];
+    [currentCategory release];
 	currentCategory = category;
 	int idx = [[currentCategory idx] intValue];
 	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:idx]]];
@@ -95,6 +109,7 @@
 			description2Label.text = NSLocalizedString(@"AdditionalDescription", @"");
 			break;
 	}
+    // [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)clearDate {
@@ -132,14 +147,19 @@
 - (void)returnDateSelectViewControllerDidFinish:(ReturnDateSelectViewController *)controller {
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[controller.datePicker date]];
-	returnDate = [[calendar dateFromComponents:components] retain];
+    NSDate *rd = [[calendar dateFromComponents:components] retain];
+    [returnDate release];
+	returnDate = rd;
 	
 	if (controller.switchPush.on) {
-		pushAlarmDate = [[calendar dateFromComponents:components] retain];
+        NSDate *pad = [[calendar dateFromComponents:components] retain];
+        [pushAlarmDate release];
+		pushAlarmDate = pad;
 	}
 	else {
 		pushAlarmDate = nil;
 	}
+    [calendar release];
 
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
@@ -170,6 +190,7 @@
 	
 	self.title = NSLocalizedString(@"NewEntry", @"");
 	
+    [currentCategory release];
 	currentCategory = [[Category alloc] init];
 	Category *tmp = [[Database getAllCategories] objectAtIndex:0];
 	currentCategory.name = tmp.name;
@@ -192,6 +213,7 @@
     self.navigationItem.leftBarButtonItem = cancelButton;
 	[cancelButton release];
 	
+    [saveButton release];
 	saveButton = [[UIBarButtonItem alloc] 
 				  initWithTitle:NSLocalizedString(@"Save", @"")
 				  style:UIBarButtonItemStylePlain
@@ -363,6 +385,8 @@
 
 	[currentCategory release];
 	[pushAlarmDate release];
+    
+    [saveButton release];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

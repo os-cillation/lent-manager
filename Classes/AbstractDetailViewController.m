@@ -41,19 +41,19 @@
 		}
 	}
     
-    /*
+    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];    
     [self presentModalViewController:navigationController animated:YES];
     [navigationController release];
     [controller release];
-     */
+     
     
     /*
     [[self navigationController] presentModalViewController:controller animated:YES];
     [controller release];
      */
 	
-	[[LentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
+	// [[LentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
 }
 
 - (IBAction)showDetails {
@@ -72,6 +72,7 @@
 		
 		[self presentModalViewController:navController animated:YES];
 		
+        CFRelease(ab);
 		[personViewController release];
 		[navController release];
 	}
@@ -109,7 +110,7 @@
 			description2Label.text = NSLocalizedString(@"AdditionalDescription", @"");
 			break;
 	}
-    // [self dismissModalViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
 }
 
 - (IBAction)clearDate {
@@ -271,6 +272,7 @@
 		else {
 			[detailsButton setHidden:YES];
 		}
+        CFRelease(ab);
 	}
 }
 

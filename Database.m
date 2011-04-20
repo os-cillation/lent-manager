@@ -24,7 +24,10 @@
 	NSString *documentsDirectory = [paths objectAtIndex:0];
 	NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@"data.sqlite"];
 	success = [fileManager fileExistsAtPath:writableDBPath];
-	if (success) return;
+	if (success) {
+        [fileManager release];
+        return;   
+    }
 	//[fileManager removeItemAtPath:writableDBPath error:&error];
 	// The writeable database does not exist, so copy the default to the appropriate location
 	NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"data.sqlite"];
@@ -119,6 +122,7 @@
 	
 	CFArrayRef contacts = ABAddressBookCopyArrayOfAllPeople(ab);
 	
+    if (contacts) {
 	for (CFIndex i = CFArrayGetCount(contacts)-1; i >= 0; i--) {
 		ABRecordRef	person = (ABRecordRef) CFArrayGetValueAtIndex(contacts, i);
 		
@@ -145,6 +149,9 @@
 			fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
 		if ([fullName length] == 0) {
+            [firstName release];
+            [lastName release];
+            [fullName release];
 			continue;
 		}
 		
@@ -160,7 +167,14 @@
 		
 		sqlite3_step(statement);
 		sqlite3_finalize(statement);
+        [firstName release];
+        [lastName release];
+        [fullName release];
 	}
+            CFRelease(contacts);
+    }
+
+    CFRelease(ab);
 	sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
 	
 	[pool release];
@@ -192,7 +206,7 @@
 		filter = [NSString stringWithFormat:@"%%%@%%", filter];
 		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			ContactEntry *entry = [ContactEntry alloc];
+			ContactEntry *entry = [[ContactEntry alloc] autorelease];
 			entry.entryId = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
 			
 			const char *name = (const char *) sqlite3_column_text(statement,1);
@@ -255,7 +269,7 @@
 	}
 	else {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
-			description = [[NSString alloc] initWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
+			description = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 1)];
 			if (sqlite3_column_int(statement, 2) == 1) {
 				description = NSLocalizedString(description, @"");
 			}
@@ -311,13 +325,14 @@
 	}
 	
 	NSSortDescriptor *sorter = [[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease];
-	NSArray *data = [[NSArray alloc] initWithArray:tmp];
+	NSArray *data = [[[NSArray alloc] initWithArray:tmp] autorelease];
 	data = [data sortedArrayUsingDescriptors:[NSArray arrayWithObject:sorter]];
+    [tmp release];
 	return data;
 }
 
 + (Category *)getCategory:(NSString *)idx {
-	Category *category = [[Category alloc] init];
+	Category *category = [[[Category alloc] init] autorelease];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
@@ -343,7 +358,7 @@
 }
 
 + (NSMutableArray *)getAllOwnCategories {
-	NSMutableArray *data = [[NSMutableArray alloc] init];
+	NSMutableArray *data = [[[NSMutableArray alloc] init] autorelease];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
 	
@@ -424,7 +439,7 @@
 + (LentEntry *)getIncomingEntry:(NSString *)entryId {
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
-	LentEntry *entry = [LentEntry alloc];
+	LentEntry *entry = [[LentEntry alloc] autorelease];
 	
 	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentIncoming NATURAL LEFT JOIN incomingText where id=?;";
 		
@@ -486,7 +501,7 @@
 }
 
 + (LentList *)getIncomingEntries:(NSString *)searchText {
-	LentList *list = [[LentList alloc] init];
+	LentList *list = [[[LentList alloc] init] autorelease];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
@@ -576,8 +591,10 @@
 		if ([listEntry count] > 0) {
 			[data addObject:listEntry];
 		}
+        [listEntry release];
 	}
 	[list setData:data];
+    [data release];
 //	NSLog(@"finish getting entries...");
 	return list;
 }
@@ -585,7 +602,7 @@
 + (LentEntry *)getOutgoingEntry:(NSString *)entryId {
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
-	LentEntry *entry = [LentEntry alloc];
+	LentEntry *entry = [[LentEntry alloc] autorelease];
 	
 	NSString *sqlString = @"SELECT id, type, description1, description2, person, date, returnDate, firstLine, secondLine, personName, (description1 || description2) as name, pushAlarm from rentOutgoing NATURAL LEFT JOIN outgoingText where id=?;";
 	
@@ -649,7 +666,7 @@
 
 + (LentList *)getOutgoingEntries:(NSString *)searchText {
 //	NSLog(@"start getting outgoing entries...");
-	LentList *list = [[LentList alloc] init];
+	LentList *list = [[[LentList alloc] init] autorelease];
 	NSMutableArray *data = [[NSMutableArray alloc] init];
 	sqlite3 *db = [Database getConnection];
 	sqlite3_stmt *statement = nil;
@@ -739,8 +756,10 @@
 		if ([listEntry count] > 0) {
 			[data addObject:listEntry];
 		}
+        [listEntry release];
 	}
 	[list setData:data];
+    [data release];
 //	NSLog(@"finish getting entries...");
 	return list;
 }
@@ -753,13 +772,13 @@
 	sqlite3_stmt *addStmt = nil;
 	
 	NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-	
 	[dateFormat setDateFormat:@"yyyy-MM-dd"];
 	NSString *dateString = [dateFormat stringFromDate:date];
 	NSString *returnDateString = [dateFormat stringFromDate:returnDate];
 	[dateFormat setTimeZone:[NSTimeZone systemTimeZone]];
 	[dateFormat setDateFormat:@"yyyy-MM-dd HH:mm"];
 	NSString *pushAlarmString = [dateFormat stringFromDate:pushAlarm];
+    [dateFormat release];
 	
 	if([entryId intValue] > 0) {
 		sql = "insert or replace into rentOutgoing(id, type, description1, description2, person, date, returnDate, pushAlarm) Values(?, ?, ?, ?, ?, ?, ?, ?)";
@@ -794,7 +813,7 @@
 	}
 	
 	if ([entryId intValue] <= 0) {
-		entryId = [[NSString alloc] initWithFormat:@"%i", sqlite3_last_insert_rowid(db)];
+		entryId = [NSString stringWithFormat:@"%i", sqlite3_last_insert_rowid(db)];
 	}
 	
 	sqlite3_reset(addStmt);
@@ -805,8 +824,6 @@
 	[formatter setTimeStyle:NSDateFormatterNoStyle];
 	dateString = [formatter stringForObjectValue:date];
 	[formatter release];
-	
-	[dateFormat release];
 	
 	NSString *firstLine = @"";
 	NSString *secondLine = @"";
@@ -846,6 +863,8 @@
 			personName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
 		fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
+        [firstName release];
+        [lastName release];
 	}
 	else {
 		if ([person length] > 0) {
@@ -853,6 +872,8 @@
 			fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
 		}
 	}
+    
+    CFRelease(ab);
 	
 	if (date != nil) {
 		if ([fullName length] > 0) {
@@ -945,7 +966,7 @@
 	sqlite3_reset(addStmt);
 
 	if ([entryId intValue] <= 0) {
-			entryId = [[NSString alloc] initWithFormat:@"%i", sqlite3_last_insert_rowid(db)];
+			entryId = [NSString stringWithFormat:@"%i", sqlite3_last_insert_rowid(db)];
 	}
 	
 	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -977,7 +998,7 @@
 	
 	NSString *fullName = @"";
 	NSString *personName = @"";
-	
+	if (personRef){
 	if (personRef > 0) {
 		NSString* firstName = (NSString *)ABRecordCopyValue(personRef, kABPersonFirstNameProperty);
 		NSString* lastName = (NSString *)ABRecordCopyValue(personRef, kABPersonLastNameProperty);
@@ -995,6 +1016,8 @@
 			personName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
 		}
 		fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
+        [firstName release];
+        [lastName release];
 	}
 	else {
 		if ([person length] > 0) {
@@ -1002,6 +1025,10 @@
 			fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"from", @""), personName];
 		}
 	}
+            CFRelease(personRef);
+    }
+
+    CFRelease(ab);
 	
 	if (returnDate != nil) {
 		if ([fullName length] > 0) {
@@ -1136,6 +1163,7 @@
 				count++;
 			}
 		}
+        [dateFormat release];
 	}
 	sqlite3_finalize(statement);
 	return count;
@@ -1165,6 +1193,7 @@
 				count++;
 			}
 		}
+        [dateFormat release];
 	}
 	sqlite3_finalize(statement);
 	return count;

@@ -12,6 +12,8 @@
 @implementation LentList
 
 - (void)setData:(NSMutableArray *)pData {
+    [pData retain];
+    [data release];
 	data = pData;
 }
 
@@ -29,10 +31,8 @@
 }
 
 - (LentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row {
-	LentEntry *result = [LentEntry alloc];
 	NSMutableArray *array = (NSMutableArray *)[data objectAtIndex:(int)section];
-	result = (LentEntry *) [array objectAtIndex:(int)row];
-	return result;
+	return (LentEntry *) [array objectAtIndex:(int)row];
 }
 
 - (void)dealloc {

@@ -14,11 +14,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.navigationItem.rightBarButtonItem = nil;
-	UIBarButtonItem *cancelButton =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-																				   target:self action:@selector(cancelContact)];
+	UIBarButtonItem *cancelButton =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelContact)];
 	self.navigationItem.leftBarButtonItem = cancelButton;
 	self.navigationItem.rightBarButtonItem = nil;
-		
+    
 	[cancelButton release];
 	self.allowsEditing = NO;
 }

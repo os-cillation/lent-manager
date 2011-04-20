@@ -77,6 +77,8 @@
 			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListOutgoing"];
 		}
 		[[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [list release];
 
 	}
 	

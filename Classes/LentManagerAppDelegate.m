@@ -59,6 +59,7 @@
 	aboutController.tabBarItem.image = [UIImage imageNamed:@"info2.png"];
 	aboutController.title = NSLocalizedString(@"About", @"");
 	UINavigationController *navController4 = [[UINavigationController alloc] initWithRootViewController:aboutController];
+    [aboutController release];
 	
 	NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 	[viewControllers addObject:navController1];
@@ -66,6 +67,7 @@
 	[viewControllers addObject:navController3];
 	[viewControllers addObject:navController4];
 	[tabBarController setViewControllers:viewControllers];
+    [viewControllers release];
     [navController1 release];
     [navController2 release];
     [navController3 release];
@@ -98,6 +100,7 @@
 				[outgoingController presentModalViewController:navController animated:YES];
 				
 				[controller release];
+                [navController release];
 			}
 		}
 		else if (newTabIndex == 1) {
@@ -112,6 +115,7 @@
 				[incomingController presentModalViewController:navController animated:YES];
 				
 				[controller release];
+                [navController release];
 			}
 		}
 	}
@@ -165,6 +169,7 @@
 				[outgoingController presentModalViewController:navController animated:YES];
 				
 				[controller release];
+                [navController release];
                 
 			}
 		}
@@ -180,6 +185,7 @@
 				[incomingController presentModalViewController:navController animated:YES];
 				
 				[controller release];
+                [navController release];
                 
 			}
 		}
@@ -190,7 +196,7 @@
 + (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId {
 	Class myClass = NSClassFromString(@"UILocalNotification");
 	if (myClass) {
-		UILocalNotification *notification = [[myClass alloc] init];
+		UILocalNotification *notification = [[[myClass alloc] init] autorelease];
 		notification.fireDate = date;
 		notification.timeZone = [NSTimeZone systemTimeZone];
 		notification.alertAction = NSLocalizedString(@"Show", nil); 

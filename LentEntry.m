@@ -69,43 +69,47 @@
 	ABRecordRef personRef = ABAddressBookGetPersonWithRecordID(ab, [person intValue]);
 	
 	NSString *fullName = @"";
-	
-	if (personRef > 0) {
-		NSString* firstName = (NSString *)ABRecordCopyValue(personRef, kABPersonFirstNameProperty);
-		NSString* lastName = (NSString *)ABRecordCopyValue(personRef, kABPersonLastNameProperty);
-		
-		
-		if (firstName == nil || lastName == nil) {
-			if (firstName == nil) {
-				personName = lastName;
-			}
-			else {
-				personName = firstName;
-			}
-		}
-		else {
-			personName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-		}
-		fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
-	}
-	else {
-		if ([person length] > 0) {
-			personName = person;
-			fullName = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
-		}
-	}
-	
-	if (date != nil) {
-		if ([fullName length] > 0) {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), [self getDateString], fullName];
-		}
-		else {
-			secondLine = [[NSString alloc] initWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), [self getDateString]];
-		}
-	}
-	else {
-		secondLine = fullName;
-	}
+    if (personRef) {
+        if (personRef > 0) {
+            NSString* firstName = (NSString *)ABRecordCopyValue(personRef, kABPersonFirstNameProperty);
+            NSString* lastName = (NSString *)ABRecordCopyValue(personRef, kABPersonLastNameProperty);
+            
+            
+            if (firstName == nil || lastName == nil) {
+                if (firstName == nil) {
+                    personName = lastName;
+                }
+                else {
+                    personName = firstName;
+                }
+            }
+            else {
+                personName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
+            }
+            fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
+            [firstName release];
+            [lastName release];
+        }
+        else {
+            if ([person length] > 0) {
+                personName = person;
+                fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
+            }
+        }
+        
+        if (date != nil) {
+            if ([fullName length] > 0) {
+                secondLine = [NSString stringWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), [self getDateString], fullName];
+            }
+            else {
+                secondLine = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), [self getDateString]];
+            }
+        }
+        else {
+            secondLine = fullName;
+        }
+    }
+    CFRelease(ab);
 }
 
 - (void)dealloc {

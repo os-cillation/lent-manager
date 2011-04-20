@@ -20,6 +20,8 @@
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	[self presentModalViewController:navController animated:YES];
+    [controller release];
+    [navController release];
 }
 
 
@@ -129,6 +131,8 @@
 	
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	[self presentModalViewController:navController animated:YES];
+    [controller release];
+    [navController release];
 }
 
 

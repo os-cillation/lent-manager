@@ -35,6 +35,7 @@
 		NSMutableArray *tmp = [[NSMutableArray alloc] init];
 		[tmp addObjectsFromArray:[allEntries getData]];
 		[list setData:tmp];
+        [tmp release];
 	}
 	else {
 		list = [Database getOutgoingEntries:searchBar.text];
@@ -61,6 +62,7 @@
 		NSMutableArray *tmp = [[NSMutableArray alloc] init];
 		[tmp addObjectsFromArray:[allEntries getData]];
 		[list setData:tmp];
+        [tmp release];
 	}
 	else {
 		list = [Database getOutgoingEntries:searchBar.text];
@@ -89,6 +91,7 @@
 	[self presentModalViewController:navController animated:YES];
 	
 	[controller release];
+    [navController release];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -103,6 +106,7 @@
 	[self presentModalViewController:navController animated:YES];
 	
 	[controller release];
+    [navController release];
 }
 
 // Override to support editing the table view.
@@ -140,6 +144,8 @@
 			[[NSUserDefaults standardUserDefaults] setObject:pushList forKey:@"PushAlarmListOutgoing"];
 		}
 		[[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [pushList release];
     }   
 }
 

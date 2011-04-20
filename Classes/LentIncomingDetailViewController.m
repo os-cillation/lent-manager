@@ -84,6 +84,8 @@
 			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListIncoming"];
 		}
 		[[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [list release];
 
 	}
 	

@@ -67,6 +67,7 @@
 			self.date  = [calendar dateFromComponents:components];
 		}
 	}
+    [calendar release];
 	[self.datePicker setDate:self.date animated:NO];
 
 	if (pushAlarm) {

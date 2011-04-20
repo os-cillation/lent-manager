@@ -34,6 +34,7 @@
 	[tmp addObjectsFromArray:[allEntries getData]];
 	list = [[LentList alloc] init];
 	[list setData:tmp];
+    [tmp release];
     [super viewDidLoad];
 	
 	editButton = [[UIBarButtonItem alloc] 

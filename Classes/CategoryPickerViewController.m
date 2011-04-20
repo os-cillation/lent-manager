@@ -26,7 +26,7 @@
 
 - (IBAction)handleDone {
 	[delegate changeCategory:[data objectAtIndex:[pickerView selectedRowInComponent:0]]];
-	[self.view removeFromSuperview];
+	// [self.view removeFromSuperview]; // nur wenn es als View ohne Controller hinzugefügt wurde
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {

@@ -11,33 +11,34 @@
 
 @implementation LentList
 
-- (void)setData:(NSMutableArray *)pData {
-    [pData retain];
-    [data release];
-	data = pData;
+@synthesize data = _data;
+
++ (LentList *)lentListWithData:(NSArray *)data
+{
+    LentList *lentList = [[[self alloc] init] autorelease];
+    lentList.data = data;
+    return lentList;
 }
 
-- (NSMutableArray *)getData {
-	return data;
+- (void)dealloc
+{
+    [_data release], _data = nil;
+    [super dealloc];
 }
 
-- (NSInteger)getSectionCount {
-	return [data count];
+- (NSUInteger)sectionCount
+{
+	return [self.data count];
 }
 
-- (NSInteger)getEntryCount:(int)section {
-	
-	return [[data objectAtIndex:section] count];
+- (NSUInteger)entryCountForSection:(int)section
+{
+	return [[self.data objectAtIndex:section] count];
 }
 
-- (LentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row {
-	NSMutableArray *array = (NSMutableArray *)[data objectAtIndex:(int)section];
-	return (LentEntry *) [array objectAtIndex:(int)row];
-}
-
-- (void)dealloc {
-	[data release];
-	[super dealloc];
+- (LentEntry *)entryForSection:(NSInteger)section atRow:(NSInteger)row
+{
+    return [[self.data objectAtIndex:section] objectAtIndex:row];
 }
 
 @end

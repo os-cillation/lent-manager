@@ -10,8 +10,11 @@
 
 
 @interface CategoryTableViewController : UITableViewController {
-	NSMutableArray *data;
-	UIBarButtonItem *editButton;
+	NSArray *_categories;
+	UIBarButtonItem *_editButton;
 }
+
+@property (nonatomic, copy) NSArray *categories;
+@property (nonatomic, retain) UIBarButtonItem *editButton;
 
 @end

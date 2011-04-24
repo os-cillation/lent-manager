@@ -12,11 +12,16 @@
 #import "LentEntry.h"
 #import "AboutViewController.h"
 
+
 @implementation AbstractTableViewController
 
-@synthesize searchBar;
+@synthesize list = _list;
+@synthesize allEntries = _allEntries;
+@synthesize editButton = _editButton;
+@synthesize searchBar = _searchBar;
 
-- (id)init {
+- (id)init
+{
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self != nil) {
 		// Initialisation code
@@ -24,163 +29,135 @@
 	return self;
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)pSearchBar {
-	pSearchBar.text = @"";
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_list release], _list = nil;
+    [_allEntries release], _allEntries = nil;
+    [_editButton release], _editButton = nil;
+    [_searchBar release], _searchBar = nil;
+    [super dealloc];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+	searchBar.text = @"";
 	[searchBar resignFirstResponder];
 }
 
-- (void)viewDidLoad {
-	NSMutableArray *tmp = [[NSMutableArray alloc] init];
-	[tmp addObjectsFromArray:[allEntries getData]];
-	list = [[LentList alloc] init];
-	[list setData:tmp];
-    [tmp release];
+- (void)viewDidLoad
+{
+    self.list = [LentList lentListWithData:self.allEntries.data];
     [super viewDidLoad];
 	
-	editButton = [[UIBarButtonItem alloc] 
-				  initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-				  target:self
-				  action:@selector(startEdit)];
+	self.editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(startEdit)] autorelease];
+    self.navigationItem.leftBarButtonItem = self.editButton;
+	[self.editButton setEnabled:NO];
 	
-    self.navigationItem.leftBarButtonItem = editButton;
-	[editButton setEnabled:NO];
-	
-	
-	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] 
-								  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-								  target:self
-								  action:@selector(add)];
+	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(add)];
     self.navigationItem.rightBarButtonItem = addButton;
-	[addButton release];	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(reload)
-												 name:@"CategoryDeleted" object:nil];
+	[addButton release];
+    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reload) name:@"CategoryDeleted" object:nil];
 }
 
-- (void)startEdit {
+- (void)startEdit
+{
 	[self.tableView setEditing:YES animated:YES];
-	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] 
-								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-								   target:self
-								   action:@selector(stopEdit)];
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(stopEdit)];
     self.navigationItem.leftBarButtonItem = doneButton;
 	[doneButton release];
 }
 
-- (void)stopEdit {
+- (void)stopEdit
+{
 	[self.tableView setEditing:NO animated:YES];
-	
-    self.navigationItem.leftBarButtonItem = editButton;
-	if ([list getSectionCount] > 0) {
-		[editButton setEnabled:YES];
-	}
-	else {
-		[editButton setEnabled:NO];
-	}
+    self.navigationItem.leftBarButtonItem = self.editButton;
+    self.editButton.enabled = ([self.list sectionCount] > 0);
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-	
-	
-	if ([list getSectionCount] > 0) {
-		[editButton setEnabled:YES];
+	if ([self.list sectionCount] > 0) {
+		self.editButton.enabled = YES;
 	}
 	else if (self.tableView.editing){
 		[self stopEdit];
 	}
-	
 	[self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark Table view methods
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return [list getSectionCount];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return [self.list sectionCount];
 }
 
-
 // Customize the number of rows in the table view.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [list getEntryCount:section];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return [self.list entryCountForSection:section];
 }
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		cell.detailTextLabel.numberOfLines = 1;
+        cell.detailTextLabel.textColor = [UIColor blackColor];
     }
-    LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
+    LentEntry *entry = [self.list entryForSection:indexPath.section atRow:indexPath.row];
 	if ([entry.firstLine length] == 0) {
 		[entry generateIncomingText];
 	}
-	
 	cell.textLabel.text = entry.firstLine;
-	
 	cell.detailTextLabel.text = entry.secondLine;
-	
-	cell.detailTextLabel.textColor = [UIColor blackColor];
 	return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath { 
-	LentEntry *entry = [list getSectionData:indexPath.section atRow:indexPath.row];
-	
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	LentEntry *entry = [self.list entryForSection:indexPath.section atRow:indexPath.row];
     NSDate *currentDate = [NSDate date];
-	
-	NSComparisonResult result = [currentDate compare:entry.returnDate];
-	
-	if (result == NSOrderedDescending){
+	if ([currentDate compare:entry.returnDate] == NSOrderedDescending) {
         cell.backgroundColor = [UIColor colorWithRed:1 green:0.4 blue:0.4 alpha:1]; 
-		return;
 	}
-	
-	cell.backgroundColor = [UIColor whiteColor];
+    else {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
 } 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	return 50.0;	
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	LentEntry *entry = [list getSectionData:section atRow:0];
-	NSString *title = [NSString stringWithFormat:@"%@", [Database getDescriptionByIndex:[entry.type intValue]]];
-	
-    return title;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	LentEntry *entry = [self.list entryForSection:section atRow:0];
+	return [NSString stringWithFormat:@"%@", [Database getDescriptionByIndex:[entry.type intValue]]];
 }
 
-- (void)dealloc {
-    [super dealloc];
-	[searchBar release];
-	[list release];
-	[tableData release];
-	[editButton release];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
 	[self.searchBar resignFirstResponder];
 }
 
-- (void)add {
-	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)add'" userInfo:nil]);
+- (void)add
+{
+	@throw [NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)add'" userInfo:nil];
 }
 
-- (void)reload {
-	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)reload'" userInfo:nil]);
+- (void)reload
+{
+	@throw [NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)reload'" userInfo:nil];
 }
 
 @end

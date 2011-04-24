@@ -39,17 +39,23 @@
 	IBOutlet UIButton *deleteDateButton;
 	IBOutlet UIButton *deleteReturnDateButton;
 	IBOutlet UITableView *contactTableView;
-	LentEntry *entry;
-	Category *currentCategory;
-	NSString *personId;
-	NSDate *date;
-	NSDate *returnDate;
-	NSDate *pushAlarmDate;
 	BOOL keyboardShown;
+@private
+	LentEntry *_entry;
+	Category *_currentCategory;
+	NSString *_personId;
+	NSDate *_date;
+	NSDate *_returnDate;
+	NSDate *_pushAlarmDate;
 }
 
-@property (nonatomic, assign) id <AbstractDetailViewControllerDelegate> delegate;
+@property (nonatomic, assign) id<AbstractDetailViewControllerDelegate> delegate;
 @property (nonatomic, retain) LentEntry *entry;
+@property (nonatomic, retain) Category *currentCategory;
+@property (nonatomic, copy) NSString *personId;
+@property (nonatomic, retain) NSDate *date;
+@property (nonatomic, retain) NSDate *returnDate;
+@property (nonatomic, retain) NSDate *pushAlarmDate;;
 
 - (IBAction)cancel;
 - (IBAction)save;

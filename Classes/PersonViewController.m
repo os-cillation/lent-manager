@@ -8,6 +8,7 @@
 
 #import "PersonViewController.h"
 
+
 @implementation PersonViewController
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -25,10 +26,5 @@
 - (void)cancelContact {
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

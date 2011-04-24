@@ -1,5 +1,5 @@
 //
-//  AddEntryViewController.m
+//  LentOutgoingDetailViewController.m
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
@@ -14,70 +14,61 @@
 
 @implementation LentOutgoingDetailViewController
 
-- (IBAction)save {
-	NSString *typeTxt = currentCategory.idx;
+- (IBAction)save
+{
+	NSString *typeTxt = self.currentCategory.index;
 	NSString *description = descriptionTxt.text;
 	NSString *description2 = description2Txt.text;
-	NSString *personString = personTxt.text;
-
-	if (personId > 0) {
-		personString = personId;
-	}
-	
+	NSString *personString = self.personId ?: personTxt.text;
 	NSString *entryId;
-	if (entry != nil) {
-		entryId = [Database addOutgoingEntry:entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+	if (self.entry) {
+		entryId = [Database addOutgoingEntry:self.entry.entryId withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:self.date withReturnDate:self.returnDate withPushAlarm:self.pushAlarmDate];
 	}
 	else {
-		entryId = [Database addOutgoingEntry:@"NULL" withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:date withReturnDate:returnDate withPushAlarm:pushAlarmDate];
+		entryId = [Database addOutgoingEntry:nil withType:typeTxt withDescription1:description withDescription2:description2 forPerson:personString withDate:self.date withReturnDate:self.returnDate withPushAlarm:self.pushAlarmDate];
 	}
 	
 	Class myClass = NSClassFromString(@"UILocalNotification");
 	if (myClass) {
-
-		NSDictionary *tmpList = [[NSUserDefaults standardUserDefaults] objectForKey:@"PushAlarmListOutgoing"];
-		NSMutableDictionary *list;
-		if (tmpList) {
-			list = [[NSMutableDictionary alloc] initWithDictionary:tmpList];
-		}
-		else {
-			list = [[NSMutableDictionary alloc] init];
-		}
-		NSData *data = [list objectForKey:entryId];
+		NSMutableDictionary *list = [[[NSUserDefaults standardUserDefaults] objectForKey:@"PushAlarmListOutgoing"] mutableCopy];
+        if (list) {
+            NSData *data = [list objectForKey:entryId];
+            if (data) {
+                UILocalNotification *notification = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [[UIApplication sharedApplication] cancelLocalNotification:notification];
+                [list removeObjectForKey:entryId];
+            }
+        }
+        else {
+            list = [[NSMutableDictionary alloc] initWithCapacity:1];
+        }
 		
-		if (data) {
-			UILocalNotification *notification = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-			[[UIApplication sharedApplication] cancelLocalNotification:notification];
-			notification = nil;
-			[list removeObjectForKey:entryId];
-		}
-		
-		if (pushAlarmDate) {
-			if ([pushAlarmDate compare:[NSDate date]] == NSOrderedDescending) {
+		if (self.pushAlarmDate) {
+			if ([self.pushAlarmDate compare:[NSDate date]] == NSOrderedDescending) {
 				NSString *message;
-				if (([descriptionTxt.text length] > 0) && ([description2Txt.text length] > 0)) {
+				if ([descriptionTxt.text length] && [description2Txt.text length]) {
 					message = [NSString stringWithFormat:@"%@ - %@", descriptionTxt.text, description2Txt.text];
 				}
-				else if (([descriptionTxt.text length] > 0)) {
+				else if ([descriptionTxt.text length]) {
 					message = descriptionTxt.text;
 				}
 				else {
 					message = description2Txt.text;
 				}
-				UILocalNotification *notification = (UILocalNotification *)[LentManagerAppDelegate createLocalNotification:message withDate:pushAlarmDate forEntry:entryId];
-				
-				data = [NSKeyedArchiver archivedDataWithRootObject:notification];
-				[list setObject:data forKey:entryId];
+                
+				UILocalNotification *notification = [LentManagerAppDelegate localNotification:message withDate:self.pushAlarmDate forEntry:entryId];
+				if (notification) {
+                    [list setObject:[NSKeyedArchiver archivedDataWithRootObject:notification] forKey:entryId];
+                }
 			}
 		}
-		if ([list count] == 0) {
-			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListOutgoing"];
-		}
-		else {
+		if ([list count]) {
 			[[NSUserDefaults standardUserDefaults] setObject:list forKey:@"PushAlarmListOutgoing"];
 		}
+		else {
+			[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"PushAlarmListOutgoing"];
+		}
 		[[NSUserDefaults standardUserDefaults] synchronize];
-        
         [list release];
 
 	}
@@ -86,7 +77,8 @@
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (void)updateStrings {
+- (void)updateStrings
+{
 	description1Label.text = NSLocalizedString(@"Author", @"");
 	description2Label.text = NSLocalizedString(@"Title", @"");
 	lentToLabel.text = NSLocalizedString(@"LentToPerson", @"");
@@ -95,7 +87,7 @@
 	[Util button:deleteDateButton setTitle:NSLocalizedString(@"Clear", @"")];
 	[Util button:deleteReturnDateButton setTitle:NSLocalizedString(@"Clear", @"")];
 	
-	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""),[Database getDescriptionByIndex:[[currentCategory idx] intValue]]]];
+	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""),[Database getDescriptionByIndex:[[self.currentCategory index] intValue]]]];
 }
 
 @end

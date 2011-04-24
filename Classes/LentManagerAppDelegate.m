@@ -193,10 +193,10 @@
 }
 
 
-+ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId {
-	Class myClass = NSClassFromString(@"UILocalNotification");
-	if (myClass) {
-		UILocalNotification *notification = [[[myClass alloc] init] autorelease];
++ (UILocalNotification *)localNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId {
+	Class klass = NSClassFromString(@"UILocalNotification");
+	if (klass) {
+		UILocalNotification *notification = [[[klass alloc] init] autorelease];
 		notification.fireDate = date;
 		notification.timeZone = [NSTimeZone systemTimeZone];
 		notification.alertAction = NSLocalizedString(@"Show", nil); 
@@ -205,31 +205,16 @@
 		
 		NSString *tabIndex = [NSString stringWithFormat:@"%i", [[[LentManagerAppDelegate getAppDelegate] tabBarController] selectedIndex]];
 		
-		NSMutableDictionary *infoDict = [[NSMutableDictionary alloc] init];
+		NSMutableDictionary *infoDict = [[NSMutableDictionary alloc] initWithCapacity:2];
 		[infoDict setValue:tabIndex forKey:@"TabIndex"];
 		[infoDict setValue:entryId forKey:@"CurrentEntry"];
-		
 		notification.userInfo = infoDict; 
+        [infoDict release];
 		
 		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 		
 		return notification;
 	}
-	//	UILocalNotification *notification = [[UILocalNotification alloc] init]; 
-//		notification.fireDate = date;
-//		notification.timeZone = [NSTimeZone systemTimeZone];
-//		notification.alertAction = NSLocalizedString(@"Show", nil); 
-//		notification.alertBody = [NSString stringWithFormat:NSLocalizedString(@"PushMessage",@""), message];
-//		notification.soundName = UILocalNotificationDefaultSoundName; 
-//		
-//		NSString *tabIndex = [NSString stringWithFormat:@"%i", [[[LentManagerAppDelegate getAppDelegate] tabBarController] selectedIndex]];
-//		
-//		NSDictionary *infoDict = [NSDictionary dictionaryWithObject:tabIndex forKey:@"tabIndex"]; 
-//		notification.userInfo = infoDict; 
-//		
-//		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
-//		
-//		return notification;
 	return nil;
 }
 
@@ -241,7 +226,8 @@
 	return NO;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [tabBarController release];
     [window release];
 	[incomingController release];

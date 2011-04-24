@@ -11,9 +11,8 @@
 
 @interface Util : NSObject {
 
-	
 }
 
-+ (void)button:(UIButton *) button setTitle:(NSString *)title;
++ (void)button:(UIButton *)button setTitle:(NSString *)title;
 
 @end

@@ -23,9 +23,9 @@
 }
 
 @property (nonatomic, assign) id <PickerViewControllerDelegate> delegate;
-@property (nonatomic, retain) NSArray *data;
+@property (nonatomic, copy) NSArray *data;
 @property (nonatomic, retain) UIPickerView *pickerView;
-@property (nonatomic, retain) NSString *stringTitle;
+@property (nonatomic, copy) NSString *stringTitle;
 @property (nonatomic, assign) int selectedIndex;
 
 - (IBAction)handleDone;

@@ -24,15 +24,14 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	if (self.date == nil) {
-		self.date = [NSDate date];
-	}
+    self.date = self.date ?: [NSDate date];
 	[self.datePicker setDate:self.date animated:NO];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
+    [self setDate:nil];
     [super dealloc];
-	[date release];
 }
 
 

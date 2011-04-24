@@ -13,7 +13,8 @@
 
 @synthesize entryId, name;
 
-- (void)dealloc {
+- (void)dealloc
+{
 	[entryId release];
 	[name release];
 	[super dealloc];

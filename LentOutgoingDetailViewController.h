@@ -1,5 +1,5 @@
 //
-//  AddEntryViewController.h
+//  LentOutgoingDetailViewController.h
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AbstractDetailViewController.h"
+
 
 @interface LentOutgoingDetailViewController : AbstractDetailViewController {
 

@@ -49,16 +49,13 @@
 	
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	if (!minDate) {
-		minDate = [[NSDate date] retain];
-	}
-	
+    minDate = minDate ?: [[NSDate date] retain];
 	self.datePicker.minimumDate = minDate;
-	if (self.date == nil) {
+	if (!self.date) {
 		NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:[NSDate date]];
 		components.day++;
 		components.hour = 8;
-		self.date  = [calendar dateFromComponents:components];
+		self.date = [calendar dateFromComponents:components];
 		
 		if ([self.date compare:minDate] == NSOrderedAscending) {
 			NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit fromDate:minDate];

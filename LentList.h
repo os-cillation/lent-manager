@@ -7,16 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LentEntry.h"
 
+
+@class LentEntry;
 
 @interface LentList : NSObject {
-	NSMutableArray *data;
+    NSArray *_data;
 }
 
-- (NSInteger)getSectionCount;
-- (NSInteger)getEntryCount:(int)section;
-- (void)setData:(NSMutableArray *)pData;
-- (NSMutableArray *)getData;
-- (LentEntry *)getSectionData:(NSInteger)section atRow:(NSInteger)row;
+@property (nonatomic, copy) NSArray *data;
+
++ (LentList *)lentListWithData:(NSArray *)data;
+
+- (NSUInteger)sectionCount;
+- (NSUInteger)entryCountForSection:(int)section;
+- (LentEntry *)entryForSection:(NSInteger)section atRow:(NSInteger)row;
+
 @end

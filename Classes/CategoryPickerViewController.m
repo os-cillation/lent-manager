@@ -18,30 +18,36 @@
 @synthesize stringTitle;
 @synthesize selectedIndex;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 	navBar.topItem.title = self.stringTitle;
 	[pickerView selectRow:selectedIndex inComponent:0 animated:YES];
 }
 
-- (IBAction)handleDone {
+- (IBAction)handleDone
+{
 	[delegate changeCategory:[data objectAtIndex:[pickerView selectedRowInComponent:0]]];
 	// [self.view removeFromSuperview]; // nur wenn es als View ohne Controller hinzugefügt wurde
 }
 
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView {
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)thePickerView
+{
 	return 1;
 }
 
-- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component {
+- (NSInteger)pickerView:(UIPickerView *)thePickerView numberOfRowsInComponent:(NSInteger)component
+{
 	return [data count];
 }
 
-- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
+- (NSString *)pickerView:(UIPickerView *)thePickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
 	return [[data objectAtIndex:row] name];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
 	[data release];
 	[stringTitle release];
     [super dealloc];

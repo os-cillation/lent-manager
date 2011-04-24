@@ -27,6 +27,6 @@
 + (LentManagerAppDelegate *)getAppDelegate;
 + (BOOL)deviceSupportsPush;
 
-+ (NSObject *)createLocalNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId;
++ (UILocalNotification *)localNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId;
 
 @end

@@ -6,17 +6,22 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "LentList.h"
 #import "AbstractDetailViewController.h"
 
+
+@class LentList;
+
 @interface AbstractTableViewController : UITableViewController <UITextFieldDelegate, UISearchBarDelegate, AbstractDetailViewControllerDelegate> {
-	IBOutlet UISearchBar *searchBar;
-	NSMutableArray *tableData;
-	LentList *list;
-	LentList *allEntries;
-	UIBarButtonItem *editButton;
+@private
+	LentList *_list;
+	LentList *_allEntries;
+	UIBarButtonItem *_editButton;
+	IBOutlet UISearchBar *_searchBar;
 }
 
+@property (nonatomic, retain) LentList *list;
+@property (nonatomic, retain) LentList *allEntries;
+@property (nonatomic, retain) UIBarButtonItem *editButton;
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
 - (void)add;

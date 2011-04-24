@@ -14,32 +14,41 @@
 
 @implementation CategoryTableViewController
 
-- (void)handleAdd {
-	CategoryAddViewController *controller = [[CategoryAddViewController alloc] initWithNibName:@"CategoryAddViewController" bundle:nil];
-	
-	
-	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-	[self presentModalViewController:navController animated:YES];
-    [controller release];
-    [navController release];
+@synthesize categories = _categories;
+@synthesize editButton = _editButton;
+
+#pragma mark -
+#pragma mark Constructors and destructors
+
+- (void)dealloc
+{
+    [_categories release], _categories = nil;
+    [_editButton release], _editButton = nil;
+    [super dealloc];
 }
 
+#pragma mark -
+#pragma mark TODO
+
+- (void)handleAdd
+{
+	CategoryAddViewController *controller = [[CategoryAddViewController alloc] initWithNibName:@"CategoryAddViewController" bundle:nil];
+	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+	[self presentModalViewController:navController animated:YES];
+    [navController release];
+    [controller release];
+}
 
 #pragma mark -
 #pragma mark View lifecycle
 
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 	
-	editButton = [[UIBarButtonItem alloc] 
-				  initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-				  target:self
-				  action:@selector(startEdit)];
-	
-    self.navigationItem.leftBarButtonItem = editButton;
-	[editButton setEnabled:NO];
-	
+	self.editButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(startEdit)] autorelease];
+    self.navigationItem.leftBarButtonItem = self.editButton;
+	[self.editButton setEnabled:NO];
 	
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] 
 								  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -50,14 +59,16 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-	data = [Database getAllOwnCategories];
+	self.categories = [Database getAllOwnCategories];
 	[self.tableView reloadData];
-	editButton.enabled = ([data count] > 0);
+	self.editButton.enabled = ([self.categories count] > 0);
 }
 
-- (void)startEdit {
+- (void)startEdit
+{
 	[self.tableView setEditing:YES animated:YES];
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] 
 								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -67,56 +78,57 @@
 	[doneButton release];
 }
 
-- (void)stopEdit {
+- (void)stopEdit
+{
 	[self.tableView setEditing:NO animated:YES];
-	
-    self.navigationItem.leftBarButtonItem = editButton;
-	editButton.enabled = ([data count] > 0);
+    self.navigationItem.leftBarButtonItem = self.editButton;
+	self.editButton.enabled = ([self.categories count] > 0);
 }
 
 #pragma mark -
 #pragma mark Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [data count];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.categories count];
 }
 
-
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    cell.textLabel.text = [[data objectAtIndex:indexPath.row] name];
+    Category *category = [self.categories objectAtIndex:indexPath.row];
+    cell.textLabel.text = category.name;
     
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return YES;
 }
 
 // Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [Database deleteCategory:[data objectAtIndex:indexPath.row]];
-		data = [Database getAllOwnCategories];
+        [Database deleteCategory:[self.categories objectAtIndex:indexPath.row]];
+        self.categories = [Database getAllOwnCategories];
 		[self.tableView reloadData];
-		[[NSNotificationCenter defaultCenter]
-			postNotificationName:@"CategoryDeleted" object:self];
-		if([data count] == 0) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryDeleted" object:self];
+		if([self.categories count] == 0) {
 			[self stopEdit];
 		}
     }    
@@ -125,24 +137,16 @@
 #pragma mark -
 #pragma mark Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     CategoryAddViewController *controller = [[CategoryAddViewController alloc] initWithNibName:@"CategoryAddViewController" bundle:nil];
-	controller.category = [data objectAtIndex:indexPath.row];
-	
+	controller.category = [self.categories objectAtIndex:indexPath.row];
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
 	[self presentModalViewController:navController animated:YES];
     [controller release];
     [navController release];
 }
 
-
-#pragma mark -
-#pragma mark Memory management
-
-- (void)dealloc {
-	[data release];
-    [super dealloc];
-}
 
 
 @end

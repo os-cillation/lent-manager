@@ -11,7 +11,8 @@
 
 @implementation Util
 
-+ (void)button:(UIButton *) button setTitle:(NSString *)title {
++ (void)button:(UIButton *) button setTitle:(NSString *)title
+{
 	[button setTitle:title forState:UIControlStateNormal];
 	[button setTitle:title forState:UIControlStateHighlighted];
 	[button setTitle:title forState:UIControlStateDisabled];

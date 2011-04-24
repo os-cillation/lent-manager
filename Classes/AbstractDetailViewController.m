@@ -11,37 +11,50 @@
 #import "DateSelectViewController.h"
 #import "ContactEntry.h"
 #import "Category.h"
-
+#import "NSDateFormatter+DateFormatter.h"
 
 
 @implementation AbstractDetailViewController
 
-@synthesize delegate, entry;
+@synthesize delegate;
+@synthesize entry = _entry;
+@synthesize currentCategory = _currentCategory;
+@synthesize personId = _personId;
+@synthesize date = _date;
+@synthesize returnDate = _returnDate;
+@synthesize pushAlarmDate = _pushAlarmDate;
 
-- (IBAction)cancel {
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_entry release], _entry = nil;
+    [_currentCategory release], _currentCategory = nil;
+    [_personId release], _personId = nil;
+    [_date release], _date = nil;
+    [_returnDate release], _returnDate = nil;
+    [_pushAlarmDate release], _pushAlarmDate = nil;
+	[super dealloc];
+}
+
+- (IBAction)cancel
+{
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)changeCategory {
+- (IBAction)changeCategory
+{
 	[self resignKeyboard];
 	CategoryPickerViewController *controller = [[CategoryPickerViewController alloc] initWithNibName:@"PickerViewController" bundle:nil];
 	controller.delegate = self;
 	controller.stringTitle = NSLocalizedString(@"Category", @"");
-
 	controller.data = [Database getAllCategories];
-	
-	
-	
 	controller.selectedIndex = 0;
-	
 	for (int i = 0; i < [controller.data count]; i++) {
-		if ([[[controller.data objectAtIndex:i] idx] isEqualToString:currentCategory.idx]) {
+		if ([[[controller.data objectAtIndex:i] index] isEqualToString:self.currentCategory.index]) {
 			controller.selectedIndex = i;
 			break;
 		}
 	}
-    
-    
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];    
     [self presentModalViewController:navigationController animated:YES];
     [navigationController release];
@@ -56,35 +69,27 @@
 	// [[LentManagerAppDelegate getAppDelegate].window addSubview:controller.view];
 }
 
-- (IBAction)showDetails {
-	if (personId != nil) {
+- (IBAction)showDetails
+{
+	if (self.personId) {
 		PersonViewController *personViewController = [[PersonViewController alloc] init];
-		
-		ABAddressBookRef ab = ABAddressBookCreate();
-		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [personId intValue]);
-		
 		personViewController.personViewDelegate = self;
-		personViewController.displayedPerson = person;
+		personViewController.displayedPerson = ABAddressBookGetPersonWithRecordID(personViewController.addressBook, [self.personId intValue]);
 		personViewController.allowsEditing = NO;
-		
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:personViewController];
 		personViewController.navigationItem.title = NSLocalizedString(@"ContactDetails", "");
-		
 		[self presentModalViewController:navController animated:YES];
-		
-        CFRelease(ab);
 		[personViewController release];
 		[navController release];
 	}
 }
 
-- (void)changeCategory:(Category *)category {
-    [category retain];
-    [currentCategory release];
-	currentCategory = category;
-	int idx = [[currentCategory idx] intValue];
-	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:idx]]];
-	switch (idx) {
+- (void)changeCategory:(Category *)category
+{
+    self.currentCategory = category;
+	int index = [category.index intValue];
+	[Util button:buttonType setTitle:[NSString stringWithFormat:NSLocalizedString(@"CategoryText", @""), [Database getDescriptionByIndex:index]]];
+	switch (index) {
 		case 0:
 			description1Label.text = NSLocalizedString(@"Author", @"");
 			description2Label.text = NSLocalizedString(@"Title", @"");
@@ -113,71 +118,51 @@
     [self dismissModalViewControllerAnimated:YES];
 }
 
-- (IBAction)clearDate {
-	date = nil;
+- (IBAction)clearDate
+{
+	self.date = nil;
 	dateTxt.text = @"";
 }
 
-- (IBAction)clearReturnDate {
-	returnDate = nil;
+- (IBAction)clearReturnDate
+{
+	self.returnDate = nil;
 	returnDateTxt.text = @"";
-	pushAlarmDate = nil;
+	self.pushAlarmDate = nil;
 }
 
-- (void)cancelContact:(id)sender {
+- (void)cancelContact:(id)sender
+{
 	[self dismissModalViewControllerAnimated:YES];	
 }
 
-- (void)dateSelectViewControllerDidFinish:(DateSelectViewController *)controller {
-	date = [controller.datePicker date];
-	
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateStyle:NSDateFormatterShortStyle];
-	[formatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *dateString = [formatter stringForObjectValue:date];
-	[formatter release];
-	
-	dateTxt.text = dateString;
-
-	
+- (void)dateSelectViewControllerDidFinish:(DateSelectViewController *)controller
+{
+	self.date = [controller.datePicker date];
+    dateTxt.text = [[NSDateFormatter dateFormatterForShortStyle] stringFromDate:self.date];
 	[self dismissModalViewControllerAnimated:YES];
 	[self resignKeyboard];	
 }
 
-- (void)returnDateSelectViewControllerDidFinish:(ReturnDateSelectViewController *)controller {
+- (void)returnDateSelectViewControllerDidFinish:(ReturnDateSelectViewController *)controller
+{
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [calendar components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[controller.datePicker date]];
-    NSDate *rd = [[calendar dateFromComponents:components] retain];
-    [returnDate release];
-	returnDate = rd;
-	
+    self.returnDate = [calendar dateFromComponents:components];
 	if (controller.switchPush.on) {
-        NSDate *pad = [[calendar dateFromComponents:components] retain];
-        [pushAlarmDate release];
-		pushAlarmDate = pad;
+        self.pushAlarmDate = self.returnDate;
 	}
 	else {
-		pushAlarmDate = nil;
+		self.pushAlarmDate = nil;
 	}
     [calendar release];
-
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateStyle:NSDateFormatterShortStyle];
-	[formatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *dateString = [formatter stringForObjectValue:returnDate];
-	[formatter release];
-	
-	
-	
-	returnDateTxt.text = dateString;
-	
+    returnDateTxt.text = [[NSDateFormatter dateFormatterForShortStyle] stringFromDate:self.returnDate];
 	[self dismissModalViewControllerAnimated:YES];
 	[self resignKeyboard];
 }
 
-- (void)resignKeyboard {
+- (void)resignKeyboard
+{
 	[dateTxt resignFirstResponder];
 	[returnDateTxt resignFirstResponder];
 	[descriptionTxt resignFirstResponder];
@@ -186,20 +171,15 @@
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
 	[super viewDidLoad];
 	
 	self.title = NSLocalizedString(@"NewEntry", @"");
-	
-    [currentCategory release];
-	currentCategory = [[Category alloc] init];
-	Category *tmp = [[Database getAllCategories] objectAtIndex:0];
-	currentCategory.name = tmp.name;
-	currentCategory.idx = tmp.idx;
-	
+
+	self.currentCategory = [[Database getAllCategories] objectAtIndex:0];
 	[self updateStrings];
-	
-	[self changeCategory:currentCategory];
+	[self changeCategory:self.currentCategory];
 	
 	descriptionTxt.delegate = self;
 	description2Txt.delegate = self;
@@ -227,62 +207,59 @@
 	[description2Txt addTarget:self action:@selector(textFieldDidChange) forControlEvents:UIControlEventEditingChanged];
 	[personTxt addTarget:self action:@selector(contactInfoDidChange) forControlEvents:UIControlEventEditingChanged];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasShown:)
-												 name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasHidden:)
-												 name:UIKeyboardDidHideNotification object:nil];
-	
-	if (self.entry != nil) {
-		[entry retain];
+	if (self.entry) {
 		self.title = NSLocalizedString(@"Edit", @"");
 		
-		[self changeCategory:[Database getCategory:entry.type]];
+		[self changeCategory:[Database getCategory:self.entry.type]];
 		
-		if ([entry.description length] > 0) {
-			descriptionTxt.text = entry.description;
-			[saveButton setEnabled:YES];
+		if ([self.entry.description length]) {
+			descriptionTxt.text = self.entry.description;
+			saveButton.enabled = YES;
 		}
-		if ([entry.description2 length] > 0) {
-			description2Txt.text = entry.description2;
-			[saveButton setEnabled:YES];
+		if ([self.entry.description2 length]) {
+			description2Txt.text = self.entry.description2;
+			saveButton.enabled = YES;
 		}		
 		
-		dateTxt.text = entry.dateString;
-		returnDateTxt.text = entry.returnDateString;
+		dateTxt.text = self.entry.dateString;
+		returnDateTxt.text = self.entry.returnDateString;
+        self.date = self.entry.date;
+		self.returnDate = self.entry.returnDate;
+		self.pushAlarmDate = self.entry.pushAlarm;
+		personTxt.text = self.entry.personName;
 		
-		date = entry.date;
-		returnDate = entry.returnDate;
-		pushAlarmDate = entry.pushAlarm;
-		personTxt.text = entry.personName;
-		
-		if (entry.person == NULL || entry.person == nil) {
-			[detailsButton setHidden:YES];
+		if (!self.entry.person) {
+			detailsButton.hidden = YES;
 			return;
 		}
 		
-		ABAddressBookRef ab = ABAddressBookCreate();
-		ABRecordRef person = ABAddressBookGetPersonWithRecordID(ab, [entry.person intValue]);
-		if (person != nil) {
-			personId = entry.person;
-			[detailsButton setHidden:NO];
-		}
-		else {
-			[detailsButton setHidden:YES];
-		}
-        CFRelease(ab);
+		ABAddressBookRef addressBook = ABAddressBookCreate();
+        if (addressBook) {
+            ABRecordRef person = ABAddressBookGetPersonWithRecordID(addressBook, [self.entry.person intValue]);
+            if (person) {
+                self.personId = self.entry.person;
+                detailsButton.hidden = NO;
+            }
+            else {
+                detailsButton.hidden = YES;
+            }
+            CFRelease(addressBook);
+        }
 	}
 }
 
-- (void)contactInfoDidChange {
-	personId = 0;
-	[detailsButton setHidden:YES];
+- (void)contactInfoDidChange
+{
+	self.personId = nil;
+    detailsButton.hidden = YES;
 	[contactTableView reloadData];
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
 	[UIView beginAnimations:nil context:NULL];
 	if (textField == personTxt) {
 		scrollView.contentSize = CGSizeMake(320, 940);
@@ -290,17 +267,14 @@
 		
 		[contactTableView setHidden:NO];
 		[contactTableView reloadData];
-		
 	}
 	else {
-		
-		
 		[contactTableView setHidden:YES];
 		if (textField == dateTxt) {
 			[self resignKeyboard];
 			DateSelectViewController *controller = [[DateSelectViewController alloc] initWithNibName:@"DateSelectViewController" bundle:nil];
 			controller.delegate = self;
-			controller.date = date;
+			controller.date = self.date;
 			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 			[self presentModalViewController:controller animated:YES];
 			
@@ -311,12 +285,11 @@
 			[self resignKeyboard];
 			ReturnDateSelectViewController *controller = [[ReturnDateSelectViewController alloc] initWithNibName:@"ReturnDateSelectViewController" bundle:nil];
 			controller.delegate = self;
-			controller.pushAlarm = pushAlarmDate;
-			controller.date = returnDate;
-			controller.minDate = date;
+			controller.pushAlarm = self.pushAlarmDate;
+			controller.date = self.returnDate;
+			controller.minDate = self.date;
 			controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 			[self presentModalViewController:controller animated:YES];
-			
 			[controller release];
 			return NO;
 		}
@@ -331,17 +304,13 @@
 	return YES;
 }
 
-- (void)textFieldDidChange {
-	if (([descriptionTxt.text length] > 0) || ([description2Txt.text length] > 0)) {
-		[saveButton setEnabled:YES];
-	}
-	else {
-		[saveButton setEnabled:NO];
-	}
+- (void)textFieldDidChange
+{
+    saveButton.enabled = (([descriptionTxt.text length] > 0) || ([description2Txt.text length] > 0));
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
 	if (textField == personTxt) {
 		[contactTableView setHidden:YES];
 	}
@@ -349,11 +318,13 @@
     return NO;
 }
 
-- (void)keyboardWasShown:(NSNotification*)aNotification{
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
 	keyboardShown = YES;
 }
 
-- (void)keyboardWasHidden:(NSNotification*)aNotification {
+- (void)keyboardWasHidden:(NSNotification*)aNotification
+{
 	[UIView beginAnimations:nil context:NULL];
 	scrollView.contentSize = CGSizeMake(320, 600);
 	keyboardShown = NO;
@@ -361,82 +332,58 @@
 	[UIView commitAnimations];
 }
 
-- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue {
+- (BOOL)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifierForValue
+{
 	return YES;
 }
 
-- (void)didReceiveMemoryWarning {
-	// Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-	
-	// Release any cached data, images, etc that aren't in use.
-}
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
-
-- (void)dealloc {
-	[super dealloc];
-	[entry release];
-	[personId release];
-	[date release];
-	[returnDate release];
-
-	[currentCategory release];
-	[pushAlarmDate release];
-    
-    [saveButton release];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-
 // Customize the number of rows in the table view.
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
 	return [Database getContactCount:personTxt.text];
 }
 
 
 // Customize the appearance of table view cells.
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     static NSString *CellIdentifier = @"Cell";
-    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (!cell) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
     }
-	
 	ContactEntry *contactEntry = [Database getContactInfo:personTxt.text atIndex:indexPath.row];
-	
 	cell.textLabel.text = contactEntry.name;
-	
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	ContactEntry *contactEntry = [Database getContactInfo:personTxt.text atIndex:indexPath.row];
 	personTxt.text = contactEntry.name;
-	personId = contactEntry.entryId;
+	self.personId = contactEntry.entryId;
 	[detailsButton setHidden:NO];
 	[contactTableView setHidden:YES];
 	[personTxt resignFirstResponder];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
 	return NSLocalizedString(@"FromAddressbook", @"");
 }
 
-- (IBAction)save {
-	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (IBAction)save'" userInfo:nil]);
+- (IBAction)save
+{
+	@throw [NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (IBAction)save'" userInfo:nil];
 }
 
-- (void)updateStrings {
-	@throw([NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)updateStrings'" userInfo:nil]);
+- (void)updateStrings
+{
+	@throw [NSException exceptionWithName:@"Runtime Exception" reason:@"Should be implemented in child class! '- (void)updateStrings'" userInfo:nil];
 }
 @end

@@ -11,7 +11,6 @@
 #import "LentList.h"
 #import "ContactEntry.h"
 
-sqlite3 *connection;
 
 @class Category;
 
@@ -41,7 +40,7 @@ sqlite3 *connection;
 + (int)getEntryCount;
 
 + (NSArray *)getAllCategories;
-+ (NSMutableArray *)getAllOwnCategories;
++ (NSArray *)getAllOwnCategories;
 + (Category *)getCategory:(NSString *)idx;
 + (void)addCategory:(NSString *)name;
 + (void)updateCategory:(Category *)category;

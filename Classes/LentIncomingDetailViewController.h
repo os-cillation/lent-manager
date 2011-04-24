@@ -1,5 +1,5 @@
 //
-//  AddEntryViewController.h
+//  LentIncomingDetailViewController.h
 //  iVerleih
 //
 //  Created by Benjamin Mies on 13.03.10.

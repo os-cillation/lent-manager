@@ -94,90 +94,34 @@
 + (void)prepareContactInfo{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	sqlite3 *db = connection;
+	sqlite3_stmt *statement;
+    
+    sqlite3_exec(db, "CREATE TABLE IF NOT EXISTS contactInfo(id INTEGER PRIMARY KEY, name TEXT)", NULL, NULL, NULL);
 	sqlite3_exec(db, "BEGIN", NULL, NULL, NULL);
-	sqlite3_stmt *statement = nil;
-	const char* sql;
+    sqlite3_exec(db, "DELETE FROM contactInfo", NULL, NULL, NULL);
 	
-	statement = nil;
-	sql = "CREATE TABLE IF NOT EXISTS contactInfo(id INTEGER PRIMARY KEY, name TEXT);";
-	
-	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
-	}
-	sqlite3_step(statement);
-	sqlite3_finalize(statement);
-	
-	statement = nil;
-	sql = "DELETE FROM contactInfo;";
-	
-	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-		//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-		NSLog(@"%s",sql);
-	}
-	sqlite3_step(statement);
-	sqlite3_finalize(statement);
-	
-	ABAddressBookRef ab = ABAddressBookCreate();
-	
-	CFArrayRef contacts = ABAddressBookCopyArrayOfAllPeople(ab);
-	
-    if (contacts) {
-	for (CFIndex i = CFArrayGetCount(contacts)-1; i >= 0; i--) {
-		ABRecordRef	person = (ABRecordRef) CFArrayGetValueAtIndex(contacts, i);
-		
-		ABRecordID id = ABRecordGetRecordID(person);
-		
-		NSString *personId = [NSString stringWithFormat:@"%i", id];
-		
-		NSString* firstName = (NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
-		NSString* lastName = (NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);		
-
-		NSString *fullName;
-		if ((firstName == NULL) && (lastName == NULL)) {
-			fullName = (NSString *)ABRecordCopyValue(person, kABPersonOrganizationProperty);
-		}
-		else if ((firstName == NULL) || (lastName == NULL)) {
-			if (firstName == NULL) {
-				fullName = lastName;
-			}
-			if (lastName == NULL) {
-				fullName = firstName;
-			}
-		}
-		else {
-			fullName = [NSString stringWithFormat:@"%@ %@", firstName, lastName];
-		}
-		if ([fullName length] == 0) {
-            [firstName release];
-            [lastName release];
-            [fullName release];
-			continue;
-		}
-		
-		statement = nil;
-		NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO contactInfo(id, name) Values('%@', ?);", personId];
-		sql = [sqlString cStringUsingEncoding:NSISOLatin1StringEncoding];
-		
-		if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) != SQLITE_OK) {
-			//NSAssert1(0, @"Error preparing statement...", sqlite3_errmsg(db));
-			NSLog(@"%s",sql);
-		}
-		sqlite3_bind_text(statement, 1, [fullName UTF8String], -1, SQLITE_TRANSIENT);
-		
-		sqlite3_step(statement);
-		sqlite3_finalize(statement);
-        [firstName release];
-        [lastName release];
-        [fullName release];
-	}
-            CFRelease(contacts);
+	ABAddressBookRef addressBook = ABAddressBookCreate();
+	if (addressBook) {
+        NSArray *contacts = [(NSArray *)ABAddressBookCopyArrayOfAllPeople(addressBook) autorelease];
+        for (CFIndex i = 0; i < [contacts count]; ++i) {
+            ABRecordRef person = (ABRecordRef)[contacts objectAtIndex:i];
+            NSString *personName = [(NSString *)ABRecordCopyCompositeName(person) autorelease];
+            if ([personName length]) {
+                if (sqlite3_prepare_v2(db, "INSERT INTO contactInfo (id, name) VALUES (?, ?)", -1, &statement, NULL) == SQLITE_OK) {
+                    sqlite3_bind_int(statement, 1, ABRecordGetRecordID(person));
+                    sqlite3_bind_text(statement, 2, [personName UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_step(statement);
+                    sqlite3_finalize(statement);
+                }
+            }
+        }
+        
+        CFRelease(addressBook);
     }
-
-    CFRelease(ab);
-	sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
-	
-	[pool release];
+    
+    sqlite3_exec(db, "COMMIT", NULL, NULL, NULL);
+    
+    [pool release];
 }
 
 + (ContactEntry *)getContactInfo:(NSString *)filter atIndex:(int)index {
@@ -249,7 +193,7 @@
 		filter = [NSString stringWithFormat:@"%%%@%%", filter];
 		sqlite3_bind_text(statement, 1, [filter UTF8String], -1, SQLITE_TRANSIENT);
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			NSString *countString = [NSString stringWithFormat:@"%s", (char*)sqlite3_column_text(statement, 0)];
+			NSString *countString = [NSString stringWithFormat:@"%s", (const char *)sqlite3_column_text(statement, 0)];
 			count = [countString intValue];
 		}
 	}

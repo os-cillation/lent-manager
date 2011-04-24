@@ -21,12 +21,23 @@
 @synthesize window;
 @synthesize tabBarController;
 
-+ (LentManagerAppDelegate *)getAppDelegate {
+- (void)dealloc
+{
+    [tabBarController release];
+    [window release];
+	[incomingController release];
+	[outgoingController release];
+	[categoryController release];
+    [super dealloc];
+}
+
++ (LentManagerAppDelegate *)getAppDelegate 
+{
 	return (LentManagerAppDelegate*) [UIApplication sharedApplication].delegate;
 }
 
-
-- (void)applicationDidFinishLaunching:(UIApplication *)application {
+- (void)applicationDidFinishLaunching:(UIApplication *)application
+{
 	[Database createEditableCopyOfDatabaseIfNeeded];   
 	outgoingController = [[LentOutgoingViewController alloc] initWithNibName:@"AbstractTableViewController" bundle:nil];
 	outgoingController.title = NSLocalizedString(@"LentToTitle", @"");
@@ -61,13 +72,8 @@
 	UINavigationController *navController4 = [[UINavigationController alloc] initWithRootViewController:aboutController];
     [aboutController release];
 	
-	NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
-	[viewControllers addObject:navController1];
-	[viewControllers addObject:navController2];
-	[viewControllers addObject:navController3];
-	[viewControllers addObject:navController4];
-	[tabBarController setViewControllers:viewControllers];
-    [viewControllers release];
+	[tabBarController setViewControllers:[NSArray arrayWithObjects:navController1, navController2, navController3, navController4, nil]];
+    
     [navController1 release];
     [navController2 release];
     [navController3 release];
@@ -77,77 +83,77 @@
     [window addSubview:tabBarController.view];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
 	[self applicationDidFinishLaunching:application];
-	if ([launchOptions count] == 0) {
-		return YES;
-	}
-	UILocalNotification *notification =
-	[launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-	if (notification) {
-		int newTabIndex = [[notification.userInfo valueForKey:@"TabIndex"] intValue];
-		NSString *entryId = [notification.userInfo valueForKey:@"CurrentEntry"];
-		[tabBarController setSelectedIndex:newTabIndex];
-		if (newTabIndex == 0) {
-			LentEntry *entry = [Database getOutgoingEntry:entryId];
-			if ([entry.entryId intValue] > 0) {
-				LentOutgoingDetailViewController *controller = [[LentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
-				
-				controller.delegate = outgoingController;
-				controller.entry = entry;
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-				controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-				[outgoingController presentModalViewController:navController animated:YES];
-				
-				[controller release];
-                [navController release];
-			}
-		}
-		else if (newTabIndex == 1) {
-			LentEntry *entry = [Database getIncomingEntry:entryId];
-			if ([entry.entryId intValue] > 0) {
-				LentIncomingDetailViewController *controller = [[LentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
-				
-				controller.delegate = incomingController;
-				controller.entry = entry;
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-				controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-				[incomingController presentModalViewController:navController animated:YES];
-				
-				[controller release];
-                [navController release];
-			}
-		}
-	}
+    if ([launchOptions count]) {
+        UILocalNotification *notification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+        if (notification) {
+            int newTabIndex = [[notification.userInfo valueForKey:@"TabIndex"] intValue];
+            NSString *entryId = [notification.userInfo valueForKey:@"CurrentEntry"];
+            [tabBarController setSelectedIndex:newTabIndex];
+            if (newTabIndex == 0) {
+                LentEntry *entry = [Database getOutgoingEntry:entryId];
+                if ([entry.entryId intValue] > 0) {
+                    LentOutgoingDetailViewController *controller = [[LentOutgoingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+                    
+                    controller.delegate = outgoingController;
+                    controller.entry = entry;
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                    [outgoingController presentModalViewController:navController animated:YES];
+                    
+                    [controller release];
+                    [navController release];
+                }
+            }
+            else if (newTabIndex == 1) {
+                LentEntry *entry = [Database getIncomingEntry:entryId];
+                if ([entry.entryId intValue] > 0) {
+                    LentIncomingDetailViewController *controller = [[LentIncomingDetailViewController alloc] initWithNibName:@"AbstractDetailViewController" bundle:nil];
+                    
+                    controller.delegate = incomingController;
+                    controller.entry = entry;
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                    [incomingController presentModalViewController:navController animated:YES];
+                    
+                    [controller release];
+                    [navController release];
+                }
+            }
+        }
+    }
 	return YES;
 }
 
-- (void)updateBadging {
+- (void)updateBadging
+{
 	outgoingController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", [Database getOutgoingCount]];
 	incomingController.tabBarItem.badgeValue = [NSString stringWithFormat:@"%i", [Database getIncomingCount]];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application {
-	int count = [Database getEntryCount];
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[Database getEntryCount]];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
 	sleeping = TRUE;
-	int count = [Database getEntryCount];
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:[Database getEntryCount]];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
 	if (sleeping) {
 		[Database prepareContactInfo];
 	}
 	sleeping = FALSE;
-	
 }
 
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
 	if (!sleeping) {
 		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Info",@"") message:notification.alertBody delegate:nil cancelButtonTitle:NSLocalizedString(@"Close",@"") otherButtonTitles:nil];
 		[alertView show];
@@ -193,7 +199,8 @@
 }
 
 
-+ (UILocalNotification *)localNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId {
++ (UILocalNotification *)localNotification:(NSString *)message withDate:(NSDate *)date forEntry:(NSString *)entryId
+{
 	Class klass = NSClassFromString(@"UILocalNotification");
 	if (klass) {
 		UILocalNotification *notification = [[[klass alloc] init] autorelease];
@@ -218,22 +225,9 @@
 	return nil;
 }
 
-+ (BOOL)deviceSupportsPush {
-	Class myClass = NSClassFromString(@"UILocalNotification");
-	if (myClass) {
-		return YES;
-	}
-	return NO;
-}
-
-- (void)dealloc
++ (BOOL)deviceSupportsPush
 {
-    [tabBarController release];
-    [window release];
-	[incomingController release];
-	[outgoingController release];
-	[categoryController release];
-    [super dealloc];
+    return NSClassFromString(@"UILocalNotification") ? YES : NO;
 }
 
 @end

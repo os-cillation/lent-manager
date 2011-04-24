@@ -250,8 +250,8 @@
 			[saveButton setEnabled:YES];
 		}		
 		
-		dateTxt.text = [entry getDateString];
-		returnDateTxt.text = [entry getReturnDateString];
+		dateTxt.text = entry.dateString;
+		returnDateTxt.text = entry.returnDateString;
 		
 		date = entry.date;
 		returnDate = entry.returnDate;

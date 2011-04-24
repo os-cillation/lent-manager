@@ -6,125 +6,125 @@
 //  Copyright 2010 os-cillation e.K.. All rights reserved.
 //
 
-#import "LentEntry.h"
 #import <AddressBook/AddressBook.h>
 #import "Database.h"
+#import "LentEntry.h"
+#import "NSDateFormatter+DateFormatter.h"
+
+
+@interface LentEntry ()
+
+- (void)generateTextData;
+
+@end
 
 
 @implementation LentEntry
 
-@synthesize entryId, type, description, description2, person, date, returnDate, firstLine, secondLine, personName, pushAlarm;
+#pragma mark -
+#pragma mark Synthesized properties
 
-- (NSString *)getDateString {
-	if (date == nil) {
-		return @"";
-	}
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateStyle:NSDateFormatterShortStyle];
-	[formatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *dateString = [formatter stringForObjectValue:date];
-	[formatter release];
-	return dateString;
+@synthesize entryId = _entryId;
+@synthesize type = _type;
+@synthesize description = _description;
+@synthesize description2 = _description2;
+@synthesize person = _person;
+@synthesize date = _date;
+@synthesize returnDate = _returnDate;
+@synthesize firstLine = _firstLine;
+@synthesize secondLine = _secondLine;
+@synthesize personName = _personName;
+@synthesize pushAlarm = _pushAlarm;
+
+#pragma mark -
+#pragma mark Constructors and destructors
+
+- (void)dealloc
+{
+    [_entryId release], _entryId = nil;
+    [_type release], _type = nil;
+    [_description release], _description = nil;
+    [_description2 release], _description2 = nil;
+    [_person release], _person = nil;
+    [_date release], _date = nil;
+    [_returnDate release], _returnDate = nil;
+    [_firstLine release], _firstLine = nil;
+    [_secondLine release], _secondLine = nil;
+    [_personName release], _personName = nil;
+    [_pushAlarm release], _pushAlarm = nil;
+	[super dealloc];
 }
 
-- (NSString *)getReturnDateString {
-	if (returnDate == nil) {
-		return @"";
-	}
-	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-	[formatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[formatter setDateStyle:NSDateFormatterShortStyle];
-	[formatter setTimeStyle:NSDateFormatterNoStyle];
-	NSString *dateString = [formatter stringForObjectValue:returnDate];
-	[formatter release];
-	return dateString;
+#pragma mark -
+#pragma mark Derived properties
+
+- (NSString *)dateString
+{
+    return self.date ? [[NSDateFormatter dateFormatterForShortStyle] stringFromDate:self.date] : @"";
 }
 
-- (void)generateOutgoingText {
+- (NSString *)returnDateString
+{
+    return self.returnDate ? [[NSDateFormatter dateFormatterForShortStyle] stringFromDate:self.returnDate] : @"";
+}
+
+#pragma mark -
+#pragma mark Database operations
+
+- (void)generateOutgoingText
+{
 	[self generateTextData];
-	[Database addOutgoingText:entryId withFirstLine:firstLine withSecondLine:secondLine withPerson:personName];
+	[Database addOutgoingText:self.entryId withFirstLine:self.firstLine withSecondLine:self.secondLine withPerson:self.personName];
 }
 
-- (void)generateIncomingText {
+- (void)generateIncomingText
+{
 	[self generateTextData];
-	[Database addIncomingText:entryId withFirstLine:firstLine withSecondLine:secondLine withPerson:personName];
+	[Database addIncomingText:self.entryId withFirstLine:self.firstLine withSecondLine:self.secondLine withPerson:self.personName];
 }
 
+#pragma mark -
+#pragma mark Private methods
 
-- (void)generateTextData {
-	if ([description length] == 0 || [description2 length] == 0) {
-		if ([description length] == 0 ) {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description2];
-		}
-		else {
-			firstLine = [[NSString alloc] initWithFormat:@"%@", description];
-		}
-	}
-	else {
-		firstLine = [[NSString alloc] initWithFormat:@"%@ - %@", description, description2];
-	}
+- (void)generateTextData
+{
+    if ([self.description length] && [self.description2 length]) {
+        self.firstLine = [NSString stringWithFormat:@"%@ - %@", self.description, self.description2];
+    }
+    else if ([self.description length]) {
+        self.firstLine = self.description;
+    }
+    else {
+        self.firstLine = [NSString stringWithFormat:@"%@", self.description2];
+    }
 	
-	ABAddressBookRef ab = ABAddressBookCreate();
-	ABRecordRef personRef = ABAddressBookGetPersonWithRecordID(ab, [person intValue]);
-	
-	NSString *fullName = @"";
-    if (personRef) {
-        if (personRef > 0) {
-            NSString* firstName = (NSString *)ABRecordCopyValue(personRef, kABPersonFirstNameProperty);
-            NSString* lastName = (NSString *)ABRecordCopyValue(personRef, kABPersonLastNameProperty);
-            
-            
-            if (firstName == nil || lastName == nil) {
-                if (firstName == nil) {
-                    personName = lastName;
-                }
-                else {
-                    personName = firstName;
-                }
-            }
-            else {
-                personName = [[NSString alloc] initWithFormat:@"%@ %@", firstName, lastName];
-            }
-            fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
-            [firstName release];
-            [lastName release];
+	ABAddressBookRef addressBook = ABAddressBookCreate();
+    if (addressBook) {
+        ABRecordRef person = ABAddressBookGetPersonWithRecordID(addressBook, [self.person intValue]);
+        NSString *fullName = @"";
+        if (person) {
+            self.personName = [(NSString *)ABRecordCopyCompositeName(person) autorelease];
+            fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), self.personName];
         }
-        else {
-            if ([person length] > 0) {
-                personName = person;
-                fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), personName];
-            }
+        else if ([self.person length]) {
+            self.personName = self.person;
+            fullName = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"to", @""), self.personName];
         }
         
-        if (date != nil) {
-            if ([fullName length] > 0) {
-                secondLine = [NSString stringWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), [self getDateString], fullName];
+        if (self.date) {
+            if ([fullName length]) {
+                self.secondLine = [NSString stringWithFormat:@"%@ %@, %@", NSLocalizedString(@"at", @""), self.dateString, fullName];
             }
             else {
-                secondLine = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), [self getDateString]];
+                self.secondLine = [NSString stringWithFormat:@"%@ %@", NSLocalizedString(@"at", @""), self.dateString];
             }
         }
         else {
-            secondLine = fullName;
+            self.secondLine = fullName;
         }
+        
+        CFRelease(addressBook);
     }
-    CFRelease(ab);
-}
-
-- (void)dealloc {
-	[entryId release];
-	[type release];
-	[description release];
-	[description2 release];
-	[person release];
-	[date release];
-	[returnDate release];
-	[firstLine release];
-	[secondLine release];
-	[personName release];
-	[pushAlarm release];
-	[super dealloc];
 }
 
 

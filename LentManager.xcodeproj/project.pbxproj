@@ -56,6 +56,7 @@
 		43C2B8E71315151A0029F12F /* PickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43C2B8E51315151A0029F12F /* PickerViewController.xib */; };
 		43C2BA24131523630029F12F /* AbstractTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 43C2BA23131523630029F12F /* AbstractTableViewController.m */; };
 		43C2E69D1192C42E006003B0 /* lent-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 43C2E69C1192C42E006003B0 /* lent-icon.png */; };
+		C758520513642FE200C79730 /* NSDateFormatter+DateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = C758520413642FE200C79730 /* NSDateFormatter+DateFormatter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -133,6 +134,8 @@
 		43C2BA23131523630029F12F /* AbstractTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractTableViewController.m; sourceTree = "<group>"; };
 		43C2E69C1192C42E006003B0 /* lent-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lent-icon.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* LentManager-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LentManager-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		C758520313642FE200C79730 /* NSDateFormatter+DateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; path = "NSDateFormatter+DateFormatter.h"; sourceTree = "<group>"; };
+		C758520413642FE200C79730 /* NSDateFormatter+DateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+DateFormatter.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +158,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C758520313642FE200C79730 /* NSDateFormatter+DateFormatter.h */,
+				C758520413642FE200C79730 /* NSDateFormatter+DateFormatter.m */,
 				43BBE7E211D0A8DE000C7B94 /* PersonViewController.h */,
 				43BBE7E311D0A8DE000C7B94 /* PersonViewController.m */,
 				4378EBB9115112CA002AA27D /* ReturnDateSelectViewController.h */,
@@ -260,11 +265,11 @@
 			isa = PBXGroup;
 			children = (
 				4340C172132E0C9200D7BA49 /* LentList.h */,
+				4378EA931150F815002AA27D /* LentList.m */,
 				43B8D7CF1157C6C00074BA21 /* ContactEntry.h */,
 				43B8D7D01157C6C00074BA21 /* ContactEntry.m */,
 				4378EA901150F815002AA27D /* LentEntry.h */,
 				4378EA911150F815002AA27D /* LentEntry.m */,
-				4378EA931150F815002AA27D /* LentList.m */,
 				4333486E131531A300C681FD /* Category.h */,
 				4333486F131531A300C681FD /* Category.m */,
 			);
@@ -391,6 +396,7 @@
 				433348481315300B00C681FD /* CategoryTableViewController.m in Sources */,
 				43334870131531A300C681FD /* Category.m in Sources */,
 				433348A41315346400C681FD /* CategoryAddViewController.m in Sources */,
+				C758520513642FE200C79730 /* NSDateFormatter+DateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,34 +10,34 @@
 
 
 @interface LentEntry : NSObject {
-	NSString *entryId;
-	NSString *type;
-	NSString *description;
-	NSString *description2;
-	NSString *person;
-	NSDate *date;
-	NSDate *returnDate;
-	NSString *firstLine;
-	NSString *secondLine;
-	NSString *personName;
-	NSDate *pushAlarm;
+	NSString *_entryId;
+	NSString *_type;
+	NSString *_description;
+	NSString *_description2;
+	NSString *_person;
+	NSDate *_date;
+	NSDate *_returnDate;
+	NSString *_firstLine;
+	NSString *_secondLine;
+	NSString *_personName;
+	NSDate *_pushAlarm;
 }
 
-@property (nonatomic, retain) NSString *entryId;
-@property (nonatomic, retain) NSString *type;
-@property (nonatomic, retain) NSString *description;
-@property (nonatomic, retain) NSString *description2;
-@property (nonatomic, retain) NSString *person;
+@property (nonatomic, copy) NSString *entryId;
+@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy) NSString *description;
+@property (nonatomic, copy) NSString *description2;
+@property (nonatomic, copy) NSString *person;
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, retain) NSDate *returnDate;
-@property (nonatomic, retain) NSString *firstLine;
-@property (nonatomic, retain) NSString *secondLine;
-@property (nonatomic, retain) NSString *personName;
+@property (nonatomic, copy) NSString *firstLine;
+@property (nonatomic, copy) NSString *secondLine;
+@property (nonatomic, copy) NSString *personName;
 @property (nonatomic, retain) NSDate *pushAlarm;
 
-- (NSString *)getDateString;
-- (NSString *)getReturnDateString;
-- (void)generateTextData;
+@property (nonatomic, readonly) NSString *dateString;
+@property (nonatomic, readonly) NSString *returnDateString;
+
 - (void)generateOutgoingText;
 - (void)generateIncomingText;
 

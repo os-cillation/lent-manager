@@ -321,7 +321,7 @@ static sqlite3 *connection = NULL;
     
     sqlite3_exec(db, [[NSString stringWithFormat:@"UPDATE rentIncoming SET type = 3 WHERE type = %@", category.index] UTF8String], NULL, NULL, NULL);
     sqlite3_exec(db, [[NSString stringWithFormat:@"UPDATE rentOutgoing SET type = 3 WHERE type = %@", category.index] UTF8String], NULL, NULL, NULL);
-    sqlite3_exec(db, [[NSString stringWithFormat:@"DELETE FROM categories WHERE type = %@", category.index] UTF8String], NULL, NULL, NULL);
+    sqlite3_exec(db, [[NSString stringWithFormat:@"DELETE FROM categories WHERE id = %@", category.index] UTF8String], NULL, NULL, NULL);
 }
 
 + (LentEntry *)getIncomingEntry:(NSString *)entryId

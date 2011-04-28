@@ -100,7 +100,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		LentEntry *entryAtIndex = [self.list entryForSection:indexPath.section atRow:indexPath.row];
+		LentEntry *entryAtIndex = [[self.list entryForSection:indexPath.section atRow:indexPath.row] retain];
 		[Database deleteOutgoingEntry:entryAtIndex.entryId];
 		[self initializeTableData];
         self.allEntries = [Database getOutgoingEntries:nil];
@@ -129,6 +129,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
             [pushList release];
         }
+        [entryAtIndex release];
     }   
 }
 

@@ -1,0 +1,15 @@
+iOS App LentManager for iPhone
+==============================
+
+Manage your lent items. Never forget to bring an item back or get your own items back.
+
+- Add new items lent to you or lent from you.
+- Enter a date when the item should be returned.
+- Get a visual glue if the item is over the return date.
+- PushNotifications informs about your items when they are due.
+- Create own categories to manage your items.
+- Connect your lent entry with a contact from your addressbook to get information like the phone number.
+- Edit or delete this entries.
+- Filter your entries by description or contact name.
+
+URL: http://www.os-cillation.de/en/development/iphone-ipad-android-apps/lentmanager/
